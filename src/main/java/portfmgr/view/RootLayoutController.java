@@ -23,7 +23,8 @@ public class RootLayoutController implements Initializable {
     @FXML private Label label;
     
     
-    public void openPortfolioModal() {
+    public void showTextInConsole() {
+    	System.out.println("Hello!");
     	
     }
 

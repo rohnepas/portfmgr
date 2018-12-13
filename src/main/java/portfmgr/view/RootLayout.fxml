@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.RootLayoutController">
    <children>
-      <Button fx:id="simpleButton" layoutX="465.0" layoutY="339.0" mnemonicParsing="false" onAction="#openPortfolioModal" text="Einfacher Button" />
+      <Button fx:id="simpleButton" layoutX="465.0" layoutY="339.0" mnemonicParsing="false" onAction="#showTextInConsole" text="Einfacher Button" />
       <Label layoutX="331.0" layoutY="434.0" text="Label" />
    </children>
 </AnchorPane>
