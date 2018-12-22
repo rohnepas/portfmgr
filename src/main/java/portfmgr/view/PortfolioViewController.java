@@ -1,6 +1,7 @@
 package portfmgr.view;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -51,16 +52,20 @@ public class PortfolioViewController {
 	}
 
 	/**
-	 * Opens the portfolioDetailView
+	 * Opens the portfolioDetailView within the rootLayout
 	 */
 	public void openPortfolio() {
 		try {
-			// Loads the portfolioDetailView.
+			// Loads the portfolioView
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(portfmgrApplication.class.getResource("view/PortfolioDetailView.fxml"));
 			AnchorPane overview = (AnchorPane) loader.load();
 
-			// Gets the RootLayout and sets the portfolioDetailView within the RootLayout
+			// Gives the controller class access to the mainApp in order to set the scene within the rootLayout.
+			PortfolioDetailViewController controller = loader.getController();
+			controller.setMainApp(mainApp);
+
+			// Opens the portfolioView within the rootLayout
 			mainApp.getRootLayout().setCenter(overview);
 		} catch (Exception e) {
 			e.printStackTrace();
