@@ -5,6 +5,6 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
    <children>
-      <Button fx:id="openDashboard" layoutX="31.0" layoutY="50.0" mnemonicParsing="false" onAction="#openDashboard" text="back to dashboard" />
+      <Button fx:id="openDashboard" layoutX="41.0" layoutY="51.0" mnemonicParsing="false" onAction="#openDashboard" text="Back to Dashboard" />
    </children>
 </AnchorPane>

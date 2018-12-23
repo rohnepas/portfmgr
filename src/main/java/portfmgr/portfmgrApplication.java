@@ -52,7 +52,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		loadRootLayoutView();
-		loadsPortfolioView();
+		loadPortfolioView();
 	}
 
 	/**
@@ -75,24 +75,23 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	/**
 	 * Loads the portfolioView within the rootLayout
 	 */
-	public void loadsPortfolioView() {
+	public void loadPortfolioView() {
 		try {
 			// Loads the portfolioView
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(portfmgrApplication.class.getResource("view/PortfolioView.fxml"));
 			AnchorPane overview = (AnchorPane) loader.load();
 
-			// Gives the controller access to the mainApp
+			// Gives the controller classe access to the mainApp in order to set the scene within the rootLayout.
 			PortfolioViewController controller = loader.getController();
 			controller.setMainApp(this);
 
-			// Opens the portfolioView within the rootLayout
+			//Opens the portfolioView within the rootLayout
 			rootLayout.setCenter(overview);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 	
 
 	/**
