@@ -64,6 +64,7 @@ public class PortfolioViewController {
 			// Gives the controller class access to the mainApp in order to set the scene within the rootLayout.
 			PortfolioDetailViewController controller = loader.getController();
 			controller.setMainApp(mainApp);
+		
 
 			// Opens the portfolioView within the rootLayout
 			mainApp.getRootLayout().setCenter(overview);
