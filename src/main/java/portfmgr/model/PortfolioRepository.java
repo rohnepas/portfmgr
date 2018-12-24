@@ -14,4 +14,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface PortfolioRepository extends CrudRepository<Portfolio, Long> {
 	
 	List<Portfolio> findByPortfolioCurrency(String portfolioCurrency);
+	Portfolio findByPortfolioId(Long Id);
 }

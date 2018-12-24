@@ -1,5 +1,9 @@
 package portfmgr.view;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
@@ -7,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.Portfolio;
+import portfmgr.model.PortfolioRepository;
 /**
  * This class represents one of the main controllers and manage the detail view about the portfolios.
  * 
@@ -16,23 +21,18 @@ import portfmgr.model.Portfolio;
 public class PortfolioDetailViewController {
 
 	private portfmgrApplication mainApp;
-	private Portfolio portfolio;
-	private String portfolioName;
-	private String portfolioCurrency;
+	private Long Id;
 	
-	public PortfolioDetailViewController(Portfolio portfolio) {
-		this.portfolio = portfolio;
-		portfolioName = portfolio.getPortfolioName();
-		portfolioCurrency = portfolio.getPortfolioCurrency();
-		updatePortfolio();
-	}
+	@Autowired
+	PortfolioRepository portRepo;
 	
 	@FXML
 	private Button openDashboard;
 
-	/**
-	 * Opens the portfolioView within the rootLayout
-	 */
+	
+	
+	// Konstruktor wegnehmen und eine mMEthode zur Verfügungstellen welche ID bekommt
+	
 	public void openDashboard() {
 		try {
 			// Loads the portfolioView
@@ -51,21 +51,9 @@ public class PortfolioDetailViewController {
 			e.printStackTrace();
 		}
 
-	}
-
-	/**
-	 * Initializes the MainApp variable and is called by the MainApp itself.
-	 * 
-	 * @param portfmgrApplication
-	 */
-	public void setMainApp(portfmgrApplication mainApp) {
-		this.mainApp = mainApp;
-
-	}
-	
+	}	
 
 	public void updatePortfolio() {
-		editPortfolio(portfolioName, portfolioCurrency);
 		// neue INstanz von OnlineCourseQuery, welche ein JSON Objekt zurück gibt
 		/*
 		 * TO DO
@@ -74,15 +62,26 @@ public class PortfolioDetailViewController {
 		
 	}
 	
-
-	public void editPortfolio(String portfolioName, String portfolioCurrency) {
+	public void editPortfolio(String portfolioName, String portfolioCurrency, Long Id) {
+		Portfolio portfolio = portRepo.findByPortfolioId(Id);
 		portfolio.setPortfolioCurrency(portfolioCurrency);
 		portfolio.setPortfolioName(portfolioName);
+
 		
 		/*
 		 * TO DO
 		 * Call Portfolio methods and set name and currency
 		 */
+		
+	}
+	
+	public void setMainApp(portfmgrApplication mainApp) {
+		this.mainApp = mainApp;
+
+	}
+	
+	public void setActualPortoflio(Long PortfolioId) {
+		Id = PortfolioId;
 		
 	}
 
