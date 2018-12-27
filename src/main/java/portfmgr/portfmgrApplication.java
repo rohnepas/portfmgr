@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import portfmgr.model.PortfolioRepository;
 import portfmgr.view.PortfolioViewController;
 
 /**
@@ -38,6 +39,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	@Override
 	public void init() throws Exception {
 		springContext = SpringApplication.run(portfmgrApplication.class);
+		PortfolioRepository portRepository = springContext.getBean(PortfolioRepository.class);
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("view/RootLayout.fxml"));
 		fxmlLoader.setControllerFactory(springContext::getBean);
 		rootLayout = fxmlLoader.load();
@@ -80,6 +82,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			// Loads the portfolioView
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(portfmgrApplication.class.getResource("view/PortfolioView.fxml"));
+			loader.setControllerFactory(springContext::getBean);
 			AnchorPane overview = (AnchorPane) loader.load();
 
 			// Gives the controller classe access to the mainApp in order to set the scene within the rootLayout.

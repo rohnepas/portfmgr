@@ -1,17 +1,22 @@
 package portfmgr.view;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioRepository;
+import portfmgr.model.Transaction;
+import portfmgr.model.TransactionRepository;
 
 /**
  * This class represents the link between the portfolio model and the portfolio
@@ -21,17 +26,29 @@ import portfmgr.model.PortfolioRepository;
  */
 
 @Controller
-public class PortfolioViewController {
+public class PortfolioViewController implements Initializable {
 
 	// Gets the repository instance injected and uses it.
 	@Autowired
 	PortfolioRepository portRepo;
+	
+	@Autowired
+	TransactionRepository transRepo;
 
 	// Reference to the main app (portfmgrApplication)
 	private portfmgrApplication mainApp;
 
 	@FXML
 	private Button openPortfolio;
+	
+	@FXML
+	private Button addPortfolio;
+	
+	@FXML
+	private Button addTransaction;
+	
+	//@FXML
+	//private Button addTransaction;
 
 	/*
 	 * Adds a portfolio to the database and prints a list of all portfolios with
@@ -39,8 +56,8 @@ public class PortfolioViewController {
 	 */
 	public void addPortfolioToDatabase() {
 		Portfolio portf = new Portfolio();
-		portf.setPortfolioName("Portfolio 1");
 		portf.setPortfolioCurrency("CHF");
+		portf.setPortfolioName("Portfolio1");
 		portRepo.save(portf);
 
 		List<Portfolio> portfolios = portRepo.findByPortfolioCurrency("CHF");
@@ -50,6 +67,7 @@ public class PortfolioViewController {
 
 		}
 	}
+	
 
 	/**
 	 * Opens the portfolioDetailView within the rootLayout
@@ -80,5 +98,8 @@ public class PortfolioViewController {
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 	}
+
+	@Override
+    public void initialize(URL location, ResourceBundle resourceBundle) {}
 
 }
