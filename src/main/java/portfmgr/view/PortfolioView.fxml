@@ -13,5 +13,6 @@
             <Font size="24.0" />
          </font>
       </Text>
+      <Button fx:id="addPortfolio" layoutX="32.0" layoutY="308.0" mnemonicParsing="false" onAction="#addPortfolioToDatabase" text="add Portfolio" />
    </children>
 </AnchorPane>
