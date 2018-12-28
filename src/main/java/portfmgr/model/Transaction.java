@@ -33,7 +33,7 @@ public class Transaction {
 	private Double priceEUR;
 	private Double priceCHF;
 	private Date transactionDate;
-	private String buyOrCell;
+	private String buyOrSell;
 	private Double feesUSD;
 	private Double feesBTC;
 	private Double feesEUR;
@@ -178,21 +178,21 @@ public class Transaction {
 	}
 
 	/*
-	 * Method to query the type of transaction (Buy or Cell)
+	 * Method to query the type of transaction (Buy or Sell)
 	 * 
 	 * @return type of transaction as String
 	 */
-	public String getBuyOrCell() {
-		return buyOrCell;
+	public String getBuyOrSell() {
+		return buyOrSell;
 	}
 
 	/*
-	 * Method to set the type of transaction (Buy or Cell)
+	 * Method to set the type of transaction (Buy or Sell)
 	 * 
 	 * @param type of transaction as String
 	 */
-	public void setBuyOrCell(String buyOrCell) {
-		this.buyOrCell = buyOrCell;
+	public void setBuyOrSell(String buyOrSell) {
+		this.buyOrSell = buyOrSell;
 	}
 
 	/*

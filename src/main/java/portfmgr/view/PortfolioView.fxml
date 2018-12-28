@@ -1,18 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioViewController">
    <children>
-      <Button fx:id="openPortfolio" layoutX="32.0" layoutY="109.0" mnemonicParsing="false" onAction="#openPortfolio" text="open detail view" />
       <Text layoutX="32.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Portfolioübersicht">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <Button fx:id="addPortfolio" layoutX="32.0" layoutY="308.0" mnemonicParsing="false" onAction="#addPortfolioToDatabase" text="add Portfolio" />
+      <AnchorPane layoutX="42.0" layoutY="179.0" prefHeight="366.0" prefWidth="906.0" AnchorPane.bottomAnchor="54.60000000000002" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="179.0">
+         <children>
+            <Rectangle fx:id="portfolio1" arcHeight="5.0" arcWidth="10.0" fill="#e6e9ed" height="143.0" layoutX="128.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0" AnchorPane.leftAnchor="128.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Rectangle>
+            <Rectangle fx:id="portfolio2" arcHeight="5.0" arcWidth="10.0" fill="#e6e9ed" height="143.0" layoutX="497.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0" AnchorPane.rightAnchor="129.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Rectangle>
+            <Rectangle fx:id="portfolio3" arcHeight="5.0" arcWidth="10.0" fill="#e6e9ed" height="143.0" layoutX="128.0" layoutY="209.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0" AnchorPane.leftAnchor="128.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Rectangle>
+            <Rectangle fx:id="portfolio4" arcHeight="5.0" arcWidth="10.0" fill="#e6e9ed" height="143.0" layoutX="498.0" layoutY="209.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Rectangle>
+            <Label fx:id="labelPortfolio2" alignment="CENTER" layoutX="607.0" layoutY="23.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelPortfolio4" alignment="CENTER" layoutX="606.0" layoutY="227.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelPortfolio3" alignment="CENTER" layoutX="237.0" layoutY="227.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelPortfolio1" alignment="CENTER" layoutX="237.0" layoutY="23.0" text="Label" textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
