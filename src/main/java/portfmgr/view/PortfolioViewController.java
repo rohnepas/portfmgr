@@ -1,21 +1,19 @@
 package portfmgr.view;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Label;
+import javafx.scene.shape.Rectangle;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioRepository;
-import portfmgr.model.Transaction;
 import portfmgr.model.TransactionRepository;
 
 /**
@@ -31,68 +29,54 @@ public class PortfolioViewController implements Initializable {
 	// Gets the repository instance injected and uses it.
 	@Autowired
 	PortfolioRepository portRepo;
-	
+
 	@Autowired
 	TransactionRepository transRepo;
 
 	// Reference to the main app (portfmgrApplication)
 	private portfmgrApplication mainApp;
+	private Portfolio[] portfArray;
+	private Label[] portfLabelArray;
+	private PortfolioDetailViewController portfDetailViewController;
 
 	@FXML
 	private Button openPortfolio;
-	
+
 	@FXML
-	private Button addPortfolio;
-	
+	private Button setName;
+
 	@FXML
 	private Button addTransaction;
-	
-	//@FXML
-	//private Button addTransaction;
 
-	/*
-	 * Adds a portfolio to the database and prints a list of all portfolios with
-	 * currency CHF
-	 */
-	public void addPortfolioToDatabase() {
-		Portfolio portf = new Portfolio();
-		portf.setPortfolioCurrency("CHF");
-		portf.setPortfolioName("Portfolio1");
-		portRepo.save(portf);
+	@FXML
+	private Rectangle portfolio1;
 
-		List<Portfolio> portfolios = portRepo.findByPortfolioCurrency("CHF");
-		for (Portfolio portfolio : portfolios) {
-			// the toString method is overwritten
-			System.out.println(portfolio);
+	@FXML
+	private Rectangle portfolio2;
 
-		}
-	}
-	
+	@FXML
+	private Rectangle portfolio3;
+
+	@FXML
+	private Rectangle portfolio4;
+
+	@FXML
+	private Label labelPortfolio1;
+
+	@FXML
+	private Label labelPortfolio2;
+
+	@FXML
+	private Label labelPortfolio3;
+
+	@FXML
+	private Label labelPortfolio4;
 
 	/**
-	 * Opens the portfolioDetailView within the rootLayout
+	 * Calls method from mainApp to open the portfolioView
 	 */
-	public void openPortfolio() {
-		try {
-			// Loads the portfolioView
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(portfmgrApplication.class.getResource("view/PortfolioDetailView.fxml"));
-			AnchorPane overview = (AnchorPane) loader.load();
-
-			// Gives the controller class access to the mainApp in order to set the scene within the rootLayout.
-			PortfolioDetailViewController controller = loader.getController();
-			controller.setMainApp(mainApp);
-			
-			// Opens the portfolioView within the rootLayout
-			mainApp.getRootLayout().setCenter(overview);
-			
-			// Just for testing call method
-			controller.setActualPortoflio((long) 123);
-			controller.editPortfolio();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void openPortfolioDetailView() {
+		mainApp.openPortfolioDetailView();
 	}
 
 	/**
@@ -104,7 +88,49 @@ public class PortfolioViewController implements Initializable {
 		this.mainApp = mainApp;
 	}
 
+	/**
+	 * Creates four portfolios and stores them in the database if they do not
+	 * already exist. The names of the portfolios are also set.
+	 * 
+	 * @param portfmgrApplication
+	 */
 	@Override
-    public void initialize(URL location, ResourceBundle resourceBundle) {}
+	public void initialize(URL location, ResourceBundle resourceBundle) {
+
+		int numberOfPortfolios = 4;
+
+		if (portRepo.count() == 0) {
+			portfArray = new Portfolio[4];
+
+			for (int i = 0; i < numberOfPortfolios; i++) {
+				portfArray[i] = new Portfolio();
+
+				portRepo.save(portfArray[i]);
+				System.out.println(portfArray[i]);
+			}
+		}
+		
+		if (portfLabelArray == null) {
+			portfLabelArray = new Label[4];
+
+			portfLabelArray[0] = labelPortfolio1;
+			portfLabelArray[1] = labelPortfolio2;
+			portfLabelArray[2] = labelPortfolio3;
+			portfLabelArray[3] = labelPortfolio4;
+		}
+
+		for (Portfolio portfolio : portfArray) {
+			for (int i = 0; i < portfLabelArray.length; i++) {
+				if (portfolio.getPortfolioName() == null) {
+					portfLabelArray[i].setText("leer");
+
+				} else {
+					portfLabelArray[i].setText(portfolio.getPortfolioName());
+				}
+			}
+
+		}
+
+	}
 
 }

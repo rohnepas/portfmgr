@@ -1,11 +1,15 @@
 package portfmgr.view;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -19,7 +23,8 @@ import portfmgr.model.PortfolioRepository;
  * @author Marc Steiner
  */
 
-public class PortfolioDetailViewController {
+@Controller
+public class PortfolioDetailViewController  implements Initializable {
 
 	private portfmgrApplication mainApp;
 	private Long Id;
@@ -46,20 +51,11 @@ public class PortfolioDetailViewController {
     }
 
 
-	public void openDashboard() {
-		try {
-			// Loads the portfolioView
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(portfmgrApplication.class.getResource("view/PortfolioView.fxml"));
-			AnchorPane overview = (AnchorPane) loader.load();
-
-			PortfolioViewController controller = loader.getController();
-			controller.setMainApp(mainApp);
-
-			mainApp.getRootLayout().setCenter(overview);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	/**
+	 * Calls method from mainApp to open the portfolioView
+	 */
+	public void openPortfolioView() {
+		mainApp.openPortfolioView();
 
 	}	
 
@@ -145,6 +141,13 @@ public class PortfolioDetailViewController {
 	
 	public Long getActualPortoflio() {
 		return Id;	
+	}
+
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		
 	}
 
 	

@@ -13,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import portfmgr.model.PortfolioRepository;
+import portfmgr.view.PortfolioDetailViewController;
 import portfmgr.view.PortfolioViewController;
 
 /**
@@ -33,28 +33,40 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	private BorderPane rootLayout;
 
 	/**
-	 * Starts Spring context, creates FXMLLoader and ceeding the control of beans
-	 * creation
+	 * Sets the spring Context for the whole application and calls the
+	 * setupLoader-Method and sets as rootLayout.
+	 * 
 	 */
 	@Override
 	public void init() throws Exception {
 		springContext = SpringApplication.run(portfmgrApplication.class);
-		PortfolioRepository portRepository = springContext.getBean(PortfolioRepository.class);
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("view/RootLayout.fxml"));
-		fxmlLoader.setControllerFactory(springContext::getBean);
-		rootLayout = fxmlLoader.load();
+		rootLayout = setupLoader("view/RootLayout.fxml").load();
 	}
 
 	/**
 	 * Saves the primary stage and calls the two views (rootLayout and
 	 * portfolioView)
+	 * 
 	 * @param Stage
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		loadRootLayoutView();
-		loadPortfolioView();
+		openPortfolioView();
+	}
+
+	/**
+	 * Sets up the loader and the spring context which is used in different parts of
+	 * the mainApp.
+	 * 
+	 * @return FXMLLoader as loader
+	 */
+	public FXMLLoader setupLoader(String view) {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(portfmgrApplication.class.getResource(view));
+		loader.setControllerFactory(springContext::getBean);
+		return loader;
 	}
 
 	/**
@@ -63,7 +75,6 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	 */
 	public void loadRootLayoutView() {
 		try {
-
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
@@ -75,30 +86,56 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	}
 
 	/**
-	 * Loads the portfolioView within the rootLayout
+	 * Sets up and loads the PortfolioView
 	 */
-	public void loadPortfolioView() {
+	public void openPortfolioView() {
 		try {
 			// Loads the portfolioView
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(portfmgrApplication.class.getResource("view/PortfolioView.fxml"));
-			loader.setControllerFactory(springContext::getBean);
-			AnchorPane overview = (AnchorPane) loader.load();
+			FXMLLoader loader = setupLoader("view/PortfolioView.fxml");
+			AnchorPane portfolioView = (AnchorPane) loader.load();
 
-			// Gives the controller classe access to the mainApp in order to set the scene within the rootLayout.
+			// Gives the controller classe access to the mainApp in order to set the scene
+			// within the rootLayout.
 			PortfolioViewController controller = loader.getController();
 			controller.setMainApp(this);
 
-			//Opens the portfolioView within the rootLayout
-			rootLayout.setCenter(overview);
+			// Opens the portfolioView within the rootLayout
+			rootLayout.setCenter(portfolioView);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 
 	/**
-	 * Method to return the rootLayout. Is use to open new scenes within the rootLayout
+	 * Sets up and loads the DetailView
+	 */
+	public void openPortfolioDetailView() {
+		try {
+			// Loads the portfolioDetailView
+			FXMLLoader loader = setupLoader("view/PortfolioDetailView.fxml");
+			AnchorPane portfolioDetailView = (AnchorPane) loader.load();
+
+			// Gives the controller class access to the mainApp in order to set the scene
+			// within the rootLayout.
+			PortfolioDetailViewController controller = loader.getController();
+			controller.setMainApp(this);
+
+			// Opens the portfolioDetailView within the rootLayout
+			getRootLayout().setCenter(portfolioDetailView);
+
+			// Just for testing call method
+			// controller.setActualPortoflio((long) 123);
+			// controller.editPortfolio();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method to return the rootLayout. Is use to open new scenes within the
+	 * rootLayout
+	 * 
 	 * @return rootLayout
 	 */
 	public BorderPane getRootLayout() {
