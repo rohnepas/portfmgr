@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import java.lang.*?>
@@ -58,7 +59,7 @@
                         <Insets left="35.0" />
                      </GridPane.margin>
                      <image>
-                        <Image url="@../../../../../images/dashboard.png" />
+                        <Image url="@../../images/dashboard.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="70.0" layoutX="20.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
@@ -66,7 +67,7 @@
                         <Insets left="35.0" />
                      </GridPane.margin>
                      <image>
-                        <Image url="@../../../../../images/refresh.png" />
+                        <Image url="@../../images/refresh.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="70.0" layoutX="210.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
@@ -74,7 +75,7 @@
                         <Insets left="35.0" />
                      </GridPane.margin>
                      <image>
-                        <Image url="@../../../../../images/export.png" />
+                        <Image url="@../../images/export.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="70.0" layoutX="10.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
@@ -82,7 +83,7 @@
                         <Insets left="35.0" />
                      </GridPane.margin>
                      <image>
-                        <Image url="@../../../../../images/pen.png" />
+                        <Image url="@../../images/pen.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="30.0" fitWidth="70.0" layoutX="10.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
@@ -90,7 +91,7 @@
                         <Insets left="35.0" />
                      </GridPane.margin>
                      <image>
-                        <Image url="@../../../../../images/trash.png" />
+                        <Image url="@../../images/trash.png" />
                      </image>
                   </ImageView>
                </children>
@@ -100,5 +101,10 @@
             </GridPane>
          </top>
       </BorderPane>
+      <Label text="Data under free license from: https://www.cryptocompare.com " AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="580.0">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

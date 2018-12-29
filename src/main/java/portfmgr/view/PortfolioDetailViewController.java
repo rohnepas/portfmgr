@@ -1,20 +1,21 @@
 package portfmgr.view;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import portfmgr.portfmgrApplication;
+import portfmgr.model.OnlineCourseQuery;
+import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioRepository;
 
 /**
@@ -27,9 +28,8 @@ import portfmgr.model.PortfolioRepository;
 public class PortfolioDetailViewController  implements Initializable {
 
 	private portfmgrApplication mainApp;
-	private Long Id;
-	private String newPortfolioName;
-	private String portfolioCurrency;
+	private Portfolio portfolio;
+	private JSONObject onlineData;
 	
 	@Autowired
 	PortfolioRepository portRepo;
@@ -37,26 +37,15 @@ public class PortfolioDetailViewController  implements Initializable {
 	@FXML
 	private Button openDashboard;
 	@FXML
-	private Button submitButton;
-	@FXML
 	private Button updatePortfolio;
 	@FXML
 	private Button exportPortfolio;
 	@FXML
 	private Button editPortfolio;
 	@FXML
-	private TextField portfolioName;
-	@FXML
-	private ChoiceBox<String> currency;
-	@FXML
-	private void submitData(ActionEvent event){
-		newPortfolioName = portfolioName.getText();
-		portfolioCurrency = currency.getValue();
-		
-		updatePortfolioNameAndCurrency();
-    }
-
-
+	private Button deletePortfolio;
+	
+	
 	/**
 	 * Calls method from mainApp to open the portfolioView
 	 */
@@ -65,75 +54,61 @@ public class PortfolioDetailViewController  implements Initializable {
 
 	}	
 
+	public JSONObject onlineCourseQuery() {
+		
+		OnlineCourseQuery query = new OnlineCourseQuery();
+		
+		List<String> testListe = Arrays.asList("BTC", "ETH", "LTC");
+		query.setSymbols(testListe);
+		
+		List<String> testListeCurrency = Arrays.asList("CHF", "USD", "EUR");
+		query.setCurrencies(testListeCurrency);
+		
+		try {
+			onlineData = query.getOnlineCourseData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(onlineData);
+		
+		return onlineData;
+		
+	}
+	
 	public void updatePortfolio() {
 		/*
 		 * TO DO:
-		 * Neue Instanz von OnlineCourseQuery welches ein JSON Objekt zurück gibt
+		 * JSON FILE auflösen und in TEXTArea als erstes anzeigen 
 		 * Alle Daten  neu Berechnen und die Daten des Portoflio updaten
 		 */
-		System.out.println("Portfolio UDPATET");
+		
+		onlineCourseQuery();
 		
 	}
 	
-	public void updatePortfolioNameAndCurrency() {
+	public void refreshPortfolio() {
 		/*
-		 * TO DO: Updatet nur den Namen und die gewählte Currency. 
-		 * Wird nach editPortfolio und dessen Aufruf von UpdateView (Action submit Button) aufgerufen  
+		 * Holt das aktuelle Portfolio nochmasl aus der Datenbank ohne Online Daten und ohne Datenberechnung
 		 */
-        
-        System.out.println(newPortfolioName);
-        System.out.println(portfolioCurrency);
-        System.out.println(Id);
-        
 		
-		/*
-		 * 	Portfolio portfolio = portRepo.findByPortfolioId(Id);
-		 *  portfolio.setPortfolioCurrency(portfolioCurrency);
-		 *  portfolio.setPortfolioName(portfolioName);
-		 */
+		//Portfolio portfolio = portRepo.findById(portfolio.getId());
+		//portfolio.getPortfolioName();
+		// portfolio.getPortfolioCurrency();
+		// NAME und Currency anzeigen
 		
 	}
 	
+	
+	/*
+	 * Sends actual portfolio to the main app, which handles starts the UpdateViewController.
+	 * If something has changed in the update view, the data will be saved directly to the database
+	 */
 	public void editPortfolio() {
 		
-		/*
-		 * TO DO: Pop Up erstellen welches Input entgegen nimmt für Currency und Namen
-		 */
-
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(portfmgrApplication.class.getResource("view/PortfolioUpdateView.fxml"));
-			AnchorPane overview = (AnchorPane) loader.load();
-			
-			/*
-			
-			choiceBox.setValue("CHF");
-			choiceBox.setItems(currencyOptions);
-			
-			
-			/*
-			Stage modalDialog = new Stage();
-			Scene scene = new Scene(overview);
-			
-			modalDialog.setScene(scene);
-		    modalDialog.setTitle("Modal Dialog");
-		    modalDialog.initModality(Modality.WINDOW_MODAL);
-		    modalDialog.initOwner(modalDialog);
-	        modalDialog.showAndWait();
-	        mainApp.getRootLayout().setCenter(modalDialog);
-	        */
-			
-			/*
-			 * WAIT von modalDialog.showAndWait() muss implementiert werden um nach dem updatePortfolioNameAndCurrency()
-			 * eine neue Ansicht zu bekommen
-			 */
-			
-			mainApp.getRootLayout().setCenter(overview);
-	     
-	        
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		mainApp.openPortfolioUpdateView(portfolio);
+		refreshPortfolio();
 	
 	}
 	
@@ -156,21 +131,14 @@ public class PortfolioDetailViewController  implements Initializable {
 
 	}
 	
-	public void setActualPortoflio(Long PortfolioId) {
-		Id = PortfolioId;	
+	public void setActualPortoflio(Portfolio portfolio) {
+		this.portfolio = portfolio;	
 	}
 	
-	public Long getActualPortoflio() {
-		return Id;	
-	}
-
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		
-	}
 
-	
+	}
 
 }
