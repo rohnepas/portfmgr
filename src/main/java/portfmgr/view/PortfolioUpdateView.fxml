@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="portfmgr.view.PortfolioUpdateViewController">
+<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioUpdateViewController">
    <children>
       <GridPane layoutY="82.0" prefHeight="108.0" prefWidth="327.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="45.0">
         <columnConstraints>
@@ -20,9 +19,13 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Speichern" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="79.0" text="Abbruch" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ChoiceBox prefHeight="27.0" prefWidth="162.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="submit" mnemonicParsing="false" onAction="#handleSubmit" text="Speichern" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Button fx:id="cancel" mnemonicParsing="false" onAction="#handleCancel" prefHeight="27.0" prefWidth="79.0" text="Abbruch" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ChoiceBox prefHeight="27.0" prefWidth="162.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            	<String fx:value="CHF"/>
+            	<String fx:value="EUR"/>
+            	<String fx:value="USD"/>
+            </ChoiceBox>	
             <TextField GridPane.columnIndex="1" />
             <Label text="Portfolio Name:" GridPane.halignment="RIGHT">
                <GridPane.margin>
