@@ -138,7 +138,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 		
 		try {
 			// Loads the portfolioDetailView
-			FXMLLoader loader = setupLoader("view/PortfolioUpdateView_2.fxml");
+			FXMLLoader loader = setupLoader("view/PortfolioUpdateView.fxml");
 			AnchorPane portfolioUpdateView = (AnchorPane) loader.load();
 			
 			// Create the dialog Stage.

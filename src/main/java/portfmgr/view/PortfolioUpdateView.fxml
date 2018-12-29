@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
+<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="portfmgr.view.PortfolioUpdateViewController">
    <children>
-   	  <ChoiceBox layoutX="333.0" layoutY="149.0" prefHeight="27.0" prefWidth="167.0" fx:id="currency">
-  
-    		<String fx:value="CHF"/>
-    		<String fx:value="USD"/>
-    		<String fx:value="EUR"/>
-
-   	  </ChoiceBox>
-      <TextField layoutX="333.0" layoutY="100.0" fx:id="portfolioName"/>
-      <Label layoutX="227.0" layoutY="105.0" prefHeight="17.0" prefWidth="96.0" text="Portfolio Name" />
-      <Label layoutX="258.0" layoutY="154.0" prefHeight="17.0" prefWidth="67.0" text="Currency" />
-      <Button layoutX="333.0" layoutY="211.0" mnemonicParsing="false" fx:id="submitButton"  onAction="#submitData" text="submit" />
-      
-      
+      <GridPane layoutY="82.0" prefHeight="108.0" prefWidth="327.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="45.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" text="Speichern" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="79.0" text="Abbruch" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ChoiceBox prefHeight="27.0" prefWidth="162.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField GridPane.columnIndex="1" />
+            <Label text="Portfolio Name:" GridPane.halignment="RIGHT">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Währung:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Label>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>
-
-
-
-
