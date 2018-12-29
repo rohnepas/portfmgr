@@ -39,6 +39,12 @@ public class PortfolioDetailViewController  implements Initializable {
 	@FXML
 	private Button submitButton;
 	@FXML
+	private Button updatePortfolio;
+	@FXML
+	private Button exportPortfolio;
+	@FXML
+	private Button editPortfolio;
+	@FXML
 	private TextField portfolioName;
 	@FXML
 	private ChoiceBox<String> currency;
@@ -65,6 +71,7 @@ public class PortfolioDetailViewController  implements Initializable {
 		 * Neue Instanz von OnlineCourseQuery welches ein JSON Objekt zurück gibt
 		 * Alle Daten  neu Berechnen und die Daten des Portoflio updaten
 		 */
+		System.out.println("Portfolio UDPATET");
 		
 	}
 	
@@ -128,6 +135,20 @@ public class PortfolioDetailViewController  implements Initializable {
 			e.printStackTrace();
 		}
 	
+	}
+	
+	public void deletePortfolio() {
+		System.out.println("Portfolio DELETE");
+		/*
+		 * TO DO: Delete Portfolio
+		 */
+	}
+	
+	public void exportPortfolio() {
+		System.out.println("Portfolio EXPORT");
+		/*
+		 * TO DO: Delete Portfolio
+		 */
 	}
 	
 	public void setMainApp(portfmgrApplication mainApp) {
