@@ -46,7 +46,7 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <TextField GridPane.columnIndex="1" />
+            <TextField fx:id="newPortfolioName" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <Text layoutX="114.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Portfoliodetails">
