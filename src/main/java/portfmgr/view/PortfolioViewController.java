@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.Portfolio;
@@ -32,6 +33,9 @@ public class PortfolioViewController implements Initializable {
 
 	@Autowired
 	TransactionRepository transRepo;
+	
+	@Autowired
+	PortfolioDetailViewController portDetailViewController;
 
 	// Reference to the main app (portfmgrApplication)
 	private portfmgrApplication mainApp;
@@ -72,9 +76,17 @@ public class PortfolioViewController implements Initializable {
 	private Label labelPortfolio4;
 
 	/**
-	 * Calls method from mainApp to open the portfolioView
+	 * Sends the selected portfolio to the portfolioDetailView and 
+	 * calls method from mainApp to open the portfolioView.
+	 * 
+	 * todo: send different portfolios. Currently the portfolio with the ID 1 is always sent.
 	 */
-	public void openPortfolioDetailView() {
+	public void openPortfolioDetailView(MouseEvent event) {
+		String source = event.getPickResult().getIntersectedNode().getId();
+		System.out.println(source);
+		Portfolio actualPortfolio = portfArray[0];
+		portDetailViewController.setActualPortoflio(actualPortfolio);
+		System.out.println(actualPortfolio);
 		mainApp.openPortfolioDetailView();
 	}
 
@@ -108,6 +120,11 @@ public class PortfolioViewController implements Initializable {
 				System.out.println(portfArray[i]);
 			}
 		}
+		
+		Portfolio portfolio1 = portfArray[0];
+		portfolio1.setPortfolioName("rohnestein");
+		portfolio1.setPortfolioCurrency("CHF");
+		portfArray[0] = portfolio1;
 		
 		if (portfLabelArray == null) {
 			portfLabelArray = new Label[4];
