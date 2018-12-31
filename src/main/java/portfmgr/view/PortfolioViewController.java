@@ -37,7 +37,6 @@ public class PortfolioViewController implements Initializable {
 	private portfmgrApplication mainApp;
 	private Portfolio[] portfArray;
 	private Label[] portfLabelArray;
-	private PortfolioDetailViewController portfDetailViewController;
 
 	@FXML
 	private Button openPortfolio;

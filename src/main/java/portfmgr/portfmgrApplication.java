@@ -12,8 +12,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import portfmgr.model.Portfolio;
 import portfmgr.view.PortfolioDetailViewController;
+import portfmgr.view.PortfolioUpdateViewController;
 import portfmgr.view.PortfolioViewController;
 
 /**
@@ -31,6 +34,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	private ConfigurableApplicationContext springContext;
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	
 
 	/**
 	 * Sets the spring Context for the whole application and calls the
@@ -123,15 +127,44 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			// Opens the portfolioDetailView within the rootLayout
 			getRootLayout().setCenter(portfolioDetailView);
 
-			// Just for testing call method
-			// controller.setActualPortoflio((long) 123);
-			// controller.editPortfolio();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void openPortfolioUpdateView(Portfolio portfolio) {
+		
+		
+		try {
+			// Loads the portfolioDetailView
+			FXMLLoader loader = setupLoader("view/PortfolioUpdateView.fxml");
+			AnchorPane portfolioUpdateView = (AnchorPane) loader.load();
+			
+			// Create the dialog Stage.
+	        Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Update Portfolio");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(primaryStage);
+	        
+	        Scene scene = new Scene(portfolioUpdateView);
+	        dialogStage.setScene(scene);
 
+			// Gives the controller class access to the mainApp in order to set the scene
+			// within the rootLayout.
+			PortfolioUpdateViewController controller = loader.getController();
+			controller.setMainApp(this);
+			controller.setPortfolio(portfolio);
+			
+			 // Show the dialog and wait until the user closes it
+	        dialogStage.showAndWait();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Method to return the rootLayout. Is use to open new scenes within the
 	 * rootLayout
