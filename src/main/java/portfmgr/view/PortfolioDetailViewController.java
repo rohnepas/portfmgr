@@ -1,13 +1,19 @@
 package portfmgr.view;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import portfmgr.portfmgrApplication;
+import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioRepository;
 
@@ -22,6 +28,7 @@ public class PortfolioDetailViewController  implements Initializable {
 
 	private portfmgrApplication mainApp;
 	private Portfolio portfolio;
+	private JSONObject onlineData;
 	
 	@Autowired
 	PortfolioRepository portRepo;
@@ -46,8 +53,8 @@ public class PortfolioDetailViewController  implements Initializable {
 
 	}	
 
-	/*
-	public JSONObject onlineCourseQuery() {
+	
+	public void onlineCourseQuery() {
 		
 		OnlineCourseQuery query = new OnlineCourseQuery();
 		
@@ -55,7 +62,9 @@ public class PortfolioDetailViewController  implements Initializable {
 		query.setSymbols(testListe);
 		
 		List<String> testListeCurrency = Arrays.asList("CHF", "USD", "EUR");
+		
 		query.setCurrencies(testListeCurrency);
+		
 		
 		try {
 			onlineData = query.getOnlineCourseData();
@@ -66,19 +75,17 @@ public class PortfolioDetailViewController  implements Initializable {
 		
 		System.out.println(onlineData);
 		
-		return onlineData;
-		
 	}
-	*/
+	
 	
 	public void updatePortfolio() {
+		
 		/*
 		 * TO DO:
 		 * JSON FILE auflösen und in TEXTArea als erstes anzeigen 
 		 * Alle Daten  neu Berechnen und die Daten des Portoflio updaten
 		 */
-		
-		//onlineCourseQuery();
+		onlineCourseQuery();
 		
 	}
 	
