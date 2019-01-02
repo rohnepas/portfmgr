@@ -127,6 +127,20 @@ public class PortfolioDetailViewController  implements Initializable {
 		 */
 	}
 	
+	public void addTransaction() {
+		System.out.println("Transaction ADDED");
+		/*
+		 * TO DO: Delete Portfolio
+		 */
+	}
+	
+	public void deleteTransaction() {
+		System.out.println("Transaction DELETET");
+		/*
+		 * TO DO: Delete Portfolio
+		 */
+	}
+	
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 
