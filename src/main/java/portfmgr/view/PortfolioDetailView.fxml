@@ -128,20 +128,20 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="proftOrLossPercent" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                              <Label fx:id="profitOrLossPercentage" text="profitOrLossPercentage" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets left="30.0" />
+                                    <Insets left="35.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label fx:id="profitOrLoss" text="profitOrLoss" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                              <Label fx:id="profitOrLoss" text="profitOrLoss" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets />
+                                    <Insets left="90.0" />
                                  </GridPane.margin>
                               </Label>
                               <ImageView fitHeight="42.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
@@ -165,7 +165,7 @@
                                     <Image url="@../../images/plusminus.png" />
                                  </image>
                                  <GridPane.margin>
-                                    <Insets right="20.0" />
+                                    <Insets right="50.0" />
                                  </GridPane.margin>
                               </ImageView>
                               <ImageView fitHeight="42.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">

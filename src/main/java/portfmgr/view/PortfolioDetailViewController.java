@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
@@ -43,6 +44,14 @@ public class PortfolioDetailViewController  implements Initializable {
 	private Button editPortfolio;
 	@FXML
 	private Button deletePortfolio;
+	@FXML
+	private Label portfolioName;
+	@FXML
+	private Label profitOrLoss;
+	@FXML
+	private Label profitOrLossPercentage;
+	@FXML
+	private Label totalPortoflioValue;
 	
 	
 	/**
@@ -153,7 +162,10 @@ public class PortfolioDetailViewController  implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		portfolioName.setText(portfolio.getPortfolioName());
+		profitOrLoss.setText("GEWINN VERLUST CHF");
+		profitOrLossPercentage.setText("GEWINN VERLUST %");
+		totalPortoflioValue.setText("WERT PORTFOLIO");
 	}
 
 }
