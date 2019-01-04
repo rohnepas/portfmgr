@@ -33,14 +33,13 @@ public class PortfolioViewController implements Initializable {
 
 	@Autowired
 	TransactionRepository transRepo;
-	
+
 	@Autowired
 	PortfolioDetailViewController portDetailViewController;
 
 	// Reference to the main app (portfmgrApplication)
 	private portfmgrApplication mainApp;
 	private Portfolio[] portfArray;
-	private Label[] portfLabelArray;
 
 	@FXML
 	private Button openPortfolio;
@@ -76,19 +75,36 @@ public class PortfolioViewController implements Initializable {
 	private Label labelPortfolio4;
 
 	/**
-	 * Sends the selected portfolio to the portfolioDetailView and 
-	 * calls method from mainApp to open the portfolioView.
+	 * Sends the selected portfolio to the portfolioDetailView and calls method from
+	 * mainApp to open the portfolioView.
 	 * 
-	 * todo: send different portfolios. Currently the portfolio with the ID 1 is always sent.
+	 * @param MouseEvent todo: send different portfolios. Currently the portfolio
+	 *                   with the ID 1 is always sent.
 	 */
 	public void openPortfolioDetailView(MouseEvent event) {
 		String source = event.getPickResult().getIntersectedNode().getId();
-		System.out.println(source);
-		Portfolio actualPortfolio = portfArray[0];
+		Portfolio actualPortfolio = portfArray[getSelectedPortfolioId(source)];
 		portDetailViewController.setActualPortoflio(actualPortfolio);
-		System.out.println(actualPortfolio);
 		mainApp.openPortfolioDetailView();
 	}
+
+	/**
+	 * Returns the index of the portfolio that must be passed when ordering the
+	 * Portfolio Detail View.
+	 * 
+	 * @param portfolioLabeId as a string
+	 * @return index of the portfolio in the list of portfolios (portfArray) as an
+	 *         int
+	 */
+	public int getSelectedPortfolioId(String portfolioLabeId) {
+		String tempString = portfolioLabeId;
+		// takes the last character from the string
+		int tempInt = Integer.parseInt(tempString.substring(tempString.length() - 1));
+		// subtracts minus 1 to get the index.
+		int listIndex = tempInt - 1;
+		return listIndex;
+	}
+
 
 	/**
 	 * Initializes the MainApp variable and is called by the MainApp itself.
@@ -101,9 +117,9 @@ public class PortfolioViewController implements Initializable {
 
 	/**
 	 * Creates four portfolios and stores them in the database if they do not
-	 * already exist. The names of the portfolios are also set.
+	 * already exist, the names of the portfolios are set and the loadPortfolio
+	 * Method is called
 	 * 
-	 * @param portfmgrApplication
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -115,38 +131,20 @@ public class PortfolioViewController implements Initializable {
 
 			for (int i = 0; i < numberOfPortfolios; i++) {
 				portfArray[i] = new Portfolio();
+				portfArray[i].setPortfolioName("leeres Portfolio");
 
 				portRepo.save(portfArray[i]);
-				System.out.println(portfArray[i]);
-			}
-		}
-		
-		Portfolio portfolio1 = portfArray[0];
-		portfolio1.setPortfolioName("rohnestein");
-		portfolio1.setPortfolioCurrency("CHF");
-		portfArray[0] = portfolio1;
-		
-		if (portfLabelArray == null) {
-			portfLabelArray = new Label[4];
-
-			portfLabelArray[0] = labelPortfolio1;
-			portfLabelArray[1] = labelPortfolio2;
-			portfLabelArray[2] = labelPortfolio3;
-			portfLabelArray[3] = labelPortfolio4;
-		}
-
-		for (Portfolio portfolio : portfArray) {
-			for (int i = 0; i < portfLabelArray.length; i++) {
-				if (portfolio.getPortfolioName() == null) {
-					portfLabelArray[i].setText("leer");
-
-				} else {
-					portfLabelArray[i].setText(portfolio.getPortfolioName());
-				}
 			}
 
 		}
+		
+		// Remark: When using a For-loop, the labels cannot be set correctly.
+		//Therefore each label is called and set individually.
+
+		labelPortfolio1.setText(portfArray[0].getPortfolioName());
+		labelPortfolio2.setText(portfArray[1].getPortfolioName());
+		labelPortfolio3.setText(portfArray[2].getPortfolioName());
+		labelPortfolio4.setText(portfArray[3].getPortfolioName());
 
 	}
-
 }

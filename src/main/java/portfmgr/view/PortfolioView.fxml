@@ -36,22 +36,22 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Rectangle>
-            <Label fx:id="labelPortfolio2" alignment="CENTER" layoutX="607.0" layoutY="23.0" text="Label" textAlignment="CENTER">
+            <Label fx:id="labelPortfolio2" alignment="CENTER" layoutX="497.0" layoutY="23.0" prefHeight="35.0" prefWidth="274.0" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelPortfolio4" alignment="CENTER" layoutX="606.0" layoutY="227.0" text="Label" textAlignment="CENTER">
+            <Label fx:id="labelPortfolio4" alignment="CENTER" layoutX="498.0" layoutY="227.0" prefHeight="35.0" prefWidth="274.0" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelPortfolio3" alignment="CENTER" layoutX="237.0" layoutY="227.0" text="Label" textAlignment="CENTER">
+            <Label fx:id="labelPortfolio3" alignment="CENTER" layoutX="129.0" layoutY="227.0" prefHeight="35.0" prefWidth="274.0" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelPortfolio1" alignment="CENTER" layoutX="237.0" layoutY="23.0" text="Label" textAlignment="CENTER">
+            <Label fx:id="labelPortfolio1" alignment="CENTER" layoutX="129.0" layoutY="23.0" prefHeight="35.0" prefWidth="274.0" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
