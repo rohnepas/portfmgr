@@ -1,6 +1,7 @@
 package portfmgr.view;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,7 @@ public class PortfolioUpdateViewController implements Initializable {
      */
     @FXML
     private void handleCancel() {
-        //dialogStage.close();
-    	System.out.println("CANCEL");
+        dialogStage.close();
     }
     
     /**
@@ -65,8 +65,22 @@ public class PortfolioUpdateViewController implements Initializable {
     private void handleSubmit() {
     	
         if (isInputValid()) {
-        	System.out.println(newPortfolioName.getText());
-        	System.out.println(currencyBox.getValue());
+        	// Test ob Portfolio gespeichert werden kann
+        	String testText = newPortfolioName.getText();
+        	portfolio.setPortfolioName(testText);
+        	portRepo.save(portfolio);
+        	dialogStage.close();
+        	
+        	
+        	//Optional<Portfolio> portfolio = portRepo.findById((long) 1);
+        	
+        	
+        	//portfolio.setPortfolioName(testText);
+        	//System.out.println(testText);
+        	//portRepo.save(portfolio);
+        	
+        	//System.out.println(newPortfolioName.getText());
+        	//System.out.println(currencyBox.getValue());
         	/*
         	 * Folgneder Code kann erst implementiert werden, wenn ein Portfolio vorhanden ist. sonst Exception
         	 * 
@@ -107,6 +121,12 @@ public class PortfolioUpdateViewController implements Initializable {
     	 * portfolioName = portfolio.getPortfolioName();
     	 * portfolioCurrency = portfolio.getPortfolioCurrency();
     	 */
+    	
+    	//Test ob Portfolio angezeigt wird
+    	newPortfolioName.setText(portfolio.getPortfolioName());
+    	this.portfolio = portfolio;
+    	
+    	
     	
     }
     

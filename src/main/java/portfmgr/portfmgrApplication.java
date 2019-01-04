@@ -153,6 +153,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			// Gives the controller class access to the mainApp in order to set the scene
 			// within the rootLayout.
 			PortfolioUpdateViewController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
 			controller.setMainApp(this);
 			controller.setPortfolio(portfolio);
 			
