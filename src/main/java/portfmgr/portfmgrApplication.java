@@ -18,6 +18,7 @@ import portfmgr.model.Portfolio;
 import portfmgr.view.PortfolioDetailViewController;
 import portfmgr.view.PortfolioUpdateViewController;
 import portfmgr.view.PortfolioViewController;
+import portfmgr.view.TransactionViewController;
 
 /**
  * This method sets the spring application context, creates a FXMLLoader and
@@ -160,6 +161,36 @@ public class portfmgrApplication extends Application implements ApplicationConte
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void openTransactionViewAdd() {
+		try {
+			// Loads the portfolioDetailView
+			FXMLLoader loader = setupLoader("view/TransactionView.fxml");
+			AnchorPane transactionView = (AnchorPane) loader.load();
+
+			// Create the dialog Stage.
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Update Transaction");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+
+			Scene scene = new Scene(transactionView);
+			dialogStage.setScene(scene);
+
+			// Gives the controller class access to the mainApp in order to set the scene
+			// within the rootLayout.
+			TransactionViewController controller = loader.getController();
+			controller.setMainApp(this);
+			controller.setDialogStage(dialogStage);
+
+			// Show the dialog and wait until the user closes it
+			dialogStage.showAndWait();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
