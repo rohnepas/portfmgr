@@ -1,24 +1,15 @@
 package portfmgr.view;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,10 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
@@ -75,6 +64,8 @@ public class PortfolioDetailViewController  implements Initializable {
 	private TableColumn<Transaction, Double> transactionFeesColumn;
 	@FXML
 	private TableColumn<Transaction, Double> transactionTotalColumn;
+	@FXML
+	private TableColumn<?, String> overviewCurrencyColumn;
 	@FXML
 	private Label portfolioName;
 	@FXML
@@ -163,12 +154,15 @@ public class PortfolioDetailViewController  implements Initializable {
 		/*
 		 * TO DO:
 		 * Finde alle CryptoCurrencies die in diesem Portfolio vorkommen
-		 * aktuell eine Testliste mit BTC ETH und LTc implementiert
+		 * aktuell eine Testliste mit verschiedenen Kryptos implementiert
 		*/
 		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
 		
 	}
 	
+	/*
+	 * Extract JSON data from JSON Object and calculate the new portfolio value
+	 */
 	public void calculatePortfolio() {
 		/*
 		 * TO DO Portfolio berechnen
@@ -179,6 +173,7 @@ public class PortfolioDetailViewController  implements Initializable {
 			for (String symbol: cryptocurrencyList) {
 				JSONObject values = onlineDataJSON.getJSONObject(symbol);
 				System.out.println("Die Werte für " + symbol);
+				
 				
 				//nur für CHF:
 				//double result = values.getDouble("CHF");
@@ -221,6 +216,7 @@ public class PortfolioDetailViewController  implements Initializable {
 		
 		return null;
 	}
+
 	
 	public List<String> getCryptoCurrencyList(){
 		return cryptocurrencyList;
@@ -333,7 +329,7 @@ public class PortfolioDetailViewController  implements Initializable {
 		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("feesEUR"));
 		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("feesCHF"));
 		transactionTotalColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("total"));
-		
+
 		/**
 		 * Gets all the transactions which need to been shown in the transaction table
 		 * 
