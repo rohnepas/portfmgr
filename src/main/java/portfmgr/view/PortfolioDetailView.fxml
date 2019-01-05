@@ -125,7 +125,7 @@
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="998.0">
                      <children>
-                        <GridPane prefHeight="95.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <GridPane prefHeight="125.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="508.3333435058594" minWidth="10.0" prefWidth="441.0" />
@@ -200,7 +200,7 @@
                                     <Insets />
                                  </GridPane.margin>
                               </Text>
-                              <Label fx:id="portfolioCurrency" prefHeight="23.0" prefWidth="67.0" text="portfolioCurrency" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                              <Label fx:id="portfolioCurrency" prefHeight="23.0" prefWidth="51.0" text="portfolioCurrency" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -213,7 +213,7 @@
                                     <Font size="18.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets right="70.0" />
+                                    <Insets right="52.0" />
                                  </GridPane.margin>
                               </Text>
                            </children>
@@ -247,7 +247,7 @@
                               </AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <HBox prefHeight="54.0" prefWidth="542.0">
+                                    <HBox prefHeight="75.0" prefWidth="493.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <Button fx:id="addTransaction" mnemonicParsing="false" onAction="#addTransaction" text="Transaktion hinzufügen">
                                              <HBox.margin>

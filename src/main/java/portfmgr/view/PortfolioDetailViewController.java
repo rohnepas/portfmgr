@@ -1,13 +1,20 @@
 package portfmgr.view;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,8 +49,9 @@ public class PortfolioDetailViewController  implements Initializable {
 
 	private portfmgrApplication mainApp;
 	private Portfolio portfolio;
-	private JSONObject onlineData;
-	private List<String> currencyList = Arrays.asList("CHF", "EUR", "USD");
+	private JSONObject onlineDataJSON;
+	private List<String> currencyList;
+	private List<String> cryptocurrencyList;
 	
 	@Autowired
 	PortfolioRepository portRepo;
@@ -67,16 +75,6 @@ public class PortfolioDetailViewController  implements Initializable {
 	private TableColumn<Transaction, Double> transactionFeesColumn;
 	@FXML
 	private TableColumn<Transaction, Double> transactionTotalColumn;
-	@FXML
-	private Button openDashboard;
-	@FXML
-	private Button updatePortfolio;
-	@FXML
-	private Button exportPortfolio;
-	@FXML
-	private Button editPortfolio;
-	@FXML
-	private Button deletePortfolio;
 	@FXML
 	private Label portfolioName;
 	@FXML
@@ -105,12 +103,17 @@ public class PortfolioDetailViewController  implements Initializable {
 	
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
+		setCurrencyList();
 		checkAndSetPortfolioSettings();
 		refreshPortfolio();
 	}
 	
+	public void setCurrencyList() {
+		currencyList = Arrays.asList("CHF", "EUR", "USD");
+	}
+	
 	/*
-	 * Checks if the choosen portolio has a propper name and currency set. If not opens updateView pop-up
+	 * Checks if the choosen portolio has a proper name and currency set. If not opens updateView pop-up
 	 */
 	public void checkAndSetPortfolioSettings() {
 
@@ -131,56 +134,101 @@ public class PortfolioDetailViewController  implements Initializable {
 		}
 	}
 	
+	/*
+	 * Refreshes the portfolio name and currency.
+	 */
 	public void refreshPortfolio() {
-		/*
-		 * Holt das aktuelle Portfolio nochmasl aus der Datenbank ohne Online Daten und ohne Datenberechnung
-		 */
+
 		portfolioName.setText(portfolio.getPortfolioName());
 		portfolioCurrency.setText(portfolio.getPortfolioCurrency());
 		
-		//Portfolio portfolio = portRepo.findById(portfolio.getId());
-		//portfolio.getPortfolioName();
-		// portfolio.getPortfolioCurrency();
-		// NAME und Currency anzeigen
+		// TO DO: UPDATE DATA
+		profitOrLoss.setText("GEWINN VERLUST CHF");
+		profitOrLossPercentage.setText("GEWINN VERLUST %");
+		totalPortoflioValue.setText("WERT PORTFOLIO");
+	}
+	
+	/*
+	 * Method called if refresh button is clicked. It finds all symbols of crypto currencies in this portfolio
+	 * and calculate the portfolio
+	 */
+	public void updatePortfolio() {
+		 
+		setCryptocurrencyList();
+		calculatePortfolio();
 		
 	}
-
 	
-	public void onlineCourseQuery() {
+	public void setCryptocurrencyList() {
+		/*
+		 * TO DO:
+		 * Finde alle CryptoCurrencies die in diesem Portfolio vorkommen
+		 * aktuell eine Testliste mit BTC ETH und LTc implementiert
+		*/
+		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
+		
+	}
+	
+	public void calculatePortfolio() {
+		/*
+		 * TO DO Portfolio berechnen
+		 */
+		onlineDataJSON = onlineCourseQuery();
+				
+		try {
+			for (String symbol: cryptocurrencyList) {
+				JSONObject values = onlineDataJSON.getJSONObject(symbol);
+				System.out.println("Die Werte für " + symbol);
+				
+				//nur für CHF:
+				//double result = values.getDouble("CHF");
+				
+				for (String currency: currencyList) {
+					double result = values.getDouble(currency);
+					System.out.print("Währung " + currency + " = " + result);
+					System.out.println("");
+				}
+				System.out.println("");
+			}
+			
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/*
+	 * Calls the Web API and query the data
+	 */
+	public JSONObject onlineCourseQuery() {
 		
 		OnlineCourseQuery query = new OnlineCourseQuery();
+		JSONObject data;
 		
-		List<String> testListe = Arrays.asList("BTC", "ETH", "LTC");
-		query.setSymbols(testListe);
-		
-		List<String> testListeCurrency = Arrays.asList("CHF", "USD", "EUR");
-		
-		query.setCurrencies(testListeCurrency);
-		
+		query.setSymbols(getCryptoCurrencyList());
+		query.setCurrencies(getCurrencyList());
 		
 		try {
-			onlineData = query.getOnlineCourseData();
+			data = query.getOnlineCourseData();
+			return data;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		System.out.println(onlineData);
-		
+		return null;
 	}
 	
-	
-	public void updatePortfolio() {
-		
-		/*
-		 * TO DO:
-		 * JSON FILE auflösen und in TEXTArea als erstes anzeigen 
-		 * Alle Daten  neu Berechnen und die Daten des Portoflio updaten
-		 */
-		onlineCourseQuery();
-		
+	public List<String> getCryptoCurrencyList(){
+		return cryptocurrencyList;
 	}
 	
+	public List<String> getCurrencyList(){
+		return currencyList;
+	}
 	
 	
 	/*
@@ -250,6 +298,8 @@ public class PortfolioDetailViewController  implements Initializable {
 		this.portfolio = portfolio;	
 	}
 	
+	
+	
 	/**
 	 * Returns an ObservableList of Transaction objects
 	 * @return ObversableList of transactions
@@ -299,10 +349,7 @@ public class PortfolioDetailViewController  implements Initializable {
 		 */
 		
 		transactionTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		
-		profitOrLoss.setText("GEWINN VERLUST CHF");
-		profitOrLossPercentage.setText("GEWINN VERLUST %");
-		totalPortoflioValue.setText("WERT PORTFOLIO");
+	
 					
 	}
 	

@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
+import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * This class calls the API for online course data from https://min-api.cryptocompare.com.
@@ -19,7 +19,6 @@ import org.json.JSONObject;
 
 public class OnlineCourseQuery {
 	
-	private JSONObject fullCourseData;
 	private String APIKey = "3b46b9503250d561de3cfa120910d34bada6f4d0587b7e3db6cf15e02a509313";
 	private String symbols;
 	private String currencies;
@@ -27,16 +26,22 @@ public class OnlineCourseQuery {
 
 	public JSONObject getOnlineCourseData() throws IOException {
 		
-		try {
-			URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + symbols + "&tsyms=" + currencies +"&api_key="+ APIKey);
-			
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("GET");
-			con.setConnectTimeout(5000);
-			con.setReadTimeout(5000);
+		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + symbols + "&tsyms=" + currencies +"&api_key="+ APIKey);
+		
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("GET");
+		con.setConnectTimeout(5000);
+		con.setReadTimeout(5000);
 
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'GET' request to URL : " + url);
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		
+		if(responseCode != 200) {
+			throw new RuntimeException("HttpResponseCode: " + responseCode);
+		}
+		
+		else
+		{
 			System.out.println("Response Code : " + responseCode);
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -47,14 +52,18 @@ public class OnlineCourseQuery {
 			}
 			
 			in.close();
-			System.out.println(data.toString());
 			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				JSONObject obj = new JSONObject(data.toString());
+				return obj;
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
-		
-		return fullCourseData;
+		return null;
 	}
 	
 	public void setSymbols (List<String> listOfSymbols) {
