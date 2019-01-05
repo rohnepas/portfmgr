@@ -1,5 +1,6 @@
 package portfmgr.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -32,16 +33,41 @@ public class Transaction {
 	private Double priceBTC;
 	private Double priceEUR;
 	private Double priceCHF;
-	private Date transactionDate;
-	private String buyOrSell;
+	private LocalDate transactionDate;
+	private String type;
 	private Double feesUSD;
 	private Double feesBTC;
 	private Double feesEUR;
 	private Double feesCHF;
+	private Double total;
 	
 	@ManyToOne
 	private Portfolio portfolio;
 
+	/*
+	 * Empty constructor
+	 * 
+	 */
+	public Transaction() {};
+	
+	/*
+	 * Overloaded constructor with some initial data
+	 * 
+	 */
+	
+	public Transaction(String currency, Double numberOfCoins, Double priceCHF, LocalDate transactionDate, String type,
+			Double feesCHF, Double total) {
+		super();
+		this.currency = currency;
+		this.numberOfCoins = numberOfCoins;
+		this.priceCHF = priceCHF;
+		this.transactionDate = transactionDate;
+		this.type = type;
+		this.feesCHF = feesCHF;
+		this.total = total;
+	}
+	
+	
 	/*
 	 * Method to query the primary key
 	 * 
@@ -50,6 +76,7 @@ public class Transaction {
 	public Long getId() {
 		return id;
 	}
+
 
 	/*
 	 * Method to query the currency
@@ -164,7 +191,7 @@ public class Transaction {
 	 * 
 	 * @return date of the transaction as Date
 	 */
-	public Date getTransactionDate() {
+	public LocalDate getTransactionDate() {
 		return transactionDate;
 	}
 
@@ -173,8 +200,8 @@ public class Transaction {
 	 * 
 	 * @param date of the transaction as Date
 	 */
-	public void setTransactionDate(Date transactionDate) {
-		this.transactionDate = transactionDate;
+	public void setTransactionDate(LocalDate localDate) {
+		this.transactionDate = localDate;
 	}
 
 	/*
@@ -182,8 +209,8 @@ public class Transaction {
 	 * 
 	 * @return type of transaction as String
 	 */
-	public String getBuyOrSell() {
-		return buyOrSell;
+	public String getType() {
+		return type;
 	}
 
 	/*
@@ -191,8 +218,8 @@ public class Transaction {
 	 * 
 	 * @param type of transaction as String
 	 */
-	public void setBuyOrSell(String buyOrSell) {
-		this.buyOrSell = buyOrSell;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/*
@@ -266,6 +293,24 @@ public class Transaction {
 	public void setFeesCHF(Double feesCHF) {
 		this.feesCHF = feesCHF;
 	}
+	
+	/*
+	 * Method to query the total in CHF
+	 * 
+	 * @return fees in CHF as Double
+	 */
+	public Double getTotal() {
+		return total;
+	}
+	
+	/*
+	 * Method to set the fees in CHF
+	 * 
+	 * @param fees in CHF as Double
+	 */
+	public void setTotal(Double total) {
+		this.total = total;
+	}
 
 	/*
 	 * Method to query the Portfolio
@@ -284,6 +329,8 @@ public class Transaction {
 	public void setPortfolio(Portfolio portfolio) {
 		this.portfolio = portfolio;
 	}
+	
+	
 
 	/*
 	 * Method overrides the toString-Method
