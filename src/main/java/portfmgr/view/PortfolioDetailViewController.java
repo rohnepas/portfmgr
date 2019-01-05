@@ -43,6 +43,7 @@ public class PortfolioDetailViewController  implements Initializable {
 	private portfmgrApplication mainApp;
 	private Portfolio portfolio;
 	private JSONObject onlineData;
+	private List<String> currencyList = Arrays.asList("CHF", "EUR", "USD");
 	
 	@Autowired
 	PortfolioRepository portRepo;
@@ -52,29 +53,20 @@ public class PortfolioDetailViewController  implements Initializable {
 	
 	@FXML
 	private TableView<Transaction> transactionTable;
-	
 	@FXML
 	private TableColumn<Transaction, LocalDate> transactionDateColumn;
-	
 	@FXML
 	private TableColumn<Transaction, String> transactionTypeColumn;
-	
 	@FXML
 	private TableColumn<Transaction, String> transactionCurrencyColumn;
-	
 	@FXML
 	private TableColumn<Transaction, Double> transactionPriceColumn;
-	
 	@FXML
 	private TableColumn<Transaction, Double> transactionAmountColumn;
-	
 	@FXML
 	private TableColumn<Transaction, Double> transactionFeesColumn;
-	
 	@FXML
 	private TableColumn<Transaction, Double> transactionTotalColumn;
-	
-	
 	@FXML
 	private Button openDashboard;
 	@FXML
@@ -87,6 +79,8 @@ public class PortfolioDetailViewController  implements Initializable {
 	private Button deletePortfolio;
 	@FXML
 	private Label portfolioName;
+	@FXML
+	private Label portfolioCurrency;
 	@FXML
 	private Label profitOrLoss;
 	@FXML
@@ -107,7 +101,49 @@ public class PortfolioDetailViewController  implements Initializable {
 	public void openPortfolioView() {
 		mainApp.openPortfolioView();
 
-	}	
+	}
+	
+	public void setMainApp(portfmgrApplication mainApp) {
+		this.mainApp = mainApp;
+		checkAndSetPortfolioSettings();
+		refreshPortfolio();
+	}
+	
+	/*
+	 * Checks if the choosen portolio has a propper name and currency set. If not opens updateView pop-up
+	 */
+	public void checkAndSetPortfolioSettings() {
+
+		String tempPortfolioName = portfolio.getPortfolioName();
+		String tempPortfolioCurrency = portfolio.getPortfolioCurrency();
+		
+		boolean currencyExists = currencyList.stream().anyMatch(str -> str.trim().equals(tempPortfolioCurrency));
+		
+		if (tempPortfolioName == "leeres Portfolio" || tempPortfolioName == "" || !currencyExists) {
+			
+			mainApp.openPortfolioUpdateView(portfolio, currencyList);
+			
+		}
+		else {
+			portfolioName.setText(portfolio.getPortfolioName());
+			portfolioCurrency.setText(portfolio.getPortfolioCurrency());
+			
+		}
+	}
+	
+	public void refreshPortfolio() {
+		/*
+		 * Holt das aktuelle Portfolio nochmasl aus der Datenbank ohne Online Daten und ohne Datenberechnung
+		 */
+		portfolioName.setText(portfolio.getPortfolioName());
+		portfolioCurrency.setText(portfolio.getPortfolioCurrency());
+		
+		//Portfolio portfolio = portRepo.findById(portfolio.getId());
+		//portfolio.getPortfolioName();
+		// portfolio.getPortfolioCurrency();
+		// NAME und Currency anzeigen
+		
+	}
 
 	
 	public void onlineCourseQuery() {
@@ -145,17 +181,6 @@ public class PortfolioDetailViewController  implements Initializable {
 		
 	}
 	
-	public void refreshPortfolio() {
-		/*
-		 * Holt das aktuelle Portfolio nochmasl aus der Datenbank ohne Online Daten und ohne Datenberechnung
-		 */
-		
-		//Portfolio portfolio = portRepo.findById(portfolio.getId());
-		//portfolio.getPortfolioName();
-		// portfolio.getPortfolioCurrency();
-		// NAME und Currency anzeigen
-		
-	}
 	
 	
 	/*
@@ -164,7 +189,7 @@ public class PortfolioDetailViewController  implements Initializable {
 	 */
 	public void editPortfolio() {
 		
-		mainApp.openPortfolioUpdateView(portfolio);
+		mainApp.openPortfolioUpdateView(portfolio, currencyList);
 		refreshPortfolio();
 	
 	}
@@ -215,14 +240,11 @@ public class PortfolioDetailViewController  implements Initializable {
 			allTransactions.remove(transaction);
 		}
 		
-		// ToDo: Beim Löschen muss die Transation noch aus der Datenbank gelöscht werden!
+		// ToDo: Beim Lï¿½schen muss die Transation noch aus der Datenbank gelï¿½scht werden!
 		
 	}
 	
-	public void setMainApp(portfmgrApplication mainApp) {
-		this.mainApp = mainApp;
-
-	}
+	
 	
 	public void setActualPortoflio(Portfolio portfolio) {
 		this.portfolio = portfolio;	
@@ -236,16 +258,12 @@ public class PortfolioDetailViewController  implements Initializable {
 	public ObservableList<Transaction> getTransaction(){	
 		ObservableList<Transaction> transaction = FXCollections.observableArrayList();
 		
-		// vorerst werden nur mal BTC-Positionen angezeigt. Es können aktuell auch nur BTC Positionen erfasst werden.
+		// vorerst werden nur mal BTC-Positionen angezeigt. Es kï¿½nnen aktuell auch nur BTC Positionen erfasst werden.
 		transaction.addAll(transRepo.findByCurrency("BTC"));
 		
 		return transaction;
 		}
 		
-		
-	
-	
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		/**
@@ -282,26 +300,13 @@ public class PortfolioDetailViewController  implements Initializable {
 		
 		transactionTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		
-		
-		portfolioName.setText(portfolio.getPortfolioName());
 		profitOrLoss.setText("GEWINN VERLUST CHF");
 		profitOrLossPercentage.setText("GEWINN VERLUST %");
 		totalPortoflioValue.setText("WERT PORTFOLIO");
-
-		}
-		
-
-	
-		
-	
-		
-		
-		
-		
-		
-		
-		
+					
 	}
+	
+}
 
 
 	

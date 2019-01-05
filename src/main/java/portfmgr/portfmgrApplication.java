@@ -1,5 +1,7 @@
 package portfmgr;
 
+import java.util.List;
+
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,7 +29,7 @@ import portfmgr.view.TransactionViewController;
  * The implementation of this class is based on the following guide:
  * https://better-coding.com/javafx-spring-boot-gradle-project-setup-guide-and-test/
  * 
- * @author pascal.rohner
+ * @author pascal.rohner & Marc Steiner
  */
 @SpringBootApplication
 public class portfmgrApplication extends Application implements ApplicationContextAware {
@@ -112,7 +114,9 @@ public class portfmgrApplication extends Application implements ApplicationConte
 
 	/**
 	 * Sets up and loads the DetailView
+	 * @author Marc Steiner
 	 */
+	
 	public void openPortfolioDetailView() {
 		try {
 			// Loads the portfolioDetailView
@@ -131,8 +135,14 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			e.printStackTrace();
 		}
 	}
-
-	public void openPortfolioUpdateView(Portfolio portfolio) {
+	
+	/**
+	 * Function is called by PortfolioDetailViewController and Opens a pop-up window to change portoflio name and currency
+	 * @param portfolio:  The portfolio which should be edit is passed from the PortfolioDetailViewController
+	 * @param currencyList: Possible portfolio currency list (CHF, EUR, USD..) 
+	 * @author Marc Steiner
+	 */
+	public void openPortfolioUpdateView(Portfolio portfolio, List<String> currencyList) {
 
 		try {
 			// Loads the portfolioDetailView
@@ -153,7 +163,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			PortfolioUpdateViewController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setMainApp(this);
-			controller.setPortfolio(portfolio);
+			controller.setPortfolio(portfolio, currencyList);
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();
@@ -192,7 +202,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 		}
 		
 	}
-
+	
 	/**
 	 * Stops the spring context when closing the JavaFx application
 	 */
@@ -212,5 +222,4 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 
 	}
-
 }
