@@ -76,7 +76,7 @@ public class TransactionViewController implements Initializable {
 		 Double tempFees = Double.valueOf(fees.getText());
 		 Double tempTotal = 344.23;
 		 
-		 // es werden temporär immer die CHF-Werte gespeichert
+		 // es werden temporï¿½r immer die CHF-Werte gespeichert
 		 
 		 Transaction transaction = new Transaction();
 		 transaction.setCurrency("BTC");
@@ -91,7 +91,7 @@ public class TransactionViewController implements Initializable {
 		 transRepo.save(transaction);
 		 dialogStage.close();
 		 
-		 // ist noch nicht ganz korrekt! Portfolio müsste ja auch noch irgendwie mitgegeben werden!
+		 // ist noch nicht ganz korrekt! Portfolio mï¿½sste ja auch noch irgendwie mitgegeben werden!
 		 mainApp.openPortfolioDetailView();
 		
 	 }
