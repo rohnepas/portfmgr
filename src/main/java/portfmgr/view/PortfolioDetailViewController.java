@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
+import portfmgr.model.PortfolioCalculator;
 import portfmgr.model.PortfolioRepository;
 import portfmgr.model.Transaction;
 import portfmgr.model.TransactionRepository;
@@ -141,12 +141,14 @@ public class PortfolioDetailViewController  implements Initializable {
 	
 	/*
 	 * Method called if refresh button is clicked. It finds all symbols of crypto currencies in this portfolio
-	 * and calculate the portfolio
+	 * and calls the portfolio calculate class
 	 */
 	public void updatePortfolio() {
 		 
 		setCryptocurrencyList();
-		calculatePortfolio();
+		onlineDataJSON = onlineCourseQuery();
+		PortfolioCalculator calculator = new PortfolioCalculator(onlineDataJSON, cryptocurrencyList, currencyList);
+		calculator.calculatePortfolio();
 		
 	}
 	
@@ -157,40 +159,6 @@ public class PortfolioDetailViewController  implements Initializable {
 		 * aktuell eine Testliste mit verschiedenen Kryptos implementiert
 		*/
 		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
-		
-	}
-	
-	/*
-	 * Extract JSON data from JSON Object and calculate the new portfolio value
-	 */
-	public void calculatePortfolio() {
-		/*
-		 * TO DO Portfolio berechnen
-		 */
-		onlineDataJSON = onlineCourseQuery();
-				
-		try {
-			for (String symbol: cryptocurrencyList) {
-				JSONObject values = onlineDataJSON.getJSONObject(symbol);
-				System.out.println("Die Werte für " + symbol);
-				
-				
-				//nur für CHF:
-				//double result = values.getDouble("CHF");
-				
-				for (String currency: currencyList) {
-					double result = values.getDouble(currency);
-					System.out.print("Währung " + currency + " = " + result);
-					System.out.println("");
-				}
-				System.out.println("");
-			}
-			
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 	
