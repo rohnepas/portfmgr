@@ -25,11 +25,6 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
    <children>
-      <Label text="Data under free license from: https://www.cryptocompare.com " AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="580.0">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
       <BorderPane prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <SplitPane dividerPositions="0.35" orientation="VERTICAL" prefHeight="200.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
@@ -247,7 +242,7 @@
                               </AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <HBox prefHeight="75.0" prefWidth="493.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <HBox>
                                        <children>
                                           <Button fx:id="addTransaction" mnemonicParsing="false" onAction="#addTransaction" text="Transaktion hinzufügen">
                                              <HBox.margin>
@@ -266,6 +261,14 @@
                                           </Button>
                                        </children>
                                     </HBox>
+                                    <Label contentDisplay="BOTTOM" text="Data under free license from: https://www.cryptocompare.com ">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="12.0" top="60.0" />
+                                       </padding>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                           </items>
