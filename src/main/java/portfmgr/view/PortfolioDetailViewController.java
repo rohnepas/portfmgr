@@ -1,14 +1,23 @@
 package portfmgr.view;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import com.jayway.jsonpath.JsonPath;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +28,8 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
@@ -41,6 +52,7 @@ public class PortfolioDetailViewController  implements Initializable {
 	private JSONObject onlineDataJSON;
 	private List<String> currencyList;
 	private List<String> cryptocurrencyList;
+	private static String BaseLinkUrl = "https://www.cryptocompare.com";
 	
 	@Autowired
 	PortfolioRepository portRepo;
@@ -76,14 +88,14 @@ public class PortfolioDetailViewController  implements Initializable {
 	private Label profitOrLossPercentage;
 	@FXML
 	private Label totalPortoflioValue;
-	
+	@FXML
+	private ImageView logo;
 	@FXML
 	private Button addTransaction;
-	
 	@FXML
 	private Button deleteTransaction;
 	
-	
+
 	/**
 	 * Calls method from mainApp to open the portfolioView
 	 */
@@ -150,6 +162,29 @@ public class PortfolioDetailViewController  implements Initializable {
 		PortfolioCalculator calculator = new PortfolioCalculator(onlineDataJSON, cryptocurrencyList, currencyList);
 		calculator.calculatePortfolio();
 		
+		/* FOLGEDNER TEST CODE IST FÜR BILDER DARZUSTELOLEN DER CURRNCIES
+		String content1 = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
+		JSONObject obj = new JSONObject(content1);
+		JSONObject data = obj.getJSONObject("Data");
+		JSONObject BTC = data.getJSONObject("BTC");
+		
+		System.out.println("COIN NAME :" + BTC.get("CoinName"));
+		
+		File Imagefile = new File(BaseLinkUrl + BTC.getString("ImageUrl"));
+		System.out.println(BaseLinkUrl + BTC.getString("ImageUrl"));
+		
+		 //Image image = new Image(BaseLinkUrl + BTC.getString("ImageUrl"));
+		//Image image = new Image("https://www.cryptocompare.com/media/19633/btc.png");
+		//File a1 = new File("../../images/dashboard.png");
+		//Image image = new Image(a1);
+	    //System.out.println(image);
+	    
+	   // logo.setImage(image);
+	    
+		//CoinName
+		//ImageUrl --> "/media/19633/btc.png"
+		*/
+
 	}
 	
 	public void setCryptocurrencyList() {
@@ -159,7 +194,6 @@ public class PortfolioDetailViewController  implements Initializable {
 		 * aktuell eine Testliste mit verschiedenen Kryptos implementiert
 		*/
 		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
-		
 	}
 	
 	/*

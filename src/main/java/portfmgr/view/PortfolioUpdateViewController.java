@@ -40,7 +40,7 @@ public class PortfolioUpdateViewController implements Initializable {
 	private ComboBox<String> currencyBox;
 	@FXML
 	private TextField newPortfolioName;
-	
+	 
 	private Stage dialogStage;
 	
     /**
