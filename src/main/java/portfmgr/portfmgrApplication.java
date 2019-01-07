@@ -37,7 +37,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	private ConfigurableApplicationContext springContext;
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-
+ 
 	/**
 	 * Sets the spring Context for the whole application and calls the
 	 * setupLoader-Method and sets as rootLayout.
@@ -173,7 +173,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 		}
 	}
 	
-	public void openTransactionViewAdd() {
+	public void openTransactionViewAdd(String coinlistPath) {
 		try {
 			// Loads the portfolioDetailView
 			FXMLLoader loader = setupLoader("view/TransactionView.fxml");
@@ -193,6 +193,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			TransactionViewController controller = loader.getController();
 			controller.setMainApp(this);
 			controller.setDialogStage(dialogStage);
+			controller.setCoinListPath(coinlistPath);
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();

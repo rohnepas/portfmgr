@@ -28,7 +28,6 @@ import portfmgr.portfmgrApplication;
 import portfmgr.model.Transaction;
 import portfmgr.model.TransactionRepository;
 
-
 /**
  * 
  * @author pascal.rohner, Marc Steiner
@@ -42,7 +41,7 @@ public class TransactionViewController implements Initializable {
 	
 	private portfmgrApplication mainApp;
 	private Stage dialogStage;
-	private static String coinlistPath = "src/main/java/coinlist/coinlist.json";
+	private String coinlistPath;
 	
 	@FXML
 	private ChoiceBox moneytary;
@@ -87,7 +86,6 @@ public class TransactionViewController implements Initializable {
 		 tempCurrency = validateCryptoInput(tempCurrency);
 		 
 		 if (tempCurrency == null) {
-			 System.out.println("ist NULL");
 			 Alert alert = new Alert(AlertType.ERROR);
 	         alert.initOwner(dialogStage);
 	         alert.setTitle("Eingabefehler");
@@ -96,8 +94,6 @@ public class TransactionViewController implements Initializable {
 		 }
 		 
 		 else {
-		 
-		 System.out.println("VALIDE" + tempCurrency);
 		 
 		 String tempType = type.getValue().toString();
 		 Double tempPrice = Double.valueOf(price.getText());
@@ -173,6 +169,10 @@ public class TransactionViewController implements Initializable {
 		moneytary.getItems().addAll("CHF", "USD", "EUR", "BTC");
 		type.getItems().addAll("Kauf", "Verkauf");
 		
+	}
+
+	public void setCoinListPath(String coinlistPath) {
+		this.coinlistPath = coinlistPath;
 	}
 
 }
