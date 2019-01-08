@@ -8,11 +8,14 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -230,12 +233,11 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 	
 	/*
-	 * Export the portfolio into a Excel Sheet with Apache POI. 
-	 * Part of the code  cpoied from: https://www.callicoder.com/java-write-excel-file-apache-poi/
-	 * 
+	 * Export the portfolio into a Excel Sheet with Apache POI
+	 * Code snippets from: https://www.tutorialspoint.com/apache_poi/apache_poi_spreadsheets.htm
 	 */
 	public void exportPortfolio() throws IOException {
-		String[] columns = {"Name", "Anzahl", "Pries pro Stk.", "Total"};
+		String[] columns = {"Name", "Anzahl", "Preis pro Stk.", "Total"};
 		
 		//Define output folder path
 		String path = System.getProperty("user.home") + File.separator + "Downloads" + File.separator + "CryptoPortfolios";
@@ -250,12 +252,12 @@ public class PortfolioDetailViewController implements Initializable {
 		// Create a Font for styling header cells
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
-        headerFont.setFontHeightInPoints((short) 12);
-        headerFont.setColor(IndexedColors.BLUE.getIndex());
+        headerFont.setFontHeightInPoints((short) 11);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
         
         // Create a Font for styling of normal cells
         Font cellsFont = workbook.createFont();
-        cellsFont.setBold(true);
+        cellsFont.setBold(false);
         cellsFont.setFontHeightInPoints((short) 11);
         cellsFont.setColor(IndexedColors.BLACK.getIndex());
 
@@ -263,21 +265,58 @@ public class PortfolioDetailViewController implements Initializable {
         CellStyle headerCellStyle = workbook.createCellStyle();
         headerCellStyle.setFont(headerFont);
         headerCellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         
         // Create a CellStyle with the font for normal cells
         CellStyle normalCellStyle = workbook.createCellStyle();
         normalCellStyle.setFont(cellsFont);
         
-        // Create a row
-        Row headerRow = sheet.createRow(0);
-        
+        // Create header row and write header
+        Row headerRow = sheet.createRow(0);        
         for(int i = 0; i < columns.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columns[i]);
             cell.setCellStyle(headerCellStyle);
         }
         
-      
+        /*
+         * This data needs to be written (Object[]). 
+         * The number "1", "2"... defines the order in a TreeMap, therefore the
+         * order which data will be shown first in the Excel sheet
+         * 
+         * TO DO: Portfolio Daten abfüllen inkl. Währung übergeben
+         * 
+         */
+        Map<String, Object[]> empinfo = new TreeMap<String, Object[]>();
+        empinfo.put( "1", new Object[] { "Bitcoin", "1", "4000", "4000" });
+        empinfo.put( "2", new Object[] { "Ethereum", "10", "200", "2000" });
+        empinfo.put( "3", new Object[] { "Litecoin", "100", "50", "5000" });
+
+        //Iterate over data and write to sheet.rowid = 1, because the row 0 is the header row info
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 1;
+        String currency = " CHF";
+
+        for (String key : keyid) {
+           Row row = sheet.createRow(rowid++);
+           Object [] objectArr = empinfo.get(key);
+           int cellid = 0;
+
+           for (Object obj : objectArr) {
+              Cell cell = row.createCell(cellid++);
+              
+              if(cellid > 2) {
+            	  cell.setCellValue((String)obj + currency);
+              }
+              
+              else {
+            	  cell.setCellValue((String)obj);
+              }
+              
+              cell.setCellStyle(normalCellStyle);
+           }
+        }
+        
         // Resize all columns to fit the content size
         for(int i = 0; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
