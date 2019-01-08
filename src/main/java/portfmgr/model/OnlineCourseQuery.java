@@ -22,12 +22,21 @@ public class OnlineCourseQuery {
 	private String APIKey = "3b46b9503250d561de3cfa120910d34bada6f4d0587b7e3db6cf15e02a509313";
 	private String symbols;
 	private String currencies;
+	JSONObject data;
+	List<String> cryptocurrencyList;
+	List<String> currencyList;
 	
+	
+	public OnlineCourseQuery(List<String> cryptocurrencyList, List<String> currencyList) throws IOException {
+		this.cryptocurrencyList = cryptocurrencyList;
+		this.currencyList = currencyList;
+		setSymbols(cryptocurrencyList);
+		setCurrencies (currencyList);
+	}
 
 	public JSONObject getOnlineCourseData() throws IOException {
 		
 		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + symbols + "&tsyms=" + currencies +"&api_key="+ APIKey);
-		
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.setConnectTimeout(5000);

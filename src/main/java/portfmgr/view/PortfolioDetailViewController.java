@@ -99,8 +99,9 @@ public class PortfolioDetailViewController implements Initializable {
 	/**
 	 * Setup the main app and initalize portfolio values
 	 * @param mainApp
+	 * @throws IOException 
 	 */
-	public void setMainApp(portfmgrApplication mainApp) {
+	public void setMainApp(portfmgrApplication mainApp) throws IOException {
 		this.mainApp = mainApp;
 		setCurrencyList();
 		checkAndSetPortfolioSettings();
@@ -112,7 +113,7 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 	
 	/**
-	 * Checks if the choosen portolio has a proper name and currency set. If not opens updateView pop-up
+	 * Checks if the choosen portfolio has a proper name and currency set. If not opens updateView pop-up
 	 */
 	public void checkAndSetPortfolioSettings() {
 
@@ -134,7 +135,7 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 	
 	/**
-	 * Refreshes the portfolio name and currency.
+	 * Refreshe the portfolio name and currency.
 	 */
 	public void refreshPortfolio() {
 
@@ -150,15 +151,19 @@ public class PortfolioDetailViewController implements Initializable {
 	/**
 	 * Method called if refresh button is clicked. It finds all symbols of crypto currencies in this portfolio
 	 * and calls the portfolio calculate class
+	 * @throws IOException 
 	 */
-	public void updatePortfolio() {
+	public void updatePortfolio() throws IOException {
 		 
 		setCryptocurrencyList();
-		onlineDataJSON = onlineCourseQuery();
+		OnlineCourseQuery query = new OnlineCourseQuery(cryptocurrencyList, currencyList);
+		onlineDataJSON = query.getOnlineCourseData();
+		
+		System.out.println("ONLINE DATEN SIND:  " + onlineDataJSON);
+		
 		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList, currencyList, coinlistPath);
 		calculator.calculatePortfolio();
 		refreshPortfolio();
-		
 	}
 	
 	/**
@@ -179,7 +184,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @return data (JSON Object with crypto currency data)
 	 */
 	public JSONObject onlineCourseQuery() {
-		
+		/*
 		OnlineCourseQuery query = new OnlineCourseQuery();
 		JSONObject data;
 		
@@ -194,7 +199,7 @@ public class PortfolioDetailViewController implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		*/
 		return null;
 	}
 

@@ -43,6 +43,7 @@ public class PortfolioCalculator {
 		try {
 			for (String symbol: cryptocurrencyList) {
 				getImageOfCryptoCurrency(symbol);
+				
 				JSONObject values = onlineDataJSON.getJSONObject(symbol);
 				System.out.println("Die Werte für " + symbol);
 				
