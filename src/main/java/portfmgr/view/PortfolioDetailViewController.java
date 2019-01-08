@@ -1,27 +1,12 @@
 package portfmgr.view;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.TreeMap;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import portfmgr.portfmgrApplication;
+import portfmgr.model.ExportData;
 import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioCalculator;
@@ -110,6 +96,10 @@ public class PortfolioDetailViewController implements Initializable {
 
 	}
 	
+	/*
+	 * Setup the main app and initalize portfolio values
+	 * @param mainApp
+	 */
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 		setCurrencyList();
@@ -171,6 +161,9 @@ public class PortfolioDetailViewController implements Initializable {
 		
 	}
 	
+	/*
+	 * Extract all the crypto currencies which are within the portfolio and add them to a list
+	 */
 	public void setCryptocurrencyList() {
 		/*
 		 * TO DO:
@@ -182,7 +175,8 @@ public class PortfolioDetailViewController implements Initializable {
 	
 	/*
 	 * Calls the Web API and query the data
-	 * @return JSON Object with crypto currency data
+	 * 
+	 * @return data (JSON Object with crypto currency data)
 	 */
 	public JSONObject onlineCourseQuery() {
 		
@@ -215,8 +209,9 @@ public class PortfolioDetailViewController implements Initializable {
 	
 	
 	/*
-	 * Sends actual portfolio to the main app, which handles starts the UpdateViewController.
-	 * If something has changed in the update view, the data will be saved directly to the database
+	 * Sends actual portfolio to the main app, which handles and starts the UpdateViewController.
+	 * If the name or the currency has been changed in the update view, 
+	 * the data will be saved directly to the database by the UpdateViewController 
 	 */
 	public void editPortfolio() {
 		
@@ -234,110 +229,10 @@ public class PortfolioDetailViewController implements Initializable {
 	
 	/*
 	 * Export the portfolio into a Excel Sheet with Apache POI
-	 * Code snippets from: https://www.tutorialspoint.com/apache_poi/apache_poi_spreadsheets.htm
 	 */
 	public void exportPortfolio() throws IOException {
-		String[] columns = {"Name", "Anzahl", "Preis pro Stk.", "Total"};
-		
-		//Define output folder path
-		String path = System.getProperty("user.home") + File.separator + "Downloads" + File.separator + "CryptoPortfolios";
-		
-	    //Define file name with actual date in Format 2019/01/01
-		String fileName = Calendar.getInstance().get(Calendar.YEAR) + "_CryptoPortfolio.xlsx";
-		
-		//Create Workbook - XSSF: Used for dealing with files excel 2007 or later(.xlsx)
-		Workbook workbook = new XSSFWorkbook();
-		Sheet sheet = workbook.createSheet("CryptoPortfolio");
-		
-		// Create a Font for styling header cells
-        Font headerFont = workbook.createFont();
-        headerFont.setBold(true);
-        headerFont.setFontHeightInPoints((short) 11);
-        headerFont.setColor(IndexedColors.WHITE.getIndex());
-        
-        // Create a Font for styling of normal cells
-        Font cellsFont = workbook.createFont();
-        cellsFont.setBold(false);
-        cellsFont.setFontHeightInPoints((short) 11);
-        cellsFont.setColor(IndexedColors.BLACK.getIndex());
-
-        // Create a CellStyle with the font for header
-        CellStyle headerCellStyle = workbook.createCellStyle();
-        headerCellStyle.setFont(headerFont);
-        headerCellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
-        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        
-        // Create a CellStyle with the font for normal cells
-        CellStyle normalCellStyle = workbook.createCellStyle();
-        normalCellStyle.setFont(cellsFont);
-        
-        // Create header row and write header
-        Row headerRow = sheet.createRow(0);        
-        for(int i = 0; i < columns.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columns[i]);
-            cell.setCellStyle(headerCellStyle);
-        }
-        
-        /*
-         * This data needs to be written (Object[]). 
-         * The number "1", "2"... defines the order in a TreeMap, therefore the
-         * order which data will be shown first in the Excel sheet
-         * 
-         * TO DO: Portfolio Daten abfüllen inkl. Währung übergeben
-         * 
-         */
-        Map<String, Object[]> empinfo = new TreeMap<String, Object[]>();
-        empinfo.put( "1", new Object[] { "Bitcoin", "1", "4000", "4000" });
-        empinfo.put( "2", new Object[] { "Ethereum", "10", "200", "2000" });
-        empinfo.put( "3", new Object[] { "Litecoin", "100", "50", "5000" });
-
-        //Iterate over data and write to sheet.rowid = 1, because the row 0 is the header row info
-        Set<String> keyid = empinfo.keySet();
-        int rowid = 1;
-        String currency = " CHF";
-
-        for (String key : keyid) {
-           Row row = sheet.createRow(rowid++);
-           Object [] objectArr = empinfo.get(key);
-           int cellid = 0;
-
-           for (Object obj : objectArr) {
-              Cell cell = row.createCell(cellid++);
-              
-              if(cellid > 2) {
-            	  cell.setCellValue((String)obj + currency);
-              }
-              
-              else {
-            	  cell.setCellValue((String)obj);
-              }
-              
-              cell.setCellStyle(normalCellStyle);
-           }
-        }
-        
-        // Resize all columns to fit the content size
-        for(int i = 0; i < columns.length; i++) {
-            sheet.autoSizeColumn(i);
-        }
-                
-        // Create folder if not exists     
-        File fileDir = new File(path);
-        
-        if (fileDir.exists()) {
-            System.out.println(fileDir + " already exists");
-        } else if (fileDir.mkdirs()) {
-            System.out.println(fileDir + " was created");
-        } else {
-            System.out.println(fileDir + " was not created");
-        }
-        
-        // Write the output to a file
-		FileOutputStream fileOut = new FileOutputStream(path + File.separator + fileName);
-        workbook.write(fileOut);
-        fileOut.close();
-        workbook.close();
+		ExportData export = new ExportData(portfolio);
+		System.out.println("Datei erfolgreich exportiert");
 	}
 	
 	/**
@@ -345,10 +240,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 * 
 	 * @author pascal.rohner
 	 */
-	
 	public void addTransaction() {
 		mainApp.openTransactionViewAdd(coinlistPath);
-		
 	}
 	
 	
@@ -376,12 +269,9 @@ public class PortfolioDetailViewController implements Initializable {
 		
 	}
 	
-	
-	
 	public void setActualPortoflio(Portfolio portfolio) {
 		this.portfolio = portfolio;	
 	}
-	
 	
 	
 	/**
