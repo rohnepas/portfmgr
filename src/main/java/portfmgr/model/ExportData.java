@@ -84,6 +84,7 @@ public class ExportData {
        
 	/**
 	 * Call the method to extract the data from the portolio and write data into the Excel sheet
+	 * @throws IOException if there is a problem with writing or closing of the excel sheet
 	 */
 	public void exportData() throws IOException {
 
@@ -105,12 +106,9 @@ public class ExportData {
               // Add portfolio currency to the "money cells"
               if(cellid > 2) {
             	  cell.setCellValue((String)obj + currency);
-              }
-              
-              else {
+              } else {
             	  cell.setCellValue((String)obj);
               }
-              
               cell.setCellStyle(normalCellStyle);
            }
         }

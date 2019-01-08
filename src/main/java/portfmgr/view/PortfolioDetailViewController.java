@@ -101,7 +101,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @param mainApp
 	 * @throws IOException 
 	 */
-	public void setMainApp(portfmgrApplication mainApp) throws IOException {
+	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 		setCurrencyList();
 		checkAndSetPortfolioSettings();
@@ -153,11 +153,17 @@ public class PortfolioDetailViewController implements Initializable {
 	 * and calls the portfolio calculate class
 	 * @throws IOException 
 	 */
-	public void updatePortfolio() throws IOException {
+	public void updatePortfolio() {
 		 
 		setCryptocurrencyList();
 		OnlineCourseQuery query = new OnlineCourseQuery(cryptocurrencyList, currencyList);
-		onlineDataJSON = query.getOnlineCourseData();
+		
+		try {
+			onlineDataJSON = query.getOnlineCourseData();
+		} catch (IOException e) {
+			System.out.println("Problem within getOnlineCourseData()");
+			e.printStackTrace();
+		}
 		
 		System.out.println("ONLINE DATEN SIND:  " + onlineDataJSON);
 		
@@ -178,32 +184,6 @@ public class PortfolioDetailViewController implements Initializable {
 		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
 	}
 	
-	/**
-	 * Calls the Web API and query the data
-	 * 
-	 * @return data (JSON Object with crypto currency data)
-	 */
-	public JSONObject onlineCourseQuery() {
-		/*
-		OnlineCourseQuery query = new OnlineCourseQuery();
-		JSONObject data;
-		
-		query.setSymbols(getCryptoCurrencyList());
-		query.setCurrencies(getCurrencyList());
-		
-		try {
-			data = query.getOnlineCourseData();
-			return data;
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		return null;
-	}
-
-	
 	public List<String> getCryptoCurrencyList(){
 		return cryptocurrencyList;
 	}
@@ -211,7 +191,6 @@ public class PortfolioDetailViewController implements Initializable {
 	public List<String> getCurrencyList(){
 		return currencyList;
 	}
-	
 	
 	/**
 	 * Sends actual portfolio to the main app, which handles and starts the UpdateViewController.
@@ -225,21 +204,27 @@ public class PortfolioDetailViewController implements Initializable {
 	
 	}
 	
+
+	/**
+	 * Export the portfolio into a Excel Sheet with Apache POI
+	 */
+	public void exportPortfolio() {
+		try {
+			new ExportData(portfolio);
+		} catch (IOException e) {
+			System.out.println("Problem with writing or closing of EXCEL sheet");
+			e.printStackTrace();
+		}
+		System.out.println("Datei erfolgreich exportiert");
+	}
+	
 	public void deletePortfolio() {
 		System.out.println("Portfolio DELETE");
 		/*
 		 * TO DO: Delete Portfolio
 		 */
 	}
-	
-	/**
-	 * Export the portfolio into a Excel Sheet with Apache POI
-	 */
-	public void exportPortfolio() throws IOException {
-		ExportData export = new ExportData(portfolio);
-		System.out.println("Datei erfolgreich exportiert");
-	}
-	
+	 
 	/**
 	 * Opens the transaction dialog to add a transaction
 	 * 

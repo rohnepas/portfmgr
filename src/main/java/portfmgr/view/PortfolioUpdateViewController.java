@@ -63,9 +63,7 @@ public class PortfolioUpdateViewController implements Initializable {
         	portfolio.setPortfolioCurrency(currencyBox.getValue());        	
         	portRepo.save(portfolio);
         	dialogStage.close();
-        	
         }
-       
     }
     
     /**

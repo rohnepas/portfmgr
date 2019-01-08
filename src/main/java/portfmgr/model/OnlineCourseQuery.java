@@ -27,7 +27,7 @@ public class OnlineCourseQuery {
 	List<String> currencyList;
 	
 	
-	public OnlineCourseQuery(List<String> cryptocurrencyList, List<String> currencyList) throws IOException {
+	public OnlineCourseQuery(List<String> cryptocurrencyList, List<String> currencyList) {
 		this.cryptocurrencyList = cryptocurrencyList;
 		this.currencyList = currencyList;
 		setSymbols(cryptocurrencyList);
@@ -46,7 +46,7 @@ public class OnlineCourseQuery {
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		
 		if(responseCode != 200) {
-			throw new RuntimeException("HttpResponseCode: " + responseCode);
+			throw new RuntimeException("Problem wirh HttpResponseCode: " + responseCode);
 		}
 		
 		else
