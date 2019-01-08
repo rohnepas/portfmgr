@@ -42,7 +42,7 @@ public class PortfolioDetailViewController implements Initializable {
 	private portfmgrApplication mainApp;
 	private Portfolio portfolio;
 	private JSONObject onlineDataJSON;
-	private List<String> currencyList;
+	private static List<String> currencyList = Arrays.asList("CHF", "EUR", "USD");
 	private List<String> cryptocurrencyList;
 	private static String coinlistPath = "src/main/java/coinlist/coinlist.json";
 	
@@ -103,15 +103,11 @@ public class PortfolioDetailViewController implements Initializable {
 	 */
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
-		setCurrencyList();
 		checkAndSetPortfolioSettings();
 		updatePortfolio();
 	}
 	
-	public void setCurrencyList() {
-		currencyList = Arrays.asList("CHF", "EUR", "USD");
-	}
-	
+		
 	/**
 	 * Checks if the choosen portfolio has a proper name and currency set. If not opens updateView pop-up
 	 */
@@ -201,7 +197,6 @@ public class PortfolioDetailViewController implements Initializable {
 		
 		mainApp.openPortfolioUpdateView(portfolio, currencyList);
 		refreshPortfolio();
-	
 	}
 	
 
@@ -263,6 +258,9 @@ public class PortfolioDetailViewController implements Initializable {
 		this.portfolio = portfolio;	
 	}
 	
+	public void setCurrencyList(List<String> list) {
+		currencyList = list;
+	}
 	
 	/**
 	 * Returns an ObservableList of Transaction objects

@@ -44,12 +44,17 @@ public class PortfolioCalculator {
 			for (String symbol: cryptocurrencyList) {
 				getImageOfCryptoCurrency(symbol);
 				
+				/*
+				 * Extract the underlying JSONObject from the main JSONObject
+				 * and get the values (CHF, USD, EUR) for the specific symbol (e.g BTC).
+				 */
 				JSONObject values = onlineDataJSON.getJSONObject(symbol);
 				System.out.println("Die Werte für " + symbol);
 				
 				//nur für CHF:
 				//double result = values.getDouble("CHF");
 				
+				// print for each currency (CHF, USD, EUR) the specific value 
 				for (String currency: currencyList) {
 					double result = values.getDouble(currency);
 					System.out.print("Währung " + currency + " = " + result);
