@@ -36,13 +36,19 @@ public class ExportData {
 	private String path = System.getProperty("user.home") + File.separator + "Downloads" + File.separator + "CryptoPortfolios";
 	
 	//Define file name with actual date in Format 2019/01/01
-	private String fileName = Calendar.getInstance().get(Calendar.YEAR) + "_CryptoPortfolio.xlsx";
+	private int calendarYear = Calendar.getInstance().get(Calendar.YEAR);
+	private String fileName = calendarYear + "_CryptoPortfolio.xlsx";
 	
 	private Font headerFont = workbook.createFont();
 	private Font cellsFont = workbook.createFont();
+	private Font titleFont = workbook.createFont();
 	private CellStyle headerCellStyle = workbook.createCellStyle();
 	private CellStyle normalCellStyle = workbook.createCellStyle();
+	private CellStyle titleCellStyle = workbook.createCellStyle();
 	private Map<String, Object[]> data = new TreeMap<String, Object[]>();
+	private int indexTitleRow = 0;
+	private int indexHeaderRow = 2;
+	private int indexDataRow = 3;
 	
 	
 	public ExportData(Portfolio portfolio) throws IOException {
@@ -55,6 +61,11 @@ public class ExportData {
 	 * Set styling of the Excel sheet and add the header row information 
 	 */
 	public void setup() {
+		// Create a font for styling title cells
+        titleFont.setBold(true);
+        titleFont.setFontHeightInPoints((short) 20);
+        titleFont.setColor(IndexedColors.BLACK.getIndex());
+		
 		// Create a Font for styling header cells
         headerFont.setBold(true);
         headerFont.setFontHeightInPoints((short) 11);
@@ -65,38 +76,48 @@ public class ExportData {
         cellsFont.setFontHeightInPoints((short) 11);
         cellsFont.setColor(IndexedColors.BLACK.getIndex());
 
+        // Create a CellStyle with the font for title
+        titleCellStyle.setFont(titleFont);
+        //titleCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        //titleCellStyle.setFillBackgroundColor(IndexedColors.RED.getIndex());
+       
         // Create a CellStyle with the font for header
         headerCellStyle.setFont(headerFont);
-        headerCellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
         headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        //headerCellStyle.setFillBackgroundColor(IndexedColors.RED.getIndex());
         
         // Create a CellStyle with the font for normal cells
         normalCellStyle.setFont(cellsFont);
 
-		// Create header row and write header
-        Row headerRow = sheet.createRow(0);        
+        // Create and write title row
+        Row titleRow = sheet.createRow(indexTitleRow);        
+        Cell titleCell = titleRow.createCell(indexTitleRow);
+        titleCell.setCellValue(calendarYear + " PORTFOLIO: " + portfolio.getPortfolioName());
+        titleCell.setCellStyle(titleCellStyle);
+                
+		// Create and write header row
+        Row headerRow = sheet.createRow(indexHeaderRow);        
         for(int i = 0; i < columns.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columns[i]);
-            cell.setCellStyle(headerCellStyle);
+            Cell headerCell = headerRow.createCell(i);
+            headerCell.setCellValue(columns[i]);
+            headerCell.setCellStyle(headerCellStyle);
         }
 	}
        
 	/**
-	 * Call the method to extract the data from the portolio and write data into the Excel sheet
+	 * Call the method to extract the data from the portfolio and write data into the Excel sheet
 	 * @throws IOException if there is a problem with writing or closing of the excel sheet
 	 */
 	public void exportData() throws IOException {
 
-        int rowid = 1;
         String currency = portfolio.getPortfolioCurrency();
         extractData();
             
-        //Iterate over data and write to sheet.rowid = 1, because the row 0 is the header row info
+        //Iterate over data and write to sheet.
         Set<String> keyid = data.keySet();
         
         for (String key : keyid) {
-           Row row = sheet.createRow(rowid++);
+           Row row = sheet.createRow(indexDataRow++);
            Object [] objectArr = data.get(key);
            int cellid = 0;
 
@@ -113,10 +134,12 @@ public class ExportData {
            }
         }
         
-        // Resize all columns to fit the content size
-        for(int i = 0; i < columns.length; i++) {
+        
+        // Resize all columns (without title column = 0) to fit the content size
+        for(int i = 1; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
         }
+        
                 
         // Create folder if not exists     
         File fileDir = new File(path);
