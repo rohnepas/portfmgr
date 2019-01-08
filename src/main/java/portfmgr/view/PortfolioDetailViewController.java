@@ -1,11 +1,24 @@
 package portfmgr.view;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +48,7 @@ import portfmgr.model.TransactionRepository;
  */
 
 @Controller
-public class PortfolioDetailViewController  implements Initializable {
+public class PortfolioDetailViewController implements Initializable {
 
 	private portfmgrApplication mainApp;
 	private Portfolio portfolio;
@@ -98,7 +111,7 @@ public class PortfolioDetailViewController  implements Initializable {
 		this.mainApp = mainApp;
 		setCurrencyList();
 		checkAndSetPortfolioSettings();
-		refreshPortfolio();
+		updatePortfolio();
 	}
 	
 	public void setCurrencyList() {
@@ -151,6 +164,7 @@ public class PortfolioDetailViewController  implements Initializable {
 		onlineDataJSON = onlineCourseQuery();
 		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList, currencyList, coinlistPath);
 		calculator.calculatePortfolio();
+		refreshPortfolio();
 		
 	}
 	
@@ -215,11 +229,76 @@ public class PortfolioDetailViewController  implements Initializable {
 		 */
 	}
 	
-	public void exportPortfolio() {
-		System.out.println("Portfolio EXPORT");
-		/*
-		 * TO DO: Delete Portfolio
-		 */
+	/*
+	 * Export the portfolio into a Excel Sheet with Apache POI. 
+	 * Part of the code  cpoied from: https://www.callicoder.com/java-write-excel-file-apache-poi/
+	 * 
+	 */
+	public void exportPortfolio() throws IOException {
+		String[] columns = {"Name", "Anzahl", "Pries pro Stk.", "Total"};
+		
+		//Define output folder path
+		String path = System.getProperty("user.home") + File.separator + "Downloads" + File.separator + "CryptoPortfolios";
+		
+	    //Define file name with actual date in Format 2019/01/01
+		String fileName = Calendar.getInstance().get(Calendar.YEAR) + "_CryptoPortfolio.xlsx";
+		
+		//Create Workbook - XSSF: Used for dealing with files excel 2007 or later(.xlsx)
+		Workbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("CryptoPortfolio");
+		
+		// Create a Font for styling header cells
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 12);
+        headerFont.setColor(IndexedColors.BLUE.getIndex());
+        
+        // Create a Font for styling of normal cells
+        Font cellsFont = workbook.createFont();
+        cellsFont.setBold(true);
+        cellsFont.setFontHeightInPoints((short) 11);
+        cellsFont.setColor(IndexedColors.BLACK.getIndex());
+
+        // Create a CellStyle with the font for header
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+        headerCellStyle.setFillBackgroundColor(IndexedColors.BLACK.getIndex());
+        
+        // Create a CellStyle with the font for normal cells
+        CellStyle normalCellStyle = workbook.createCellStyle();
+        normalCellStyle.setFont(cellsFont);
+        
+        // Create a row
+        Row headerRow = sheet.createRow(0);
+        
+        for(int i = 0; i < columns.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columns[i]);
+            cell.setCellStyle(headerCellStyle);
+        }
+        
+      
+        // Resize all columns to fit the content size
+        for(int i = 0; i < columns.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+                
+        // Create folder if not exists     
+        File fileDir = new File(path);
+        
+        if (fileDir.exists()) {
+            System.out.println(fileDir + " already exists");
+        } else if (fileDir.mkdirs()) {
+            System.out.println(fileDir + " was created");
+        } else {
+            System.out.println(fileDir + " was not created");
+        }
+        
+        // Write the output to a file
+		FileOutputStream fileOut = new FileOutputStream(path + File.separator + fileName);
+        workbook.write(fileOut);
+        fileOut.close();
+        workbook.close();
 	}
 	
 	/**
