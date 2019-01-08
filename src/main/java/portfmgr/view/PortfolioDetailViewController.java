@@ -96,7 +96,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	}
 	
-	/*
+	/**
 	 * Setup the main app and initalize portfolio values
 	 * @param mainApp
 	 */
@@ -111,7 +111,7 @@ public class PortfolioDetailViewController implements Initializable {
 		currencyList = Arrays.asList("CHF", "EUR", "USD");
 	}
 	
-	/*
+	/**
 	 * Checks if the choosen portolio has a proper name and currency set. If not opens updateView pop-up
 	 */
 	public void checkAndSetPortfolioSettings() {
@@ -133,7 +133,7 @@ public class PortfolioDetailViewController implements Initializable {
 		}
 	}
 	
-	/*
+	/**
 	 * Refreshes the portfolio name and currency.
 	 */
 	public void refreshPortfolio() {
@@ -147,7 +147,7 @@ public class PortfolioDetailViewController implements Initializable {
 		totalPortoflioValue.setText("WERT PORTFOLIO");
 	}
 	
-	/*
+	/**
 	 * Method called if refresh button is clicked. It finds all symbols of crypto currencies in this portfolio
 	 * and calls the portfolio calculate class
 	 */
@@ -161,7 +161,7 @@ public class PortfolioDetailViewController implements Initializable {
 		
 	}
 	
-	/*
+	/**
 	 * Extract all the crypto currencies which are within the portfolio and add them to a list
 	 */
 	public void setCryptocurrencyList() {
@@ -173,7 +173,7 @@ public class PortfolioDetailViewController implements Initializable {
 		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
 	}
 	
-	/*
+	/**
 	 * Calls the Web API and query the data
 	 * 
 	 * @return data (JSON Object with crypto currency data)
@@ -208,7 +208,7 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 	
 	
-	/*
+	/**
 	 * Sends actual portfolio to the main app, which handles and starts the UpdateViewController.
 	 * If the name or the currency has been changed in the update view, 
 	 * the data will be saved directly to the database by the UpdateViewController 
@@ -227,7 +227,7 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 	}
 	
-	/*
+	/**
 	 * Export the portfolio into a Excel Sheet with Apache POI
 	 */
 	public void exportPortfolio() throws IOException {

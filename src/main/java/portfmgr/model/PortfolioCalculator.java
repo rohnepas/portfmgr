@@ -8,10 +8,12 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/*
- * Calcualtes the whole portfolio with all the insights
+/**
+ * Calculates the whole portfolio with all the insights
+ * 
+ * @param portfolio (whole JSON online data file, cryptocurrencyList and the currencyList)
  * @author Marc Steiner
- * @param: whole portfolio, whole JSON online data file, cryptocurrencyList and the currencyList
+ *
  */
 public class PortfolioCalculator {
 	private JSONObject onlineDataJSON;
@@ -29,7 +31,7 @@ public class PortfolioCalculator {
 		this.currencyList = currencyList;
 	}
 	
-	/*
+	/**
 	 * Extract JSON data from JSON Object and calculate the new portfolio value
 	 * Display everything in the insights
 	 * 
@@ -63,7 +65,7 @@ public class PortfolioCalculator {
 		
 	}
 	
-	/*
+	/**
 	 * reads the file in coinlistPath and extracts the URL for the picture and name of the specific crypto currency
 	 * "Data" is the key in the JSON file for the symbol of the currency.
 	 * "ImageURL" is the value in the JSON file for the URL of the specific image

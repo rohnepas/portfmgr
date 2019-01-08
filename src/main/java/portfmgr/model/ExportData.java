@@ -17,7 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-/*
+/**
  * This class handles the Excel sheet export
  * @author Marc Steiner
  */
@@ -51,7 +51,7 @@ public class ExportData {
 		exportData();
 	}
 	
-	/*
+	/**
 	 * Set styling of the Excel sheet and add the header row information 
 	 */
 	public void setup() {
@@ -82,7 +82,7 @@ public class ExportData {
         }
 	}
        
-	/*
+	/**
 	 * Call the method to extract the data from the portolio and write data into the Excel sheet
 	 */
 	public void exportData() throws IOException {
@@ -138,7 +138,7 @@ public class ExportData {
         workbook.close();
 	}
 	
-	 /*
+	 /**
      * This data needs to be written (Object[]). 
      * The number "1", "2"... defines the order in a TreeMap, therefore the
      * order which data will be shown first in the Excel sheet

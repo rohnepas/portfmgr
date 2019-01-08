@@ -68,7 +68,7 @@ public class PortfolioUpdateViewController implements Initializable {
        
     }
     
-    /*
+    /**
      * Checks if the input for name and currency is correct, otherwise prompt alert
      */
     private boolean isInputValid() {
@@ -87,7 +87,7 @@ public class PortfolioUpdateViewController implements Initializable {
     	return true;
     }
     
-    /*
+    /**
      * Set the possible currency list for the choiceBox and displays the actual name and currency from the portfolio.
      * @param currencyList: Is the possible selection of currencies (CHF, EUR...)
      * @param portfolio: the actual portfolio
