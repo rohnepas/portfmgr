@@ -5,13 +5,11 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,13 +18,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.ImageView;
 import portfmgr.portfmgrApplication;
+import portfmgr.model.ExportData;
 import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
+import portfmgr.model.PortfolioCalculator;
 import portfmgr.model.PortfolioRepository;
 import portfmgr.model.Transaction;
 import portfmgr.model.TransactionRepository;
@@ -38,11 +37,14 @@ import portfmgr.model.TransactionRepository;
  */
 
 @Controller
-public class PortfolioDetailViewController  implements Initializable {
+public class PortfolioDetailViewController implements Initializable {
 
 	private portfmgrApplication mainApp;
 	private Portfolio portfolio;
-	private JSONObject onlineData;
+	private JSONObject onlineDataJSON;
+	private static List<String> currencyList = Arrays.asList("CHF", "EUR", "USD");
+	private List<String> cryptocurrencyList;
+	private static String coinlistPath = "src/main/java/coinlist/coinlist.json";
 	
 	@Autowired
 	PortfolioRepository portRepo;
@@ -52,121 +54,163 @@ public class PortfolioDetailViewController  implements Initializable {
 	
 	@FXML
 	private TableView<Transaction> transactionTable;
-	
 	@FXML
 	private TableColumn<Transaction, LocalDate> transactionDateColumn;
-	
 	@FXML
 	private TableColumn<Transaction, String> transactionTypeColumn;
-	
 	@FXML
 	private TableColumn<Transaction, String> transactionCurrencyColumn;
-	
 	@FXML
 	private TableColumn<Transaction, Double> transactionPriceColumn;
-	
 	@FXML
 	private TableColumn<Transaction, Double> transactionAmountColumn;
-	
 	@FXML
 	private TableColumn<Transaction, Double> transactionFeesColumn;
-	
 	@FXML
 	private TableColumn<Transaction, Double> transactionTotalColumn;
-	
-	
 	@FXML
-	private Button openDashboard;
-	@FXML
-	private Button updatePortfolio;
-	@FXML
-	private Button exportPortfolio;
-	@FXML
-	private Button editPortfolio;
-	@FXML
-	private Button deletePortfolio;
+	private TableColumn<?, String> overviewCurrencyColumn;
 	@FXML
 	private Label portfolioName;
+	@FXML
+	private Label portfolioCurrency;
 	@FXML
 	private Label profitOrLoss;
 	@FXML
 	private Label profitOrLossPercentage;
 	@FXML
 	private Label totalPortoflioValue;
-	
+	@FXML
+	private ImageView logo;
 	@FXML
 	private Button addTransaction;
-	
 	@FXML
 	private Button deleteTransaction;
 	
-	
+
 	/**
 	 * Calls method from mainApp to open the portfolioView
 	 */
 	public void openPortfolioView() {
 		mainApp.openPortfolioView();
 
-	}	
-
+	}
 	
-	public void onlineCourseQuery() {
+	/**
+	 * Setup the main app and initalize portfolio values
+	 * @param mainApp
+	 * @throws IOException 
+	 */
+	public void setMainApp(portfmgrApplication mainApp) {
+		this.mainApp = mainApp;
+		checkAndSetPortfolioSettings();
+		updatePortfolio();
+	}
+	
 		
-		OnlineCourseQuery query = new OnlineCourseQuery();
+	/**
+	 * Checks if the choosen portfolio has a proper name and currency set. If not opens updateView pop-up
+	 */
+	public void checkAndSetPortfolioSettings() {
+
+		String tempPortfolioName = portfolio.getPortfolioName();
+		String tempPortfolioCurrency = portfolio.getPortfolioCurrency();
 		
-		List<String> testListe = Arrays.asList("BTC", "ETH", "LTC");
-		query.setSymbols(testListe);
+		boolean currencyExists = currencyList.stream().anyMatch(str -> str.trim().equals(tempPortfolioCurrency));
 		
-		List<String> testListeCurrency = Arrays.asList("CHF", "USD", "EUR");
+		if (tempPortfolioName == "leeres Portfolio" || tempPortfolioName == "" || !currencyExists) {
+			
+			mainApp.openPortfolioUpdateView(portfolio, currencyList);
+			
+		}
+		else {
+			portfolioName.setText(portfolio.getPortfolioName());
+			portfolioCurrency.setText(portfolio.getPortfolioCurrency());
+			
+		}
+	}
+	
+	/**
+	 * Refreshe the portfolio name and currency.
+	 */
+	public void refreshPortfolio() {
+
+		portfolioName.setText(portfolio.getPortfolioName());
+		portfolioCurrency.setText(portfolio.getPortfolioCurrency());
 		
-		query.setCurrencies(testListeCurrency);
-		
+		// TO DO: UPDATE DATA
+		profitOrLoss.setText("GEWINN VERLUST CHF");
+		profitOrLossPercentage.setText("GEWINN VERLUST %");
+		totalPortoflioValue.setText("WERT PORTFOLIO");
+	}
+	
+	/**
+	 * Method called if refresh button is clicked. It finds all symbols of crypto currencies in this portfolio
+	 * and calls the portfolio calculate class
+	 * @throws IOException 
+	 */
+	public void updatePortfolio() {
+		 
+		setCryptocurrencyList();
+		OnlineCourseQuery query = new OnlineCourseQuery(cryptocurrencyList, currencyList);
 		
 		try {
-			onlineData = query.getOnlineCourseData();
+			onlineDataJSON = query.getOnlineCourseData();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Problem within getOnlineCourseData()");
 			e.printStackTrace();
 		}
 		
-		System.out.println(onlineData);
+		System.out.println("ONLINE DATEN SIND:  " + onlineDataJSON);
 		
+		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList, currencyList, coinlistPath);
+		calculator.calculatePortfolio();
+		refreshPortfolio();
 	}
 	
-	
-	public void updatePortfolio() {
-		
+	/**
+	 * Extract all the crypto currencies which are within the portfolio and add them to a list
+	 */
+	public void setCryptocurrencyList() {
 		/*
 		 * TO DO:
-		 * JSON FILE auflÃ¶sen und in TEXTArea als erstes anzeigen 
-		 * Alle Daten  neu Berechnen und die Daten des Portoflio updaten
-		 */
-		onlineCourseQuery();
-		
+		 * Finde alle CryptoCurrencies die in diesem Portfolio vorkommen
+		 * aktuell eine Testliste mit verschiedenen Kryptos implementiert
+		*/
+		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
 	}
 	
-	public void refreshPortfolio() {
-		/*
-		 * Holt das aktuelle Portfolio nochmasl aus der Datenbank ohne Online Daten und ohne Datenberechnung
-		 */
-		
-		//Portfolio portfolio = portRepo.findById(portfolio.getId());
-		//portfolio.getPortfolioName();
-		// portfolio.getPortfolioCurrency();
-		// NAME und Currency anzeigen
-		
+	public List<String> getCryptoCurrencyList(){
+		return cryptocurrencyList;
 	}
 	
+	public List<String> getCurrencyList(){
+		return currencyList;
+	}
 	
-	/*
-	 * Sends actual portfolio to the main app, which handles starts the UpdateViewController.
-	 * If something has changed in the update view, the data will be saved directly to the database
+	/**
+	 * Sends actual portfolio to the main app, which handles and starts the UpdateViewController.
+	 * If the name or the currency has been changed in the update view, 
+	 * the data will be saved directly to the database by the UpdateViewController 
 	 */
 	public void editPortfolio() {
 		
-		mainApp.openPortfolioUpdateView(portfolio);
+		mainApp.openPortfolioUpdateView(portfolio, currencyList);
 		refreshPortfolio();
+	}
 	
+
+	/**
+	 * Export the portfolio into a Excel Sheet with Apache POI
+	 */
+	public void exportPortfolio() {
+		try {
+			new ExportData(portfolio);
+		} catch (IOException e) {
+			System.out.println("Problem with writing or closing of EXCEL sheet");
+			e.printStackTrace();
+		}
+		System.out.println("Datei erfolgreich exportiert");
 	}
 	
 	public void deletePortfolio() {
@@ -175,23 +219,14 @@ public class PortfolioDetailViewController  implements Initializable {
 		 * TO DO: Delete Portfolio
 		 */
 	}
-	
-	public void exportPortfolio() {
-		System.out.println("Portfolio EXPORT");
-		/*
-		 * TO DO: Delete Portfolio
-		 */
-	}
-	
+	 
 	/**
 	 * Opens the transaction dialog to add a transaction
 	 * 
 	 * @author pascal.rohner
 	 */
-	
 	public void addTransaction() {
-		mainApp.openTransactionViewAdd();
-		
+		mainApp.openTransactionViewAdd(coinlistPath);
 	}
 	
 	
@@ -215,17 +250,16 @@ public class PortfolioDetailViewController  implements Initializable {
 			allTransactions.remove(transaction);
 		}
 		
-		// ToDo: Beim Löschen muss die Transation noch aus der Datenbank gelöscht werden!
+		// ToDo: Beim Lï¿½schen muss die Transation noch aus der Datenbank gelï¿½scht werden!
 		
-	}
-	
-	public void setMainApp(portfmgrApplication mainApp) {
-		this.mainApp = mainApp;
-
 	}
 	
 	public void setActualPortoflio(Portfolio portfolio) {
 		this.portfolio = portfolio;	
+	}
+	
+	public void setCurrencyList(List<String> list) {
+		currencyList = list;
 	}
 	
 	/**
@@ -236,16 +270,12 @@ public class PortfolioDetailViewController  implements Initializable {
 	public ObservableList<Transaction> getTransaction(){	
 		ObservableList<Transaction> transaction = FXCollections.observableArrayList();
 		
-		// vorerst werden nur mal BTC-Positionen angezeigt. Es können aktuell auch nur BTC Positionen erfasst werden.
+		// vorerst werden nur mal BTC-Positionen angezeigt. Es kï¿½nnen aktuell auch nur BTC Positionen erfasst werden.
 		transaction.addAll(transRepo.findByCurrency("BTC"));
 		
 		return transaction;
 		}
 		
-		
-	
-	
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		/**
@@ -265,7 +295,7 @@ public class PortfolioDetailViewController  implements Initializable {
 		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("feesEUR"));
 		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("feesCHF"));
 		transactionTotalColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("total"));
-		
+
 		/**
 		 * Gets all the transactions which need to been shown in the transaction table
 		 * 
@@ -281,27 +311,11 @@ public class PortfolioDetailViewController  implements Initializable {
 		 */
 		
 		transactionTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		
-		
-		portfolioName.setText(portfolio.getPortfolioName());
-		profitOrLoss.setText("GEWINN VERLUST CHF");
-		profitOrLossPercentage.setText("GEWINN VERLUST %");
-		totalPortoflioValue.setText("WERT PORTFOLIO");
-
-		}
-		
-
 	
-		
-	
-		
-		
-		
-		
-		
-		
-		
+					
 	}
+	
+}
 
 
 	
