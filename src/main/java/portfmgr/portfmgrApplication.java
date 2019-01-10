@@ -200,9 +200,11 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	 * @param portfolio:  The portfolio which should be edit is passed from the PortfolioDetailViewController
 	 * @param transaction: The transaction which should be edit is passed from the PortfolioDetailViewController
 	 * @param coinlistPath: Path to the coinlist is getting passed 
-	 * @author Pascal Rohner
-	 */
-	public void openTransactionViewAdd(Portfolio portfolio, Transaction transaction, String coinlistPath) {
+	 * @author Pascal Rohner und Marc Steiner
+	 * @param currencyList 
+	 * @param cryptocurrencyList 
+	 */ 
+	public void openTransactionViewAdd(Portfolio portfolio, Transaction transaction, String coinlistPath, List<String> currencyList) {
 		try {
 			FXMLLoader loader = setupLoader("view/TransactionView.fxml");
 			AnchorPane transactionView = (AnchorPane) loader.load();
@@ -219,11 +221,12 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			// Gives the controller class access to the mainApp in order to set the scene
 			// within the rootLayout.
 			TransactionViewController controller = loader.getController();
-			controller.setMainApp(this);
+			controller.setMainApp(this, currencyList);
 			controller.setDialogStage(dialogStage);
 			controller.setPortfolio(portfolio);
 			controller.setTransaction(transaction);
 			controller.setCoinListPath(coinlistPath);
+			
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();
@@ -255,4 +258,5 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 
 	}
+
 }

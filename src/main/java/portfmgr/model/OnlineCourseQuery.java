@@ -25,14 +25,24 @@ public class OnlineCourseQuery {
 	private List<String> cryptocurrencyList;
 	private List<String> currencyList;
 	
-	
+	 
 	public OnlineCourseQuery(List<String> cryptocurrencyList, List<String> currencyList) {
 		this.cryptocurrencyList = cryptocurrencyList;
 		this.currencyList = currencyList;
 		setSymbols(cryptocurrencyList);
 		setCurrencies (currencyList);
 	}
+	
+	public OnlineCourseQuery(String symbol) {
+		setSymbols(cryptocurrencyList);
+		setCurrencies (currencyList);
+	}
 
+	/**
+	 * 
+	 * @return obj (JSON Object
+	 * @throws IOException
+	 */
 	public JSONObject getOnlineCourseData() throws IOException {
 		
 		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + symbols + "&tsyms=" + currencies +"&api_key="+ APIKey);
@@ -81,5 +91,4 @@ public class OnlineCourseQuery {
 	public void setCurrencies (List<String> listOfCurrencies) {
 		currencies = String.join(",", listOfCurrencies);			
 	}
-	
 }

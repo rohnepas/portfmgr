@@ -275,10 +275,11 @@ public class PortfolioDetailViewController implements Initializable {
 	 * Opens the transaction dialog to add a transaction. Because there is no 
 	 * transaction at this point, the parameter null is passed.
 	 * 
-	 * @author Pascal Rohner
+	 * @author Pascal Rohner und Marc Steiner
 	 */
 	public void addTransaction() {
-		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath);
+		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath, currencyList);
+		
 	}
 
 	/**
@@ -311,7 +312,8 @@ public class PortfolioDetailViewController implements Initializable {
 
 	public void editTransaction() {
 		Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();		
-		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath);	
+		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath, currencyList);	
+
 	}
 
 	/**
