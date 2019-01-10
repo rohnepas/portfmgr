@@ -44,7 +44,7 @@ public class Transaction {
 	
 	@ManyToOne
 	private Portfolio portfolio;
-
+ 
 	/*
 	 * Empty constructor
 	 * 

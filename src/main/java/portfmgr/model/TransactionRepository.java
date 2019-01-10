@@ -2,6 +2,7 @@ package portfmgr.model;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,9 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	List<Transaction> findByCurrency(String currency);
 	
 	List<Transaction> findByPortfolio(Portfolio portfolio);
+	
+	@Query(value = "SELECT sum(total) FROM Transaction WHERE currency = 'BTC'")
+	Double totalBTC();
 	
 
 

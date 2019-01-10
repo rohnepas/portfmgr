@@ -1,5 +1,6 @@
 package portfmgr.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -15,13 +16,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.OnlineCourseQuery;
@@ -86,8 +88,6 @@ public class PortfolioDetailViewController implements Initializable {
 	@FXML
 	private Label totalPortoflioValue;
 	@FXML
-	private ImageView logo;
-	@FXML
 	private Button addTransaction;
 	@FXML
 	private Button editTransaction;
@@ -142,26 +142,21 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Refreshe the portfolio name and currency.
+	 * Refresh the portfolio name and currency.
 	 * 
 	 * @author Marc Steiner
 	 */
-	public void refreshPortfolio() {
+	public void refreshPortfolioData() {
 
 		portfolioName.setText(portfolio.getPortfolioName());
 		portfolioCurrency.setText(portfolio.getPortfolioCurrency());
 
-		// TO DO: UPDATE DATA
-		profitOrLoss.setText("GEWINN VERLUST CHF");
-		profitOrLossPercentage.setText("GEWINN VERLUST %");
-		totalPortoflioValue.setText("WERT PORTFOLIO");
 	}
 
 	/**
 	 * Method called if refresh button is clicked. It finds all symbols of crypto
-	 * currencies in this portfolio and calls the portfolio calculate class
+	 * currencies in this portfolio, let calculate the portfolio value and statistics and display the results
 	 * 
-	 * @throws IOException
 	 * @author Marc Steiner
 	 */
 	public void updatePortfolio() {
@@ -176,17 +171,21 @@ public class PortfolioDetailViewController implements Initializable {
 			e.printStackTrace();
 		}
 
-		System.out.println("ONLINE DATEN SIND:  " + onlineDataJSON);
-
 		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList,
 				currencyList, coinlistPath);
+		
 		calculator.calculatePortfolio();
-		refreshPortfolio();
+		profitOrLoss.setText(String.valueOf(calculator.getProfitOrLoss()));
+		profitOrLossPercentage.setText(String.valueOf(calculator.getProfitOrLossPercentage()) + " %");
+		totalPortoflioValue.setText(String.valueOf(calculator.getTotalPortfolioValue()));
+
+		refreshPortfolioData();
 	}
 
 	/**
 	 * Extract all the crypto currencies which are within the portfolio and add them
 	 * to a list
+	 * 
 	 * @author Marc Steiner
 	 */
 	public void setCryptocurrencyList() {
@@ -226,7 +225,7 @@ public class PortfolioDetailViewController implements Initializable {
 	public void editPortfolio() {
 
 		mainApp.openPortfolioUpdateView(portfolio, currencyList);
-		refreshPortfolio();
+		refreshPortfolioData();
 	}
 
 	/**
@@ -235,15 +234,29 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Marc Steiner
 	 */
 	public void exportPortfolio() {
-		try {
-			new ExportData(portfolio);
-		} catch (IOException e) {
-			System.out.println("Problem with writing or closing of EXCEL sheet");
-			e.printStackTrace();
+		// Opens the file chooser function and give back the destination file
+		File file = mainApp.openFileExportView();
+		
+		if(file != null) {
+			try {
+				new ExportData(portfolio, file);
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Excel File wurde erfolgreich erstellt");
+				alert.showAndWait();
+				
+			} catch (IOException e) {
+				System.out.println("Problem with writing or closing of EXCEL sheet");
+				e.printStackTrace();
+			}
 		}
-		System.out.println("Datei erfolgreich exportiert");
 	}
 
+	/**
+	 * Set back the portfolio to default and delete all data from the portfolio
+	 * @author Marc Steiner
+	 */
 	public void deletePortfolio() {
 		System.out.println("Portfolio DELETE");
 		/*
@@ -255,10 +268,11 @@ public class PortfolioDetailViewController implements Initializable {
 	 * Opens the transaction dialog to add a transaction. Because there is no 
 	 * transaction at this point, the parameter null is passed.
 	 * 
-	 * @author Pascal Rohner
+	 * @author Pascal Rohner und Marc Steiner
 	 */
 	public void addTransaction() {
-		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath);
+		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath, currencyList);
+		
 	}
 
 	/**
@@ -291,7 +305,8 @@ public class PortfolioDetailViewController implements Initializable {
 
 	public void editTransaction() {
 		Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();		
-		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath);	
+		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath, currencyList);	
+
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package portfmgr;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.BeansException;
@@ -14,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import portfmgr.model.Portfolio;
@@ -179,15 +181,30 @@ public class portfmgrApplication extends Application implements ApplicationConte
 		}
 	}
 	
+	/**
+	 * Opens a window which let the user decide where to save the export Excel file
+	 * @author Marc Steiner
+	 * @return file ("path" where to save the export file)
+	 */
+	public File openFileExportView() {
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(primaryStage);
+        return file;
+	}
+	
 	
 	/**
 	 * Function is called by PortfolioDetailViewController and Opens a pop-up window to add/edit a transaction.
 	 * @param portfolio:  The portfolio which should be edit is passed from the PortfolioDetailViewController
 	 * @param transaction: The transaction which should be edit is passed from the PortfolioDetailViewController
 	 * @param coinlistPath: Path to the coinlist is getting passed 
-	 * @author Pascal Rohner
-	 */
-	public void openTransactionViewAdd(Portfolio portfolio, Transaction transaction, String coinlistPath) {
+	 * @author Pascal Rohner und Marc Steiner
+	 * @param currencyList 
+	 * @param cryptocurrencyList 
+	 */ 
+	public void openTransactionViewAdd(Portfolio portfolio, Transaction transaction, String coinlistPath, List<String> currencyList) {
 		try {
 			FXMLLoader loader = setupLoader("view/TransactionView.fxml");
 			AnchorPane transactionView = (AnchorPane) loader.load();
@@ -204,11 +221,12 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			// Gives the controller class access to the mainApp in order to set the scene
 			// within the rootLayout.
 			TransactionViewController controller = loader.getController();
-			controller.setMainApp(this);
+			controller.setMainApp(this, currencyList);
 			controller.setDialogStage(dialogStage);
 			controller.setPortfolio(portfolio);
 			controller.setTransaction(transaction);
 			controller.setCoinListPath(coinlistPath);
+			
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();
@@ -240,4 +258,5 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 
 	}
+
 }

@@ -24,6 +24,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ExportData {
 	
 	private Portfolio portfolio;
+	private File file;
+	private int indexTitleRow = 0;
+	private int indexHeaderRow = 2;
+	private int indexDataRow = 3;
+	private Map<String, Object[]> data = new TreeMap<String, Object[]>();
 	
 	//Create Workbook - XSSF: Used for dealing with files excel 2007 or later(.xlsx)
 	private Workbook workbook = new XSSFWorkbook();
@@ -31,13 +36,9 @@ public class ExportData {
 	
 	// Define columen structur of Excel sheet
 	private String[] columns = {"Name", "Anzahl", "Preis pro Stk.", "Total"}; 
-	
-	//Define output folder path
-	private String path = System.getProperty("user.home") + File.separator + "Downloads" + File.separator + "CryptoPortfolios";
-	
+
 	//Define file name with actual date in Format 2019/01/01
 	private int calendarYear = Calendar.getInstance().get(Calendar.YEAR);
-	private String fileName = calendarYear + "_CryptoPortfolio.xlsx";
 	
 	private Font headerFont = workbook.createFont();
 	private Font cellsFont = workbook.createFont();
@@ -45,14 +46,11 @@ public class ExportData {
 	private CellStyle headerCellStyle = workbook.createCellStyle();
 	private CellStyle normalCellStyle = workbook.createCellStyle();
 	private CellStyle titleCellStyle = workbook.createCellStyle();
-	private Map<String, Object[]> data = new TreeMap<String, Object[]>();
-	private int indexTitleRow = 0;
-	private int indexHeaderRow = 2;
-	private int indexDataRow = 3;
+
 	
-	
-	public ExportData(Portfolio portfolio) throws IOException {
+	public ExportData(Portfolio portfolio, File file) throws IOException {
 		this.portfolio = portfolio;
+		this.file = file;
 		setup();
 		exportData();
 	}
@@ -134,30 +132,18 @@ public class ExportData {
            }
         }
         
-        
         // Resize all columns (without title column = 0) to fit the content size
         for(int i = 1; i < columns.length; i++) {
             sheet.autoSizeColumn(i);
         }
         
-                
-        // Create folder if not exists     
-        File fileDir = new File(path);
-        
-        if (fileDir.exists()) {
-            System.out.println(fileDir + " already exists");
-        } else if (fileDir.mkdirs()) {
-            System.out.println(fileDir + " was created");
-        } else {
-            System.out.println(fileDir + " was not created");
-        }
-        
         // Write the output to a file
-		FileOutputStream fileOut = new FileOutputStream(path + File.separator + fileName);
+        FileOutputStream fileOut = new FileOutputStream(file);
         workbook.write(fileOut);
         fileOut.close();
         workbook.close();
 	}
+	
 	
 	 /**
      * This data needs to be written (Object[]). 
