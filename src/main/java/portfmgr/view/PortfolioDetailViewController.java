@@ -151,25 +151,12 @@ public class PortfolioDetailViewController implements Initializable {
 		portfolioName.setText(portfolio.getPortfolioName());
 		portfolioCurrency.setText(portfolio.getPortfolioCurrency());
 
-		/* TO DO
-		profitOrLoss.setText("GEWINN VERLUST CHF");
-		profitOrLossPercentage.setText("GEWINN VERLUST %");
-		totalPortoflioValue.setText("WERT PORTFOLIO");
-		insightCurrencyColumn
-		insightNumberColumn
-		insightValueColumn
-		insightAverageColumn
-		insightChangePercentageColumn
-		insightChangeColumn
-		insightCurrencyPicture
-		*/
 	}
 
 	/**
 	 * Method called if refresh button is clicked. It finds all symbols of crypto
-	 * currencies in this portfolio and calls the portfolio calculate class
+	 * currencies in this portfolio, let calculate the portfolio value and statistics and display the results
 	 * 
-	 * @throws IOException
 	 * @author Marc Steiner
 	 */
 	public void updatePortfolio() {
@@ -186,7 +173,12 @@ public class PortfolioDetailViewController implements Initializable {
 
 		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList,
 				currencyList, coinlistPath);
+		
 		calculator.calculatePortfolio();
+		profitOrLoss.setText(String.valueOf(calculator.getProfitOrLoss()));
+		profitOrLossPercentage.setText(String.valueOf(calculator.getProfitOrLossPercentage()));
+		totalPortoflioValue.setText(String.valueOf(calculator.getTotalPortfolioValue()));
+
 		refreshPortfolioData();
 	}
 

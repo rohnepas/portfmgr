@@ -7,9 +7,13 @@ import java.nio.file.Paths;
 import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 /**
- * Calculates the whole portfolio with all the insights
+ * Calculates profit and loss values and the total portfolio value
  * 
  * @param portfolio (whole JSON online data file, cryptocurrencyList and the currencyList)
  * @author Marc Steiner
@@ -22,6 +26,13 @@ public class PortfolioCalculator {
 	private List<String> currencyList;
 	private String coinlistPath;
 	private static String BaseLinkUrl = "https://www.cryptocompare.com";
+	private double profitOrLoss;
+	private double profitOrLossPercentage;
+	private double totalPortfolioValue;
+	
+	
+	@Autowired
+	TransactionRepository transRepo;
 	
 	public PortfolioCalculator(Portfolio portfolio, JSONObject onlineDataJSON, List<String> cryptocurrencyList, List<String> currencyList, String coinlistPath) {
 		this.portfolio = portfolio;
@@ -107,4 +118,16 @@ public class PortfolioCalculator {
 		
 	}
 	
+	public Double getProfitOrLoss() {
+		return profitOrLoss;
+	}
+	
+	public Double getProfitOrLossPercentage() {
+		return profitOrLossPercentage;
+	}
+	
+	public Double getTotalPortfolioValue() {
+		return totalPortfolioValue;
+	}
+
 }
