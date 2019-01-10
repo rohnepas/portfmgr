@@ -184,6 +184,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	/**
 	 * Opens a window which let the user decide where to save the export Excel file
 	 * @author Marc Steiner
+	 * @return file ("path" where to save the export file)
 	 */
 	public File openFileExportView() {
 		FileChooser fileChooser = new FileChooser();

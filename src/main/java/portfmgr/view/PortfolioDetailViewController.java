@@ -238,21 +238,22 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Marc Steiner
 	 */
 	public void exportPortfolio() {
+		// Opens the file chooser function and give back the destination file
 		File file = mainApp.openFileExportView();
 		
 		if(file != null) {
 			try {
 				new ExportData(portfolio, file);
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Excel File wurde erfolgreich erstellt");
+				alert.showAndWait();
+				
 			} catch (IOException e) {
 				System.out.println("Problem with writing or closing of EXCEL sheet");
 				e.printStackTrace();
 			}
-
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("Excel File wurde erfolgreich erstellt");
-			alert.showAndWait();
 		}
 	}
 
