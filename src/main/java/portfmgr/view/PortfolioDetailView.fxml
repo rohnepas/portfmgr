@@ -286,7 +286,10 @@
                                       </columns>
                                     </TableView>
                                  </children></AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                 <children>
+                                    <Button fx:id="testQuery" layoutX="53.0" layoutY="14.0" mnemonicParsing="false" onAction="#testQueryMethod" text="query test" />
+                                 </children></AnchorPane>
                           </items>
                         </SplitPane>
                      </children>

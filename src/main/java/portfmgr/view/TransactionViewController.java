@@ -261,6 +261,8 @@ public class TransactionViewController implements Initializable {
 		}
 
 	}
+	
+	
 
 	/**
 	 * Sets the portfolio so that when a transaction is stored, it can be assigned
