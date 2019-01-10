@@ -22,9 +22,8 @@ public class OnlineCourseQuery {
 	private String APIKey = "3b46b9503250d561de3cfa120910d34bada6f4d0587b7e3db6cf15e02a509313";
 	private String symbols;
 	private String currencies;
-	JSONObject data;
-	List<String> cryptocurrencyList;
-	List<String> currencyList;
+	private List<String> cryptocurrencyList;
+	private List<String> currencyList;
 	
 	
 	public OnlineCourseQuery(List<String> cryptocurrencyList, List<String> currencyList) {
