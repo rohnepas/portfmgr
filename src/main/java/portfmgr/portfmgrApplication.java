@@ -17,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import portfmgr.model.Portfolio;
+import portfmgr.model.Transaction;
 import portfmgr.view.PortfolioDetailViewController;
 import portfmgr.view.PortfolioUpdateViewController;
 import portfmgr.view.PortfolioViewController;
@@ -29,7 +30,7 @@ import portfmgr.view.TransactionViewController;
  * The implementation of this class is based on the following guide:
  * https://better-coding.com/javafx-spring-boot-gradle-project-setup-guide-and-test/
  * 
- * @author pascal.rohner & Marc Steiner
+ * @author Pascal Rohner & Marc Steiner
  */
 @SpringBootApplication
 public class portfmgrApplication extends Application implements ApplicationContextAware {
@@ -41,6 +42,8 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	/**
 	 * Sets the spring Context for the whole application and calls the
 	 * setupLoader-Method and sets as rootLayout.
+	 * 
+	 * @author Pascal Rohner
 	 * 
 	 */
 	@Override
@@ -54,6 +57,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	 * portfolioView)
 	 * 
 	 * @param Stage
+	 * @author Pascal Rohner
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -67,6 +71,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	 * the mainApp.
 	 * 
 	 * @return FXMLLoader as loader
+	 * @author Pascal Rohner
 	 */
 	public FXMLLoader setupLoader(String view) {
 		FXMLLoader loader = new FXMLLoader();
@@ -77,7 +82,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 
 	/**
 	 * Opens the rootLayout within a new Scene and sets some stage settings
-	 * 
+	 * @author Pascal Rohner
 	 */
 	public void loadRootLayoutView() {
 		try {
@@ -93,6 +98,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 
 	/**
 	 * Sets up and loads the PortfolioView
+	 * @author Pascal Rohner
 	 */
 	public void openPortfolioView() {
 		try {
@@ -173,9 +179,16 @@ public class portfmgrApplication extends Application implements ApplicationConte
 		}
 	}
 	
-	public void openTransactionViewAdd(String coinlistPath) {
+	
+	/**
+	 * Function is called by PortfolioDetailViewController and Opens a pop-up window to add/edit a transaction.
+	 * @param portfolio:  The portfolio which should be edit is passed from the PortfolioDetailViewController
+	 * @param transaction: The transaction which should be edit is passed from the PortfolioDetailViewController
+	 * @param coinlistPath: Path to the coinlist is getting passed 
+	 * @author Pascal Rohner
+	 */
+	public void openTransactionViewAdd(Portfolio portfolio, Transaction transaction, String coinlistPath) {
 		try {
-			// Loads the portfolioDetailView
 			FXMLLoader loader = setupLoader("view/TransactionView.fxml");
 			AnchorPane transactionView = (AnchorPane) loader.load();
 
@@ -193,6 +206,8 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			TransactionViewController controller = loader.getController();
 			controller.setMainApp(this);
 			controller.setDialogStage(dialogStage);
+			controller.setPortfolio(portfolio);
+			controller.setTransaction(transaction);
 			controller.setCoinListPath(coinlistPath);
 
 			// Show the dialog and wait until the user closes it
@@ -206,6 +221,8 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	
 	/**
 	 * Stops the spring context when closing the JavaFx application
+	 *
+	 *@author Pascal Rohner
 	 */
 	@Override
 	public void stop() {

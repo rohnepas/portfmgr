@@ -28,6 +28,7 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String currency;
+	private String moneytary;
 	private Double numberOfCoins;
 	private Double priceUSD;
 	private Double priceBTC;
@@ -55,10 +56,11 @@ public class Transaction {
 	 * 
 	 */
 	
-	public Transaction(String currency, Double numberOfCoins, Double priceCHF, LocalDate transactionDate, String type,
+	public Transaction(String currency, String moneytary, Double numberOfCoins, Double priceCHF, LocalDate transactionDate, String type,
 			Double feesCHF, Double total) {
 		super();
 		this.currency = currency;
+		this.moneytary = moneytary;
 		this.numberOfCoins = numberOfCoins;
 		this.priceCHF = priceCHF;
 		this.transactionDate = transactionDate;
@@ -94,6 +96,24 @@ public class Transaction {
 	 */
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+	
+	/*
+	 * Method to query the moneytary (= Währung)
+	 * 
+	 * @return moneytary as a String
+	 */
+	public String getMoneytary() {
+		return moneytary;
+	}
+	
+	/*
+	 * Method to set the moneytary
+	 * 
+	 * @param moneytary as a String
+	 */
+	public void setMoneytary(String moneytary) {
+		this.moneytary = moneytary;
 	}
 
 	/*
