@@ -125,7 +125,7 @@ public class PortfolioDetailViewController implements Initializable {
 //		System.out.println(insights.getTotal());
 		
 		// prints the distinct currencies
-		System.out.println(transRepo.findDistinctCurrencies());
+		
 		
 		
 		
@@ -446,6 +446,26 @@ public class PortfolioDetailViewController implements Initializable {
 		 * 
 		 * @author Pascal Rohner
 		 */
+		
+		/**
+		 * Sets up the columns for the insights table
+		 * 
+		 * @author Pascal Rohner
+		 */
+		
+		insightCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Insight, String>("currency"));
+		insightNumberOfCoinsColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("numberOfCoins"));
+		insightTotalColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("total"));
+		insightAveragePriceColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("averagePrice"));
+		insightChangeColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("change"));
+		
+		/**
+		 * Gets all the insights which need to been shown in the insight table
+		 * 
+		 * @author Pascal Rohner
+		 */
+
+		insightTable.setItems(getInsight());
 		
 
 

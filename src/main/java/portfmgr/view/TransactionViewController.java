@@ -106,6 +106,7 @@ public class TransactionViewController implements Initializable {
 		else {
 			
 			JSONObject cryptocurrencyData = getCryptoCurrencyData(tempCurrency);
+			System.out.println(cryptocurrencyData);
 			// Calls a method for calculating the total
 			Double tempTotal = calculateTotal(type.getValue().toString(), Double.valueOf(price.getText()),
 					Double.valueOf(numberOfCoins.getText()), Double.valueOf(fees.getText()));
@@ -196,7 +197,8 @@ public class TransactionViewController implements Initializable {
 	}
 
 	/**
-	 * Calculates the total amount spent on a transaction.
+	 * Calculates the total amount spent on a transaction. In case of a selling the amount
+	 * is converted to a negative double.
 	 * 
 	 * @param type of the transaction, price paid, number of coins bought, fees spent
 	 * @author Pascal Rohner
@@ -207,7 +209,7 @@ public class TransactionViewController implements Initializable {
 		if (type == "Kauf") {
 			return (price * numberOfCoins) + fees;
 		} else {
-			return (price * numberOfCoins) - fees;
+			return ((price * numberOfCoins) + fees) * -1 ;
 		}
 	}
 
