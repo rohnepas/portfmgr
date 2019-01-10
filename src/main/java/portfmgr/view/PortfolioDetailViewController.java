@@ -24,7 +24,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.OnlineCourseQuery;
@@ -89,8 +88,6 @@ public class PortfolioDetailViewController implements Initializable {
 	@FXML
 	private Label totalPortoflioValue;
 	@FXML
-	private ImageView logo;
-	@FXML
 	private Button addTransaction;
 	@FXML
 	private Button editTransaction;
@@ -145,19 +142,27 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Refreshe the portfolio name and currency.
+	 * Refresh the portfolio name and currency.
 	 * 
 	 * @author Marc Steiner
 	 */
-	public void refreshPortfolio() {
+	public void refreshPortfolioData() {
 
 		portfolioName.setText(portfolio.getPortfolioName());
 		portfolioCurrency.setText(portfolio.getPortfolioCurrency());
 
-		// TO DO: UPDATE DATA
+		/* TO DO
 		profitOrLoss.setText("GEWINN VERLUST CHF");
 		profitOrLossPercentage.setText("GEWINN VERLUST %");
 		totalPortoflioValue.setText("WERT PORTFOLIO");
+		insightCurrencyColumn
+		insightNumberColumn
+		insightValueColumn
+		insightAverageColumn
+		insightChangePercentageColumn
+		insightChangeColumn
+		insightCurrencyPicture
+		*/
 	}
 
 	/**
@@ -179,12 +184,10 @@ public class PortfolioDetailViewController implements Initializable {
 			e.printStackTrace();
 		}
 
-		System.out.println("ONLINE DATEN SIND:  " + onlineDataJSON);
-
 		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList,
 				currencyList, coinlistPath);
 		calculator.calculatePortfolio();
-		refreshPortfolio();
+		refreshPortfolioData();
 	}
 
 	/**
@@ -229,7 +232,7 @@ public class PortfolioDetailViewController implements Initializable {
 	public void editPortfolio() {
 
 		mainApp.openPortfolioUpdateView(portfolio, currencyList);
-		refreshPortfolio();
+		refreshPortfolioData();
 	}
 
 	/**
@@ -257,6 +260,10 @@ public class PortfolioDetailViewController implements Initializable {
 		}
 	}
 
+	/**
+	 * Set back the portfolio to default and delete all data from the portfolio
+	 * @author Marc Steiner
+	 */
 	public void deletePortfolio() {
 		System.out.println("Portfolio DELETE");
 		/*
