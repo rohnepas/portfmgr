@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,9 +32,10 @@ import portfmgr.model.Transaction;
 import portfmgr.model.TransactionRepository;
 
 /**
- * This class represents one of the main controllers and manage the detail view about the portfolios.
+ * This class represents one of the main controllers and manage the detail view
+ * about the portfolios.
  * 
- * @author Marc Steiner & pascal.rohner
+ * @author Marc Steiner & Pascal Rohner
  */
 
 @Controller
@@ -45,13 +47,16 @@ public class PortfolioDetailViewController implements Initializable {
 	private static List<String> currencyList = Arrays.asList("CHF", "EUR", "USD");
 	private List<String> cryptocurrencyList;
 	private static String coinlistPath = "src/main/java/coinlist/coinlist.json";
-	
+
 	@Autowired
 	PortfolioRepository portRepo;
-	
+
 	@Autowired
 	TransactionRepository transRepo;
 	
+	@Autowired
+	TransactionViewController transViewController;
+
 	@FXML
 	private TableView<Transaction> transactionTable;
 	@FXML
@@ -85,123 +90,149 @@ public class PortfolioDetailViewController implements Initializable {
 	@FXML
 	private Button addTransaction;
 	@FXML
+	private Button editTransaction;
+	@FXML
 	private Button deleteTransaction;
-	
 
 	/**
 	 * Calls method from mainApp to open the portfolioView
+	 * 
+	 * @author Pascal Rohner
 	 */
 	public void openPortfolioView() {
 		mainApp.openPortfolioView();
 
 	}
-	
+
 	/**
 	 * Setup the main app and initalize portfolio values
+	 * 
 	 * @param mainApp
-	 * @throws IOException 
+	 * @throws IOException
+	 * @author Marc Steiner
 	 */
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 		checkAndSetPortfolioSettings();
 		updatePortfolio();
 	}
-	
-		
+
 	/**
-	 * Checks if the choosen portfolio has a proper name and currency set. If not opens updateView pop-up
+	 * Checks if the choosen portfolio has a proper name and currency set. If not
+	 * opens updateView pop-up
+	 * 
+	 * @author Marc Steiner
 	 */
 	public void checkAndSetPortfolioSettings() {
 
 		String tempPortfolioName = portfolio.getPortfolioName();
 		String tempPortfolioCurrency = portfolio.getPortfolioCurrency();
-		
+
 		boolean currencyExists = currencyList.stream().anyMatch(str -> str.trim().equals(tempPortfolioCurrency));
-		
+
 		if (tempPortfolioName == "leeres Portfolio" || tempPortfolioName == "" || !currencyExists) {
-			
+
 			mainApp.openPortfolioUpdateView(portfolio, currencyList);
-			
-		}
-		else {
+
+		} else {
 			portfolioName.setText(portfolio.getPortfolioName());
 			portfolioCurrency.setText(portfolio.getPortfolioCurrency());
-			
+
 		}
 	}
-	
+
 	/**
 	 * Refreshe the portfolio name and currency.
+	 * 
+	 * @author Marc Steiner
 	 */
 	public void refreshPortfolio() {
 
 		portfolioName.setText(portfolio.getPortfolioName());
 		portfolioCurrency.setText(portfolio.getPortfolioCurrency());
-		
+
 		// TO DO: UPDATE DATA
 		profitOrLoss.setText("GEWINN VERLUST CHF");
 		profitOrLossPercentage.setText("GEWINN VERLUST %");
 		totalPortoflioValue.setText("WERT PORTFOLIO");
 	}
-	
+
 	/**
-	 * Method called if refresh button is clicked. It finds all symbols of crypto currencies in this portfolio
-	 * and calls the portfolio calculate class
-	 * @throws IOException 
+	 * Method called if refresh button is clicked. It finds all symbols of crypto
+	 * currencies in this portfolio and calls the portfolio calculate class
+	 * 
+	 * @throws IOException
+	 * @author Marc Steiner
 	 */
 	public void updatePortfolio() {
-		 
+
 		setCryptocurrencyList();
 		OnlineCourseQuery query = new OnlineCourseQuery(cryptocurrencyList, currencyList);
-		
+
 		try {
 			onlineDataJSON = query.getOnlineCourseData();
 		} catch (IOException e) {
 			System.out.println("Problem within getOnlineCourseData()");
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("ONLINE DATEN SIND:  " + onlineDataJSON);
-		
-		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList, currencyList, coinlistPath);
+
+		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList,
+				currencyList, coinlistPath);
 		calculator.calculatePortfolio();
 		refreshPortfolio();
 	}
-	
+
 	/**
-	 * Extract all the crypto currencies which are within the portfolio and add them to a list
+	 * Extract all the crypto currencies which are within the portfolio and add them
+	 * to a list
+	 * @author Marc Steiner
 	 */
 	public void setCryptocurrencyList() {
 		/*
-		 * TO DO:
-		 * Finde alle CryptoCurrencies die in diesem Portfolio vorkommen
-		 * aktuell eine Testliste mit verschiedenen Kryptos implementiert
-		*/
+		 * TO DO: Finde alle CryptoCurrencies die in diesem Portfolio vorkommen aktuell
+		 * eine Testliste mit verschiedenen Kryptos implementiert
+		 */
 		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
 	}
-	
-	public List<String> getCryptoCurrencyList(){
+
+	/**
+	 * 
+	 * @return
+	 * @author Marc Steiner
+	 */
+	public List<String> getCryptoCurrencyList() {
 		return cryptocurrencyList;
 	}
-	
-	public List<String> getCurrencyList(){
+
+	/**
+	 * 
+	 * @return
+	 * @author Marc Steiner
+	 */
+	public List<String> getCurrencyList() {
 		return currencyList;
 	}
-	
+
 	/**
-	 * Sends actual portfolio to the main app, which handles and starts the UpdateViewController.
-	 * If the name or the currency has been changed in the update view, 
-	 * the data will be saved directly to the database by the UpdateViewController 
+	 * Sends actual portfolio to the main app, which handles and starts the
+	 * UpdateViewController. If the name or the currency has been changed in the
+	 * update view, the data will be saved directly to the database by the
+	 * UpdateViewController
+	 * 
+	 * @author Marc Steiner
 	 */
 	public void editPortfolio() {
-		
+
 		mainApp.openPortfolioUpdateView(portfolio, currencyList);
 		refreshPortfolio();
 	}
-	
 
 	/**
 	 * Export the portfolio into a Excel Sheet with Apache POI
+	 * 
+	 * @author Marc Steiner
 	 */
 	public void exportPortfolio() {
 		try {
@@ -212,75 +243,97 @@ public class PortfolioDetailViewController implements Initializable {
 		}
 		System.out.println("Datei erfolgreich exportiert");
 	}
-	
+
 	public void deletePortfolio() {
 		System.out.println("Portfolio DELETE");
 		/*
 		 * TO DO: Delete Portfolio
 		 */
 	}
-	 
+
 	/**
-	 * Opens the transaction dialog to add a transaction
+	 * Opens the transaction dialog to add a transaction. Because there is no 
+	 * transaction at this point, the parameter null is passed.
 	 * 
-	 * @author pascal.rohner
+	 * @author Pascal Rohner
 	 */
 	public void addTransaction() {
-		mainApp.openTransactionViewAdd(coinlistPath);
+		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath);
 	}
-	
-	
+
 	/**
-	 * Deletes a transaction from the transaction table
+	 * Deletes a transaction from the transaction table and from the database
 	 * 
-	 * @author pascal.rohner
+	 * @author Pascal Rohner
 	 */
 	public void deleteTransaction() {
-		
+
 		// Creation of a observable list for selected transaction and all transaction
 		ObservableList<Transaction> selectedTransactions, allTransactions;
-		
+
 		allTransactions = transactionTable.getItems();
-		
+
 		// gives the selected rows
 		selectedTransactions = transactionTable.getSelectionModel().getSelectedItems();
-		
+
 		// loops over the selected rows and removes them from the transaction table
 		for (Transaction transaction : selectedTransactions) {
 			allTransactions.remove(transaction);
+			transRepo.delete(transaction);
 		}
-		
-		// ToDo: Beim L�schen muss die Transation noch aus der Datenbank gel�scht werden!
-		
 	}
-	
+
+	/**
+	 * Opens the transaction view to edit a given transaction
+	 * 
+	 * @author Pascal Rohner
+	 */
+
+	public void editTransaction() {
+		Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();		
+		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath);	
+	}
+
+	/**
+	 * Sets the actual portfolio. Is needed to assign a transaction to the portfolio when it is created.
+	 * 
+	 * @author Pascal Rohner
+	 */
 	public void setActualPortoflio(Portfolio portfolio) {
-		this.portfolio = portfolio;	
+		this.portfolio = portfolio;
 	}
+
 	
+	/**
+	 * 
+	 * @param list
+	 * @author Marc Steiner
+	 */
 	public void setCurrencyList(List<String> list) {
 		currencyList = list;
 	}
-	
+
 	/**
 	 * Returns an ObservableList of Transaction objects
+	 * 
 	 * @return ObversableList of transactions
-	 * @author pascal.rohner 
+	 * @author Pascal Rohner
 	 */
-	public ObservableList<Transaction> getTransaction(){	
+	public ObservableList<Transaction> getTransaction() {
 		ObservableList<Transaction> transaction = FXCollections.observableArrayList();
+
 		
-		// vorerst werden nur mal BTC-Positionen angezeigt. Es k�nnen aktuell auch nur BTC Positionen erfasst werden.
-		transaction.addAll(transRepo.findByCurrency("BTC"));
-		
+		transaction.addAll(transRepo.findByPortfolio(portfolio));
+
 		return transaction;
-		}
-		
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		/**
 		 * Sets up the columns for the transaction table
-		 * @author pascal.rohner
+		 * 
+		 * @author Pascal Rohner
 		 */
 		transactionDateColumn.setCellValueFactory(new PropertyValueFactory<Transaction, LocalDate>("transactionDate"));
 		transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<Transaction, String>("type"));
@@ -299,26 +352,19 @@ public class PortfolioDetailViewController implements Initializable {
 		/**
 		 * Gets all the transactions which need to been shown in the transaction table
 		 * 
-		 * @author pascal.rohner
+		 * @author Pascal Rohner
 		 */
-				
+
 		transactionTable.setItems(getTransaction());
-		
+
 		/**
 		 * Allows the user to just select a single rows in the transaction table
 		 * 
-		 * @author pascal.rohner
+		 * @author Pascal Rohner
 		 */
-		
+
 		transactionTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-	
-					
+
 	}
-	
+
 }
-
-
-	
-	
-
-

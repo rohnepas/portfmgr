@@ -21,7 +21,7 @@ import portfmgr.model.TransactionRepository;
  * This class represents the link between the portfolio model and the portfolio
  * view.
  * 
- * @author pascal.rohner
+ * @author Pascal Rohner
  */
 
 @Controller
