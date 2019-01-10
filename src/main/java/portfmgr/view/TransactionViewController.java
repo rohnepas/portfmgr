@@ -7,6 +7,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.json.JSONArray;
@@ -24,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portfmgr.portfmgrApplication;
+import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioRepository;
 import portfmgr.model.Transaction;
@@ -50,6 +53,9 @@ public class TransactionViewController implements Initializable {
 	private Portfolio portfolio;
 	private Stage dialogStage;
 	private String coinlistPath;
+	private JSONObject onlineDataJSON;
+	private List<String> currencyList;
+	private List<String> cryptocurrencyList;
 
 	@FXML
 	private ChoiceBox moneytary;
@@ -74,6 +80,7 @@ public class TransactionViewController implements Initializable {
 	@FXML
 	private TextField cryptoCurrency;
 
+ 
 	/**
 	 * Method is called when "save" is clicked in the transaction view. The method
 	 * performs a validation and saves the portfolio to the database or updates the
@@ -97,14 +104,15 @@ public class TransactionViewController implements Initializable {
 		}
 
 		else {
-
+			
+			JSONObject cryptocurrencyData = getCryptoCurrencyData(tempCurrency);
 			// Calls a method for calculating the total
 			Double tempTotal = calculateTotal(type.getValue().toString(), Double.valueOf(price.getText()),
 					Double.valueOf(numberOfCoins.getText()), Double.valueOf(fees.getText()));
 
 			if (transaction == null) {
-				saveTransaction(moneytary.getValue().toString(), tempCurrency, type.getValue().toString(),
-						Double.valueOf(price.getText()), Double.valueOf(numberOfCoins.getText()),
+				saveTransaction(cryptocurrencyData, moneytary.getValue().toString(), tempCurrency, type.getValue().toString(),
+						Double.valueOf(numberOfCoins.getText()),
 						Double.valueOf(fees.getText()), tempTotal);
 			} else {
 				updateTransaction(transaction);
@@ -118,6 +126,30 @@ public class TransactionViewController implements Initializable {
 			this.transaction = null;
 
 		}
+	}
+	
+	/**
+	 * Calls the API for crypto currencies and give back the values only for one specific crypto currency
+	 * @return values (JSON Object with fiat rate of defined crypto currency)
+	 * @param tempCurrency  (crypto currency symbol for that the fiat rate will be called)
+	 * @author Marc Steiner
+	 * 
+	 */
+	public JSONObject getCryptoCurrencyData(String tempCurrency) {
+		
+		//Convert String to needed List>String>
+		List<String> symbol = Arrays.asList(tempCurrency);
+		OnlineCourseQuery query = new OnlineCourseQuery(symbol, currencyList);
+
+		try {
+			//Get the value for the specific crypto currency
+			JSONObject values = query.getOnlineCourseData().getJSONObject(tempCurrency);
+			return values;
+		} catch (IOException e) {
+			System.out.println("Problem within getOnlineCourseData()");
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/*
@@ -180,17 +212,20 @@ public class TransactionViewController implements Initializable {
 	}
 
 	/**
-	 * Creates a new transaction and saves it in the database
+	 * Creates a new transaction and saves it in the database. It save not only the value for the specified currency
+	 * it also saves for all other fiat currencies so that switching between different 
+	 * portfolio currencies is possible.
 	 * 
 	 * @param moneytary (= Währung), currency bought, type of the transaction (Kauf
 	 *                  oder Verkauf), price paid, number of coins bought, fees
 	 *                  spent and total amout of money spent for the transaction
-	 * @author Pascal Rohner
+	 * @author Pascal Rohner und Marc Steiner
 	 * 
 	 */
 
-	public void saveTransaction(String moneytary, String currency, String type, Double price, Double numberOfCoins,
+	public void saveTransaction(JSONObject cryptocurrencyData, String moneytary, String currency, String type, Double numberOfCoins,
 			Double fees, Double total) {
+		
 		Transaction transaction = new Transaction();
 		transaction.setCurrency(currency);
 		transaction.setMoneytary(moneytary);
@@ -199,27 +234,25 @@ public class TransactionViewController implements Initializable {
 		transaction.setTransactionDate(LocalDate.now());
 		transaction.setPortfolio(this.portfolio);
 		transaction.setTotal(total);
+		transaction.setPriceCHF(cryptocurrencyData.getDouble("CHF"));
+		transaction.setPriceUSD(cryptocurrencyData.getDouble("USD"));
+		transaction.setPriceEUR(cryptocurrencyData.getDouble("EUR"));
+		
 
 		if (moneytary == "CHF") {
-			transaction.setPriceCHF(price);
+			transaction.setPriceCHF(cryptocurrencyData.getDouble("CHF"));
 			transaction.setFeesCHF(fees);
 		}
 
 		if (moneytary == "EUR") {
-			transaction.setPriceEUR(price);
+			transaction.setPriceCHF(cryptocurrencyData.getDouble("EUR"));
 			transaction.setFeesEUR(fees);
 
 		}
 
 		if (moneytary == "USD") {
-			transaction.setPriceUSD(price);
+			transaction.setPriceCHF(cryptocurrencyData.getDouble("USD"));
 			transaction.setFeesUSD(fees);
-
-		}
-
-		if (moneytary == "BTC") {
-			transaction.setPriceBTC(price);
-			transaction.setFeesBTC(fees);
 
 		}
 
@@ -290,11 +323,13 @@ public class TransactionViewController implements Initializable {
 	 * Sets the MainApp for calling a method.
 	 * 
 	 * @param mainApp
-	 * @author Pascal Rohner
+	 * @author Pascal Rohner und Marc Steiner
 	 */
-
-	public void setMainApp(portfmgrApplication mainApp) {
+	public void setMainApp(portfmgrApplication mainApp, List<String> currencyList) {
 		this.mainApp = mainApp;
+		this.currencyList = currencyList;
+		moneytary.getItems().addAll(currencyList);
+		type.getItems().addAll("Kauf", "Verkauf");
 	}
 
 	/**
@@ -309,9 +344,7 @@ public class TransactionViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		moneytary.getItems().addAll("CHF", "USD", "EUR", "BTC");
-		type.getItems().addAll("Kauf", "Verkauf");
+		
 
 	}
-
 }
