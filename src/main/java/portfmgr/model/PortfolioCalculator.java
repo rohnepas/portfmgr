@@ -9,9 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-
 /**
  * Calculates profit and loss values and the total portfolio value
  * 
@@ -43,8 +40,7 @@ public class PortfolioCalculator {
 	}
 	
 	/**
-	 * Extract JSON data from JSON Object and calculate the new portfolio value
-	 * Display everything in the insights
+	 * Extract JSON data from JSON Object and calculate the portfolio statistics
 	 * 
 	 * TO DO: basierend auf dem Portfolio alles berechnen
 	 * 

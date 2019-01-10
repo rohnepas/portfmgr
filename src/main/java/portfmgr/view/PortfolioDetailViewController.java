@@ -176,7 +176,7 @@ public class PortfolioDetailViewController implements Initializable {
 		
 		calculator.calculatePortfolio();
 		profitOrLoss.setText(String.valueOf(calculator.getProfitOrLoss()));
-		profitOrLossPercentage.setText(String.valueOf(calculator.getProfitOrLossPercentage()));
+		profitOrLossPercentage.setText(String.valueOf(calculator.getProfitOrLossPercentage()) + " %");
 		totalPortoflioValue.setText(String.valueOf(calculator.getTotalPortfolioValue()));
 
 		refreshPortfolioData();
@@ -185,6 +185,7 @@ public class PortfolioDetailViewController implements Initializable {
 	/**
 	 * Extract all the crypto currencies which are within the portfolio and add them
 	 * to a list
+	 * 
 	 * @author Marc Steiner
 	 */
 	public void setCryptocurrencyList() {
