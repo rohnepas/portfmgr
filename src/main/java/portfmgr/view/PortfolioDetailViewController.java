@@ -1,5 +1,6 @@
 package portfmgr.view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -15,6 +16,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
@@ -235,14 +238,22 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Marc Steiner
 	 */
 	public void exportPortfolio() {
-		try {
-			new ExportData(portfolio);
-		} catch (IOException e) {
-			System.out.println("Problem with writing or closing of EXCEL sheet");
-			e.printStackTrace();
+		File file = mainApp.openFileExportView();
+		
+		if(file != null) {
+			try {
+				new ExportData(portfolio, file);
+			} catch (IOException e) {
+				System.out.println("Problem with writing or closing of EXCEL sheet");
+				e.printStackTrace();
+			}
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Excel File wurde erfolgreich erstellt");
+			alert.showAndWait();
 		}
-		System.out.println("Datei erfolgreich exportiert");
-		//
 	}
 
 	public void deletePortfolio() {

@@ -1,5 +1,6 @@
 package portfmgr;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.BeansException;
@@ -14,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import portfmgr.model.Portfolio;
@@ -177,6 +179,18 @@ public class portfmgrApplication extends Application implements ApplicationConte
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Opens a window which let the user decide where to save the export Excel file
+	 * @author Marc Steiner
+	 */
+	public File openFileExportView() {
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(primaryStage);
+        return file;
 	}
 	
 	
