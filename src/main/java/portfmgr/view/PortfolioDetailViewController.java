@@ -242,6 +242,7 @@ public class PortfolioDetailViewController implements Initializable {
 			e.printStackTrace();
 		}
 		System.out.println("Datei erfolgreich exportiert");
+		//
 	}
 
 	public void deletePortfolio() {
