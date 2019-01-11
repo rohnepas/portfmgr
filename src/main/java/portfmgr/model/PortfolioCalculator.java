@@ -60,7 +60,9 @@ public class PortfolioCalculator {
 	 */
 	public void calculatePortfolio() {
 		
-		System.out.println("BTC Transaktionen:" + transRepo.sumCryptoCurrencyTotal("BTC"));
+		System.out.println("BTC Transaktionen: " + transRepo.sumCryptoCurrencyTotal("BTC"));
+		System.out.println("Symbole: " + transRepo.findDistinctCryptoCurrency());
+		System.out.println("Total Number of Coins per Symbol: " + transRepo.sumAndGroupTotalNumberOfCoins());
 		
 		try {
 			

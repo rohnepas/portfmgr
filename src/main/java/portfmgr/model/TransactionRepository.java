@@ -37,21 +37,20 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	 * 
 	 * @return distinct list of available crypto currency symbols
 	 * @author Marc Steiner
-	 *//*
-	@Query("SELECT DISTINCT Transaction.currency FROM Transaction")
+	 */
+	@Query("SELECT DISTINCT currency FROM Transaction")
 	List<String> findDistinctCryptoCurrency();
 	
-	*//**
+	/**
 	 * SQL query which groups all transactions by crypto currency and sum the total number of this crypto currencycost.
 	 *  
-	 * 
 	 * @param numberOfCoins (=total amount of coins per transaction referred to Transaction.java)
 	 * @param currency (=crypto currency referred to Transaction.java)
 	 * @return SQL query return list of objects <Object[]>
 	 * @author Marc Steiner
-	 *//*
-	@Query("SELECT sum(numberOfCoins) FROM Transaction WHERE GROUP BY currency")
-	List<?> sumAndGroupTotalNumberOfCoins();*/
+	 */
+	@Query("SELECT sum(numberOfCoins) FROM Transaction GROUP BY currency")
+	List<?> sumAndGroupTotalNumberOfCoins();
 
 
 }
