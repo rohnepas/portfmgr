@@ -14,14 +14,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("portfmgr.model.TransactionRepository")
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
-	
+
 	List<Transaction> findByCurrency(String currency);
-	
+
 	List<Transaction> findByPortfolio(Portfolio portfolio);
-	
+
 	@Query(value = "SELECT sum(total) FROM Transaction WHERE currency = 'BTC'")
 	Double totalBTC();
-	
+
 
 
 }

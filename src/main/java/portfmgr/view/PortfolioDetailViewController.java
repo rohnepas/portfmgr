@@ -26,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
+import portfmgr.model.Insight;
 import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioCalculator;
@@ -58,9 +59,14 @@ public class PortfolioDetailViewController implements Initializable {
 	
 	@Autowired
 	TransactionViewController transViewController;
+	
+//	@Autowired
+//	Insights insights;
 
 	@FXML
 	private TableView<Transaction> transactionTable;
+	@FXML
+	private TableView<Insight> insightTable;
 	@FXML
 	private TableColumn<Transaction, LocalDate> transactionDateColumn;
 	@FXML
@@ -77,6 +83,23 @@ public class PortfolioDetailViewController implements Initializable {
 	private TableColumn<Transaction, Double> transactionTotalColumn;
 	@FXML
 	private TableColumn<?, String> overviewCurrencyColumn;
+	
+	@FXML
+	private TableColumn<Insight, String> insightCurrencyColumn;
+	
+	@FXML
+	private TableColumn<Insight, Double> insightNumberOfCoinsColumn;
+	
+	@FXML
+	private TableColumn<Insight, Double> insightTotalColumn;
+	
+	@FXML
+	private TableColumn<Insight, Double> insightAveragePriceColumn;
+	
+	@FXML
+	private TableColumn<Insight, Double> insightChangeColumn;
+	
+	
 	@FXML
 	private Label portfolioName;
 	@FXML
@@ -93,7 +116,23 @@ public class PortfolioDetailViewController implements Initializable {
 	private Button editTransaction;
 	@FXML
 	private Button deleteTransaction;
+	@FXML
+	private Button testQuery;
 
+	public void testQueryMethod() {
+//		insights.setTotal(transRepo.sumUpTotals());
+//		System.out.println("should print the total:");
+//		System.out.println(insights.getTotal());
+		
+		// prints the distinct currencies
+		
+		
+		
+		
+		
+	}
+	
+	
 	/**
 	 * Calls method from mainApp to open the portfolioView
 	 * 
@@ -342,6 +381,28 @@ public class PortfolioDetailViewController implements Initializable {
 
 		return transaction;
 	}
+	
+	/**
+	 * Manually added insight object
+	 * 
+	 */
+	
+	public ObservableList<Insight> getInsight() {
+		ObservableList<Insight> insight = FXCollections.observableArrayList();
+		
+		// an manual an insight
+		Insight insightObject = new Insight();
+		insightObject.setCurrency("BTC");
+		insightObject.setNumberOfCoins(2.3);
+		insightObject.setAveragePrice(3232.0);
+		insightObject.setTotal(8988.23);
+		insightObject.setChange(79.9);
+		
+		insight.add(insightObject);
+		return insight;
+		
+
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -379,6 +440,34 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 
 		transactionTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		
+		/**
+		 * Sets up the columns for the insight table
+		 * 
+		 * @author Pascal Rohner
+		 */
+		
+		/**
+		 * Sets up the columns for the insights table
+		 * 
+		 * @author Pascal Rohner
+		 */
+		
+		insightCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Insight, String>("currency"));
+		insightNumberOfCoinsColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("numberOfCoins"));
+		insightTotalColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("total"));
+		insightAveragePriceColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("averagePrice"));
+		insightChangeColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("change"));
+		
+		/**
+		 * Gets all the insights which need to been shown in the insight table
+		 * 
+		 * @author Pascal Rohner
+		 */
+
+		insightTable.setItems(getInsight());
+		
+
 
 	}
 
