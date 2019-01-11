@@ -12,15 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Calculates profit and loss values and the total portfolio value
  * 
- * @param portfolio (whole JSON online data file, cryptocurrencyList and the currencyList)
+ * @param portfolio (whole JSON online data file, cryptoCurrencyList and the fiatCurrencyList)
  * @author Marc Steiner
  *
  */
 public class PortfolioCalculator {
 	private JSONObject onlineDataJSON;
 	private Portfolio portfolio;
-	private List<String> cryptocurrencyList;
-	private List<String> currencyList;
+	private List<String> cryptoCurrencyList;
+	private List<String> fiatCurrencyList;
 	private List<Transaction> transactionList;
 	private String coinlistPath;
 	private static String BaseLinkUrl = "https://www.cryptocompare.com";
@@ -32,12 +32,12 @@ public class PortfolioCalculator {
 	@Autowired
 	TransactionRepository transRepo;
 	
-	public PortfolioCalculator(Portfolio portfolio, JSONObject onlineDataJSON, List<String> cryptocurrencyList, List<String> currencyList, String coinlistPath) {
+	public PortfolioCalculator(Portfolio portfolio, JSONObject onlineDataJSON, List<String> cryptoCurrencyList, List<String> fiatCurrencyList, String coinlistPath) {
 		this.portfolio = portfolio;
 		this.coinlistPath = coinlistPath;
 		this.onlineDataJSON = onlineDataJSON;
-		this.cryptocurrencyList = cryptocurrencyList;
-		this.currencyList = currencyList;
+		this.cryptoCurrencyList = cryptoCurrencyList;
+		this.fiatCurrencyList = fiatCurrencyList;
 		//setTransactionList();
 	}
 	
@@ -51,7 +51,7 @@ public class PortfolioCalculator {
 		
 		try {
 			
-			for (String symbol: cryptocurrencyList) {
+			for (String symbol: cryptoCurrencyList) {
 								
 				/*
 				 * Extract the underlying JSONObject from the main JSONObject
