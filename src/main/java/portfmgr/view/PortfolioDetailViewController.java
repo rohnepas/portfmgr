@@ -47,8 +47,8 @@ public class PortfolioDetailViewController implements Initializable {
 	private portfmgrApplication mainApp;
 	private Portfolio portfolio;
 	private JSONObject onlineDataJSON;
-	private static List<String> currencyList = Arrays.asList("CHF", "EUR", "USD");
-	private List<String> cryptocurrencyList;
+	private static List<String> fiatCurrencyList = Arrays.asList("CHF", "EUR", "USD");
+	private List<String> cryptoCurrencyList;
 	private static String coinlistPath = "src/main/java/coinlist/coinlist.json";
 
 	@Autowired
@@ -59,6 +59,10 @@ public class PortfolioDetailViewController implements Initializable {
 	
 	@Autowired
 	TransactionViewController transViewController;
+	
+	@Autowired
+	PortfolioCalculator portfolioCalculator;
+	
 	
 //	@Autowired
 //	Insights insights;
@@ -124,12 +128,7 @@ public class PortfolioDetailViewController implements Initializable {
 //		System.out.println("should print the total:");
 //		System.out.println(insights.getTotal());
 		
-		// prints the distinct currencies
-		
-		
-		
-		
-		
+		// prints the distinct currencies	
 	}
 	
 	
@@ -167,11 +166,11 @@ public class PortfolioDetailViewController implements Initializable {
 		String tempPortfolioName = portfolio.getPortfolioName();
 		String tempPortfolioCurrency = portfolio.getPortfolioCurrency();
 
-		boolean currencyExists = currencyList.stream().anyMatch(str -> str.trim().equals(tempPortfolioCurrency));
+		boolean currencyExists = fiatCurrencyList.stream().anyMatch(str -> str.trim().equals(tempPortfolioCurrency));
 
 		if (tempPortfolioName == "leeres Portfolio" || tempPortfolioName == "" || !currencyExists) {
 
-			mainApp.openPortfolioUpdateView(portfolio, currencyList);
+			mainApp.openPortfolioUpdateView(portfolio, fiatCurrencyList);
 
 		} else {
 			portfolioName.setText(portfolio.getPortfolioName());
@@ -198,10 +197,11 @@ public class PortfolioDetailViewController implements Initializable {
 	 * 
 	 * @author Marc Steiner
 	 */
+	
 	public void updatePortfolio() {
 
-		setCryptocurrencyList();
-		OnlineCourseQuery query = new OnlineCourseQuery(cryptocurrencyList, currencyList);
+		setCryptoCurrencyList();
+		OnlineCourseQuery query = new OnlineCourseQuery(cryptoCurrencyList, fiatCurrencyList);
 
 		try {
 			onlineDataJSON = query.getOnlineCourseData();
@@ -210,13 +210,12 @@ public class PortfolioDetailViewController implements Initializable {
 			e.printStackTrace();
 		}
 
-		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptocurrencyList,
-				currencyList, coinlistPath);
+		portfolioCalculator.init(portfolio, onlineDataJSON, coinlistPath);
 		
-		calculator.calculatePortfolio();
-		profitOrLoss.setText(String.valueOf(calculator.getProfitOrLoss()));
-		profitOrLossPercentage.setText(String.valueOf(calculator.getProfitOrLossPercentage()) + " %");
-		totalPortoflioValue.setText(String.valueOf(calculator.getTotalPortfolioValue()));
+		portfolioCalculator.calculatePortfolio();
+		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioCurrency());
+		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
+		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioCurrency());
 
 		refreshPortfolioData();
 	}
@@ -227,12 +226,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 * 
 	 * @author Marc Steiner
 	 */
-	public void setCryptocurrencyList() {
-		/*
-		 * TO DO: Finde alle CryptoCurrencies die in diesem Portfolio vorkommen aktuell
-		 * eine Testliste mit verschiedenen Kryptos implementiert
-		 */
-		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
+	public void setCryptoCurrencyList() {
+		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency();
 	}
 
 	/**
@@ -241,7 +236,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Marc Steiner
 	 */
 	public List<String> getCryptoCurrencyList() {
-		return cryptocurrencyList;
+		return cryptoCurrencyList;
 	}
 
 	/**
@@ -249,8 +244,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @return
 	 * @author Marc Steiner
 	 */
-	public List<String> getCurrencyList() {
-		return currencyList;
+	public List<String> getfiatCurrencyList() {
+		return fiatCurrencyList;
 	}
 
 	/**
@@ -263,7 +258,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 */
 	public void editPortfolio() {
 
-		mainApp.openPortfolioUpdateView(portfolio, currencyList);
+		//change fiatCurrency of portfolio is not allowed. List<String> = actual portfolio currency
+		mainApp.openPortfolioUpdateView(portfolio, Arrays.asList(portfolio.getPortfolioCurrency()));
 		refreshPortfolioData();
 	}
 
@@ -310,7 +306,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Pascal Rohner und Marc Steiner
 	 */
 	public void addTransaction() {
-		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath, currencyList);
+		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath, fiatCurrencyList);
 		
 	}
 
@@ -344,7 +340,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	public void editTransaction() {
 		Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();		
-		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath, currencyList);	
+		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath, fiatCurrencyList);	
 
 	}
 
@@ -363,8 +359,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @param list
 	 * @author Marc Steiner
 	 */
-	public void setCurrencyList(List<String> list) {
-		currencyList = list;
+	public void setFiatCurrencyList (List<String> list) {
+		fiatCurrencyList = list;
 	}
 
 	/**

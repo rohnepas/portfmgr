@@ -309,6 +309,7 @@ public class TransactionViewController implements Initializable {
 
 	public void setPortfolio(Portfolio portfolio) {
 		this.portfolio = portfolio;
+		moneytary.getItems().addAll(portfolio.getPortfolioCurrency());
 
 	}
 
@@ -330,7 +331,6 @@ public class TransactionViewController implements Initializable {
 	public void setMainApp(portfmgrApplication mainApp, List<String> currencyList) {
 		this.mainApp = mainApp;
 		this.currencyList = currencyList;
-		moneytary.getItems().addAll(currencyList);
 		type.getItems().addAll("Kauf", "Verkauf");
 	}
 

@@ -22,20 +22,20 @@ public class OnlineCourseQuery {
 	private String APIKey = "3b46b9503250d561de3cfa120910d34bada6f4d0587b7e3db6cf15e02a509313";
 	private String symbols;
 	private String currencies;
-	private List<String> cryptocurrencyList;
-	private List<String> currencyList;
+	private List<String> cryptoCurrencyList;
+	private List<String> fiatCurrencyList;
 	
 	 
-	public OnlineCourseQuery(List<String> cryptocurrencyList, List<String> currencyList) {
-		this.cryptocurrencyList = cryptocurrencyList;
-		this.currencyList = currencyList;
-		setSymbols(cryptocurrencyList);
-		setCurrencies (currencyList);
+	public OnlineCourseQuery(List<String> cryptoCurrencyList, List<String> fiatCurrencyList) {
+		this.cryptoCurrencyList = cryptoCurrencyList;
+		this.fiatCurrencyList = fiatCurrencyList;
+		setSymbols(cryptoCurrencyList);
+		setCurrencies (fiatCurrencyList);
 	}
 	
 	public OnlineCourseQuery(String symbol) {
-		setSymbols(cryptocurrencyList);
-		setCurrencies (currencyList);
+		setSymbols(cryptoCurrencyList);
+		setCurrencies (fiatCurrencyList);
 	}
 
 	/**
@@ -44,6 +44,7 @@ public class OnlineCourseQuery {
 	 * @throws IOException
 	 */
 	public JSONObject getOnlineCourseData() throws IOException {
+		
 		
 		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + symbols + "&tsyms=" + currencies +"&api_key="+ APIKey);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -85,7 +86,7 @@ public class OnlineCourseQuery {
 	}
 	
 	public void setSymbols (List<String> listOfSymbols) {
-		symbols = String.join(",", listOfSymbols);			
+		symbols = String.join(",", listOfSymbols);	
 	}
 	
 	public void setCurrencies (List<String> listOfCurrencies) {
