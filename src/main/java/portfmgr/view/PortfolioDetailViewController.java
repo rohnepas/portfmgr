@@ -227,9 +227,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Marc Steiner
 	 */
 	public void setCryptoCurrencyList() {
-		//cryptoCurrencyList = transRepo.findDistinctCryptoCurrency();
-	
-		cryptoCurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
+		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency();
 	}
 
 	/**

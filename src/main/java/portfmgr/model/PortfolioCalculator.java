@@ -58,11 +58,7 @@ public class PortfolioCalculator {
 	 * 
 	 */
 	public void calculatePortfolio() {
-		
-		System.out.println("BTC Transaktionen: " + transRepo.sumCryptoCurrencyTotal("BTC"));
-		System.out.println("Symbole: " + transRepo.findDistinctCryptoCurrency());
 		calculateTotalPortfolioValue();
-	
 	}
 	
 	/**
@@ -82,8 +78,6 @@ public class PortfolioCalculator {
 	            map.put(((String)object[1]),(Double)object[0]);
 	          }
 	    }
-		
-		System.out.println("DATEN SIND: " + map);
 		
 		if (map != null) {
 			Double tempTotalPortfolioValue = 0.0;
