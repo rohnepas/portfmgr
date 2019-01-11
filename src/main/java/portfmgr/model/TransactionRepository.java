@@ -21,7 +21,6 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	List<Transaction> findByPortfolio(Portfolio portfolio);
 	
 
-	
 	/**
 	 * SQL query which sum up the number of coins for one specific crypto currency
 	 * 
@@ -49,8 +48,8 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	 * @return SQL query return list of objects <Object[]>
 	 * @author Marc Steiner
 	 */
-	@Query("SELECT sum(numberOfCoins) FROM Transaction GROUP BY currency")
-	List<?> sumAndGroupTotalNumberOfCoins();
+	@Query("SELECT sum(numberOfCoins) as nbr, currency FROM Transaction GROUP BY currency")
+	List<Object[]> sumAndGroupTotalNumberOfCoins();
 
 
 }

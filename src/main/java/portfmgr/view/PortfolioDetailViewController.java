@@ -61,7 +61,7 @@ public class PortfolioDetailViewController implements Initializable {
 	TransactionViewController transViewController;
 	
 	@Autowired
-	PortfolioCalculator calculator;
+	PortfolioCalculator portfolioCalculator;
 	
 	
 //	@Autowired
@@ -210,12 +210,12 @@ public class PortfolioDetailViewController implements Initializable {
 			e.printStackTrace();
 		}
 
-		calculator.init(portfolio, onlineDataJSON, cryptoCurrencyList, fiatCurrencyList, coinlistPath);
+		portfolioCalculator.init(portfolio, onlineDataJSON, coinlistPath);
 		
-		calculator.calculatePortfolio();
-		profitOrLoss.setText(String.valueOf(calculator.getProfitOrLoss()));
-		profitOrLossPercentage.setText(String.valueOf(calculator.getProfitOrLossPercentage()) + " %");
-		totalPortoflioValue.setText(String.valueOf(calculator.getTotalPortfolioValue()));
+		portfolioCalculator.calculatePortfolio();
+		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioCurrency());
+		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
+		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioCurrency());
 
 		refreshPortfolioData();
 	}

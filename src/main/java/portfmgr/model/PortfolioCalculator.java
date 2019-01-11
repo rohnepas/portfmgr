@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,6 @@ import org.springframework.stereotype.Service;
  * This class must be marked as @Service because of Spring Data and in the controller class, 
  * it must be marked @Autowired. Documentation: https://www.moreofless.co.uk/spring-mvc-java-autowired-component-null-repository-service/
  * 
- * @param portfolio (whole JSON online data file, cryptoCurrencyList and the fiatCurrencyList)
  * @author Marc Steiner
  *
  */
@@ -23,25 +26,21 @@ import org.springframework.stereotype.Service;
 public class PortfolioCalculator {
 	private JSONObject onlineDataJSON;
 	private Portfolio portfolio;
-	private List<String> cryptoCurrencyList;
-	private List<String> fiatCurrencyList;
 	private List<Transaction> transactionList;
 	private String coinlistPath;
 	private static String BaseLinkUrl = "https://www.cryptocompare.com";
 	private double profitOrLoss;
 	private double profitOrLossPercentage;
-	private double totalPortfolioValue;
+	private String totalPortfolioValue = "-";
 	
 	
 	@Autowired
 	TransactionRepository transRepo;
 	
-	public void init(Portfolio portfolio, JSONObject onlineDataJSON, List<String> cryptoCurrencyList, List<String> fiatCurrencyList, String coinlistPath) {
+	public void init(Portfolio portfolio, JSONObject onlineDataJSON, String coinlistPath) {
 		this.portfolio = portfolio;
 		this.coinlistPath = coinlistPath;
 		this.onlineDataJSON = onlineDataJSON;
-		this.cryptoCurrencyList = cryptoCurrencyList;
-		this.fiatCurrencyList = fiatCurrencyList;
 		setTransactionList();
 	}
 	
@@ -62,33 +61,8 @@ public class PortfolioCalculator {
 		
 		System.out.println("BTC Transaktionen: " + transRepo.sumCryptoCurrencyTotal("BTC"));
 		System.out.println("Symbole: " + transRepo.findDistinctCryptoCurrency());
-		System.out.println("Total Number of Coins per Symbol: " + transRepo.sumAndGroupTotalNumberOfCoins());
-		
-		try {
-			
-			for (String symbol: cryptoCurrencyList) {
-								
-				/*
-				 * Extract the underlying JSONObject from the main JSONObject
-				 * and get the values (CHF, USD, EUR) for the specific symbol (e.g BTC).
-				 */
-				JSONObject values = onlineDataJSON.getJSONObject(symbol);
-								
-				/*
-				 * Extract the value of the specific crypto currency (e.g BTC)
-				 * in the specified portfolio currency (e.g CHF)
-				 */
-				double result = values.getDouble(portfolio.getPortfolioCurrency());
-				totalPortfolioValue = totalPortfolioValue + result;
-				
-				System.out.println("'"+ symbol + "': Wert: " + result);
-			}
-		
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		calculateTotalPortfolioValue();
+	
 	}
 	
 	/**
@@ -97,10 +71,50 @@ public class PortfolioCalculator {
 	 */
 	public void calculateTotalPortfolioValue() {
 		
-		// Get a list of total number of coins per crypto currency
-		//List<?> list = transRepo.sumAndGroupTotalNumberOfCoins();
-		totalPortfolioValue = 0;
+		List<Object[]> list = transRepo.sumAndGroupTotalNumberOfCoins();
+	
+		//Convert list into accessible map
+		Map<String,Double> map = null;
+		if(list != null && !list.isEmpty()) {
+			map = new HashMap<String,Double>();
+			
+			for (Object[] object : list) {
+	            map.put(((String)object[1]),(Double)object[0]);
+	          }
+	    }
 		
+		System.out.println("DATEN SIND: " + map);
+		
+		if (map != null) {
+			Double tempTotalPortfolioValue = 0.0;
+			
+			try {
+				
+				for (Map.Entry<String, Double> symbol: map.entrySet()) {
+									
+					/*
+					 * Extract the underlying JSONObject from the main JSONObject
+					 * and get the fiat values for the specific symbol (e.g BTC).
+					 */
+					JSONObject values = onlineDataJSON.getJSONObject(symbol.getKey());
+					
+					/*
+					 * Extract the value of the specific crypto currency (e.g BTC)
+					 * in the specified portfolio currency (e.g CHF)
+					 */
+					double result = values.getDouble(portfolio.getPortfolioCurrency());
+					tempTotalPortfolioValue = tempTotalPortfolioValue + result * symbol.getValue();
+				}
+			
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+			
+			// Format double to two decimal
+			DecimalFormat df = new DecimalFormat("####0.00");
+			totalPortfolioValue = df.format(tempTotalPortfolioValue);
+		}
 	}
 	
 		
@@ -148,7 +162,7 @@ public class PortfolioCalculator {
 		return profitOrLossPercentage;
 	}
 	
-	public Double getTotalPortfolioValue() {
+	public String getTotalPortfolioValue() {
 		return totalPortfolioValue;
 	}
 
