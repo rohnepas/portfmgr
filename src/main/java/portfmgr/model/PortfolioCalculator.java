@@ -8,14 +8,18 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
- * Calculates profit and loss values and the total portfolio value
+ * Calculates profit and loss values and the total portfolio value.
+ * This class must be marked as @Service because of Spring Data and in the controller class, 
+ * it must be marked @Autowired. Documentation: https://www.moreofless.co.uk/spring-mvc-java-autowired-component-null-repository-service/
  * 
  * @param portfolio (whole JSON online data file, cryptoCurrencyList and the fiatCurrencyList)
  * @author Marc Steiner
  *
  */
+@Service
 public class PortfolioCalculator {
 	private JSONObject onlineDataJSON;
 	private Portfolio portfolio;
@@ -32,13 +36,20 @@ public class PortfolioCalculator {
 	@Autowired
 	TransactionRepository transRepo;
 	
-	public PortfolioCalculator(Portfolio portfolio, JSONObject onlineDataJSON, List<String> cryptoCurrencyList, List<String> fiatCurrencyList, String coinlistPath) {
+	public void init(Portfolio portfolio, JSONObject onlineDataJSON, List<String> cryptoCurrencyList, List<String> fiatCurrencyList, String coinlistPath) {
 		this.portfolio = portfolio;
 		this.coinlistPath = coinlistPath;
 		this.onlineDataJSON = onlineDataJSON;
 		this.cryptoCurrencyList = cryptoCurrencyList;
 		this.fiatCurrencyList = fiatCurrencyList;
-		//setTransactionList();
+		setTransactionList();
+	}
+	
+	/**
+	 * Find all transactions whithin this portfolio
+	 */
+	public void setTransactionList() {
+		transactionList = transRepo.findByPortfolio(portfolio);
 	}
 	
 	/**
@@ -88,13 +99,7 @@ public class PortfolioCalculator {
 		
 	}
 	
-	/**
-	 * Find all transactions whithin this portfolio
-	 */
-	public void setTransactionList() {
-		transactionList = transRepo.findByPortfolio(portfolio);
-	}
-	
+		
 	/**
 	 * reads the file in coinlistPath and extracts the URL for the picture and name of the specific crypto currency
 	 * "Data" is the key in the JSON file for the symbol of the currency.

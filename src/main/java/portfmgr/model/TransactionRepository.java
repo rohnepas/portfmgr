@@ -28,11 +28,11 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	 * @param symbol (crypto currency)
 	 * @return sum of bumber of coins
 	 * @author Marc Steiner
-	 *//*
+	 */
 	@Query("SELECT SUM(total) FROM Transaction WHERE currency = :symbol")
 	Double sumCryptoCurrencyTotal(@Param("symbol") String symbol);
 	
-	*//**
+	/**
 	 * SQL query which search all unique crypto currency symbols are available
 	 * 
 	 * @return distinct list of available crypto currency symbols

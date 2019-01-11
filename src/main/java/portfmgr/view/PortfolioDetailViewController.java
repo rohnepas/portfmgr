@@ -60,6 +60,10 @@ public class PortfolioDetailViewController implements Initializable {
 	@Autowired
 	TransactionViewController transViewController;
 	
+	@Autowired
+	PortfolioCalculator calculator;
+	
+	
 //	@Autowired
 //	Insights insights;
 
@@ -193,6 +197,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * 
 	 * @author Marc Steiner
 	 */
+	
 	public void updatePortfolio() {
 
 		setCryptoCurrencyList();
@@ -205,8 +210,7 @@ public class PortfolioDetailViewController implements Initializable {
 			e.printStackTrace();
 		}
 
-		PortfolioCalculator calculator = new PortfolioCalculator(portfolio, onlineDataJSON, cryptoCurrencyList,
-				fiatCurrencyList, coinlistPath);
+		calculator.init(portfolio, onlineDataJSON, cryptoCurrencyList, fiatCurrencyList, coinlistPath);
 		
 		calculator.calculatePortfolio();
 		profitOrLoss.setText(String.valueOf(calculator.getProfitOrLoss()));
@@ -224,7 +228,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 */
 	public void setCryptoCurrencyList() {
 		//cryptoCurrencyList = transRepo.findDistinctCryptoCurrency();
-		
+	
 		cryptoCurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
 	}
 
