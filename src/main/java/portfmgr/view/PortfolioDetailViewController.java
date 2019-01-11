@@ -228,10 +228,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Marc Steiner
 	 */
 	public void setCryptocurrencyList() {
-		/*
-		 * TO DO: Finde alle CryptoCurrencies die in diesem Portfolio vorkommen aktuell
-		 * eine Testliste mit verschiedenen Kryptos implementiert
-		 */
+		//cryptocurrencyList = transRepo.findDistinctCryptoCurrency();
+		
 		cryptocurrencyList = Arrays.asList("BTC", "ETH", "LTC", "XRP", "TRX", "IOT");
 	}
 

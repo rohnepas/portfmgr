@@ -21,6 +21,7 @@ public class PortfolioCalculator {
 	private Portfolio portfolio;
 	private List<String> cryptocurrencyList;
 	private List<String> currencyList;
+	private List<Transaction> transactionList;
 	private String coinlistPath;
 	private static String BaseLinkUrl = "https://www.cryptocompare.com";
 	private double profitOrLoss;
@@ -37,6 +38,7 @@ public class PortfolioCalculator {
 		this.onlineDataJSON = onlineDataJSON;
 		this.cryptocurrencyList = cryptocurrencyList;
 		this.currencyList = currencyList;
+		//setTransactionList();
 	}
 	
 	/**
@@ -48,34 +50,49 @@ public class PortfolioCalculator {
 	public void calculatePortfolio() {
 		
 		try {
+			
 			for (String symbol: cryptocurrencyList) {
-				getImageOfCryptoCurrency(symbol);
-				
+								
 				/*
 				 * Extract the underlying JSONObject from the main JSONObject
 				 * and get the values (CHF, USD, EUR) for the specific symbol (e.g BTC).
 				 */
 				JSONObject values = onlineDataJSON.getJSONObject(symbol);
-				System.out.println("Die Werte für " + symbol);
+								
+				/*
+				 * Extract the value of the specific crypto currency (e.g BTC)
+				 * in the specified portfolio currency (e.g CHF)
+				 */
+				double result = values.getDouble(portfolio.getPortfolioCurrency());
+				totalPortfolioValue = totalPortfolioValue + result;
 				
-				//nur für CHF:
-				//double result = values.getDouble("CHF");
-				
-				// print for each currency (CHF, USD, EUR) the specific value 
-				for (String currency: currencyList) {
-					double result = values.getDouble(currency);
-					System.out.print("Währung " + currency + " = " + result);
-					System.out.println("");
-				}
-				System.out.println("");
+				System.out.println("'"+ symbol + "': Wert: " + result);
 			}
-			
-			
+		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * Calculate the total portfolio value based on data from database 
+	 * 
+	 */
+	public void calculateTotalPortfolioValue() {
+		
+		// Get a list of total number of coins per crypto currency
+		//List<?> list = transRepo.sumAndGroupTotalNumberOfCoins();
+		totalPortfolioValue = 0;
+		
+	}
+	
+	/**
+	 * Find all transactions whithin this portfolio
+	 */
+	public void setTransactionList() {
+		transactionList = transRepo.findByPortfolio(portfolio);
 	}
 	
 	/**
