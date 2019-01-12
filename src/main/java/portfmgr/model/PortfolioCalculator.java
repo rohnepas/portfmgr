@@ -37,6 +37,12 @@ public class PortfolioCalculator {
 		this.onlineDataJSON = onlineDataJSON;
 		this.cryptocurrencyList = cryptocurrencyList;
 		this.currencyList = currencyList;
+		test();
+	}
+	
+	public void test() {
+		System.out.println(portfolio);
+		transRepo.findByPortfolio(portfolio);
 	}
 	
 	/**

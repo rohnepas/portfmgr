@@ -58,7 +58,10 @@ public class TransactionViewController implements Initializable {
 	private List<String> cryptocurrencyList;
 
 	@FXML
-	private ChoiceBox moneytary;
+	private ChoiceBox fiatCurrency;
+	
+	@FXML
+	private TextField cryptoCurrency;
 
 	@FXML
 	private ChoiceBox type;
@@ -77,9 +80,6 @@ public class TransactionViewController implements Initializable {
 	@FXML
 	private Button cancel;
 
-	@FXML
-	private TextField cryptoCurrency;
-
  
 	/**
 	 * Method is called when "save" is clicked in the transaction view. The method
@@ -89,13 +89,13 @@ public class TransactionViewController implements Initializable {
 	 * @author: Pascal Rohner, Marc Steiner
 	 */
 	public void handleAddition() {
-		String tempMoneytary = moneytary.getValue().toString();
-		String tempCurrency = cryptoCurrency.getText().toUpperCase();
+		String tempfiatCurrency = fiatCurrency.getValue().toString();
+		String tempcryptoCurrency = cryptoCurrency.getText().toUpperCase();
 
-		tempCurrency = validateCryptoInput(tempCurrency);
+		tempcryptoCurrency = validateCryptoInput(tempcryptoCurrency);
 
 		// Simple validation if the entered Crypto Currency exists.
-		if (tempCurrency == null) {
+		if (tempcryptoCurrency == null) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(dialogStage);
 			alert.setTitle("Eingabefehler");
@@ -105,14 +105,12 @@ public class TransactionViewController implements Initializable {
 
 		else {
 			
-			JSONObject cryptocurrencyData = getCryptoCurrencyData(tempCurrency);
-			System.out.println(cryptocurrencyData);
 			// Calls a method for calculating the total
 			Double tempTotal = calculateTotal(type.getValue().toString(), Double.valueOf(price.getText()),
 					Double.valueOf(numberOfCoins.getText()), Double.valueOf(fees.getText()));
 
 			if (transaction == null) {
-				saveTransaction(cryptocurrencyData, moneytary.getValue().toString(), tempCurrency, type.getValue().toString(),
+				saveTransaction(cryptocurrencyData, fiatCurrency.getValue().toString(), tempcryptoCurrency, type.getValue().toString(),
 						Double.valueOf(numberOfCoins.getText()),
 						Double.valueOf(fees.getText()), tempTotal);
 			} else {
@@ -287,7 +285,7 @@ public class TransactionViewController implements Initializable {
 		this.transaction = transaction;
 
 		if (transaction != null) {
-			moneytary.setValue(transaction.getMoneytary());
+			fiatCurrency.setValue(transaction.getMoneytary());
 			cryptoCurrency.setText(transaction.getCurrency());
 			type.setValue(transaction.getType());
 			price.setText(String.valueOf(transaction.getPriceCHF()));
@@ -330,7 +328,7 @@ public class TransactionViewController implements Initializable {
 	public void setMainApp(portfmgrApplication mainApp, List<String> currencyList) {
 		this.mainApp = mainApp;
 		this.currencyList = currencyList;
-		moneytary.getItems().addAll(currencyList);
+		fiatCurrency.getItems().addAll(currencyList);
 		type.getItems().addAll("Kauf", "Verkauf");
 	}
 
