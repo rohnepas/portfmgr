@@ -35,7 +35,7 @@ import portfmgr.model.TransactionRepository;
 /**
  * This class represents the controller for the transaction view which is used
  * to add, delete and edit transactions.
- * 
+ *
  * @author Pascal Rohner, Marc Steiner
  *
  */
@@ -59,7 +59,7 @@ public class TransactionViewController implements Initializable {
 
 	@FXML
 	private ChoiceBox fiatCurrency;
-	
+
 	@FXML
 	private TextField cryptoCurrency;
 
@@ -80,12 +80,12 @@ public class TransactionViewController implements Initializable {
 	@FXML
 	private Button cancel;
 
- 
+
 	/**
 	 * Method is called when "save" is clicked in the transaction view. The method
 	 * performs a validation and saves the portfolio to the database or updates the
 	 * portfolio.
-	 * 
+	 *
 	 * @author: Pascal Rohner, Marc Steiner
 	 */
 	public void handleAddition() {
@@ -99,12 +99,12 @@ public class TransactionViewController implements Initializable {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(dialogStage);
 			alert.setTitle("Eingabefehler");
-			alert.setHeaderText("Kryptowährung existiert nicht - bitte korrigieren");
+			alert.setHeaderText("Kryptowï¿½hrung existiert nicht - bitte korrigieren");
 			alert.showAndWait();
 		}
 
 		else {
-			
+
 			// Calls a method for calculating the total
 			Double tempTotal = calculateTotal(type.getValue().toString(), Double.valueOf(price.getText()),
 					Double.valueOf(numberOfCoins.getText()), Double.valueOf(fees.getText()));
@@ -126,16 +126,16 @@ public class TransactionViewController implements Initializable {
 
 		}
 	}
-	
+
 	/**
 	 * Calls the API for crypto currencies and give back the values only for one specific crypto currency
 	 * @return values (JSON Object with fiat rate of defined crypto currency)
 	 * @param tempCurrency  (crypto currency symbol for that the fiat rate will be called)
 	 * @author Marc Steiner
-	 * 
+	 *
 	 */
 	public JSONObject getCryptoCurrencyData(String tempCurrency) {
-		
+
 		//Convert String to needed List>String>
 		List<String> symbol = Arrays.asList(tempCurrency);
 		OnlineCourseQuery query = new OnlineCourseQuery(symbol, currencyList);
@@ -154,7 +154,7 @@ public class TransactionViewController implements Initializable {
 	/*
 	 * This method validate the user input of the crypto currencies based on JSON
 	 * list from http://www.cryptocompare.com
-	 * 
+	 *
 	 * @author Marc Steiner
 	 */
 	public String validateCryptoInput(String input) {
@@ -187,7 +187,7 @@ public class TransactionViewController implements Initializable {
 
 	/**
 	 * Closes the dialog if the cancel button is clicked
-	 * 
+	 *
 	 * @author Pascal Rohner
 	 */
 	public void handleCancel() {
@@ -197,10 +197,10 @@ public class TransactionViewController implements Initializable {
 	/**
 	 * Calculates the total amount spent on a transaction. In case of a selling the amount
 	 * is converted to a negative double.
-	 * 
+	 *
 	 * @param type of the transaction, price paid, number of coins bought, fees spent
 	 * @author Pascal Rohner
-	 * 
+	 *
 	 */
 
 	public Double calculateTotal(String type, Double price, Double numberOfCoins, Double fees) {
@@ -213,19 +213,19 @@ public class TransactionViewController implements Initializable {
 
 	/**
 	 * Creates a new transaction and saves it in the database. It save not only the value for the specified currency
-	 * it also saves for all other fiat currencies so that switching between different 
+	 * it also saves for all other fiat currencies so that switching between different
 	 * portfolio currencies is possible.
-	 * 
-	 * @param moneytary (= Währung), currency bought, type of the transaction (Kauf
+	 *
+	 * @param moneytary (= Wï¿½hrung), currency bought, type of the transaction (Kauf
 	 *                  oder Verkauf), price paid, number of coins bought, fees
 	 *                  spent and total amout of money spent for the transaction
 	 * @author Pascal Rohner und Marc Steiner
-	 * 
+	 *
 	 */
 
 	public void saveTransaction(JSONObject cryptocurrencyData, String moneytary, String currency, String type, Double numberOfCoins,
 			Double fees, Double total) {
-		
+
 		Transaction transaction = new Transaction();
 		transaction.setCurrency(currency);
 		transaction.setMoneytary(moneytary);
@@ -237,7 +237,7 @@ public class TransactionViewController implements Initializable {
 		transaction.setPriceCHF(cryptocurrencyData.getDouble("CHF"));
 		transaction.setPriceUSD(cryptocurrencyData.getDouble("USD"));
 		transaction.setPriceEUR(cryptocurrencyData.getDouble("EUR"));
-		
+
 
 		if (moneytary == "CHF") {
 			transaction.setPriceCHF(cryptocurrencyData.getDouble("CHF"));
@@ -262,7 +262,7 @@ public class TransactionViewController implements Initializable {
 
 	/**
 	 * Saves the updates transaction into the database
-	 * 
+	 *
 	 * @param transaction
 	 * @author Pascal Rohner
 	 */
@@ -294,26 +294,27 @@ public class TransactionViewController implements Initializable {
 		}
 
 	}
-	
-	
+
+
 
 	/**
 	 * Sets the portfolio so that when a transaction is stored, it can be assigned
 	 * to the portfolio.
-	 * 
+	 *
 	 * @param portfolio
 	 * @author Pascal Rohner
 	 */
 
 	public void setPortfolio(Portfolio portfolio) {
 		this.portfolio = portfolio;
+		moneytary.getItems().addAll(portfolio.getPortfolioCurrency());
 
 	}
 
 	/**
-	 * 
+	 *
 	 * @author Marc Steiner
-	 * 
+	 *
 	 */
 	public void setCoinListPath(String coinlistPath) {
 		this.coinlistPath = coinlistPath;
@@ -321,14 +322,13 @@ public class TransactionViewController implements Initializable {
 
 	/**
 	 * Sets the MainApp for calling a method.
-	 * 
+	 *
 	 * @param mainApp
 	 * @author Pascal Rohner und Marc Steiner
 	 */
 	public void setMainApp(portfmgrApplication mainApp, List<String> currencyList) {
 		this.mainApp = mainApp;
 		this.currencyList = currencyList;
-		fiatCurrency.getItems().addAll(currencyList);
 		type.getItems().addAll("Kauf", "Verkauf");
 	}
 
@@ -343,8 +343,8 @@ public class TransactionViewController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		
+
+
 
 	}
 }

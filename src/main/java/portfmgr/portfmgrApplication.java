@@ -146,12 +146,11 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	}
 	
 	/**
-	 * Function is called by PortfolioDetailViewController and Opens a pop-up window to change portoflio name and currency
+	 * Function is called by PortfolioDetailViewController and Opens a pop-up window to change portoflio name
 	 * @param portfolio:  The portfolio which should be edit is passed from the PortfolioDetailViewController
-	 * @param currencyList: Possible portfolio currency list (CHF, EUR, USD..) 
 	 * @author Marc Steiner
 	 */
-	public void openPortfolioUpdateView(Portfolio portfolio, List<String> currencyList) {
+	public void openPortfolioUpdateView(Portfolio portfolio, List<String> fiatCurrencyList) {
 
 		try {
 			// Loads the portfolioDetailView
@@ -172,7 +171,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			PortfolioUpdateViewController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setMainApp(this);
-			controller.setPortfolio(portfolio, currencyList);
+			controller.setPortfolio(portfolio, fiatCurrencyList);
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();

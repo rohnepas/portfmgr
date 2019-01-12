@@ -108,7 +108,7 @@ public class ExportData {
 	 */
 	public void exportData() throws IOException {
 
-        String currency = portfolio.getPortfolioCurrency();
+        String fiatCurrency = portfolio.getPortfolioCurrency();
         extractData();
             
         //Iterate over data and write to sheet.
@@ -124,7 +124,7 @@ public class ExportData {
               
               // Add portfolio currency to the "money cells"
               if(cellid > 2) {
-            	  cell.setCellValue((String)obj + currency);
+            	  cell.setCellValue((String)obj + fiatCurrency);
               } else {
             	  cell.setCellValue((String)obj);
               }
