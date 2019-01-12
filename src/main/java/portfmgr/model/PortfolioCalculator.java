@@ -96,7 +96,7 @@ public class PortfolioCalculator {
 					 * Extract the value of the specific crypto currency (e.g BTC)
 					 * in the specified portfolio currency (e.g CHF)
 					 */
-					double result = values.getDouble(portfolio.getPortfolioCurrency());
+					double result = values.getDouble(portfolio.getPortfolioFiatCurrency());
 					tempTotalPortfolioValue = tempTotalPortfolioValue + result * symbol.getValue();
 				}
 

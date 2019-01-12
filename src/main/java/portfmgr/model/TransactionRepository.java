@@ -2,6 +2,7 @@ package portfmgr.model;
 
 import java.util.List;
 
+import org.hibernate.query.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository("portfmgr.model.TransactionRepository")
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
 
-	List<Transaction> findByCurrency(String currency);
+	List<Transaction> findByCryptoCurrency(String cryptoCurrency);
 
 	List<Transaction> findByPortfolio(Portfolio portfolio);
 	
@@ -28,7 +29,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	 * @return sum of bumber of coins
 	 * @author Marc Steiner
 	 */
-	@Query("SELECT SUM(total) FROM Transaction WHERE currency = :symbol")
+	@Query("SELECT SUM(total) FROM Transaction WHERE cryptoCurrency = :symbol")
 	Double sumCryptoCurrencyTotal(@Param("symbol") String symbol);
 	
 	/**
@@ -37,7 +38,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	 * @return distinct list of available crypto currency symbols
 	 * @author Marc Steiner
 	 */
-	@Query("SELECT DISTINCT currency FROM Transaction")
+	@Query("SELECT DISTINCT cryptoCurrency FROM Transaction")
 	List<String> findDistinctCryptoCurrency();
 	
 	/**
@@ -48,8 +49,9 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	 * @return SQL query return list of objects <Object[]>
 	 * @author Marc Steiner
 	 */
-	@Query("SELECT sum(numberOfCoins) as nbr, currency FROM Transaction GROUP BY currency")
+	@Query("SELECT sum(numberOfCoins) as nbr, cryptoCurrency FROM Transaction GROUP BY cryptoCurrency")
 	List<Object[]> sumAndGroupTotalNumberOfCoins();
+	
 
 
 }

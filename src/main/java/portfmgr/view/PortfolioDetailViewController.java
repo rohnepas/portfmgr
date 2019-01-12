@@ -107,7 +107,7 @@ public class PortfolioDetailViewController implements Initializable {
 	@FXML
 	private Label portfolioName;
 	@FXML
-	private Label portfolioCurrency;
+	private Label portfolioFiatCurrency;
 	@FXML
 	private Label profitOrLoss;
 	@FXML
@@ -164,7 +164,7 @@ public class PortfolioDetailViewController implements Initializable {
 	public void checkAndSetPortfolioSettings() {
 
 		String tempPortfolioName = portfolio.getPortfolioName();
-		String tempPortfolioCurrency = portfolio.getPortfolioCurrency();
+		String tempPortfolioCurrency = portfolio.getPortfolioFiatCurrency();
 
 		boolean currencyExists = fiatCurrencyList.stream().anyMatch(str -> str.trim().equals(tempPortfolioCurrency));
 
@@ -174,7 +174,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 		} else {
 			portfolioName.setText(portfolio.getPortfolioName());
-			portfolioCurrency.setText(portfolio.getPortfolioCurrency());
+			portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
 
 		}
 	}
@@ -187,7 +187,7 @@ public class PortfolioDetailViewController implements Initializable {
 	public void refreshPortfolioData() {
 
 		portfolioName.setText(portfolio.getPortfolioName());
-		portfolioCurrency.setText(portfolio.getPortfolioCurrency());
+		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
 
 	}
 
@@ -213,9 +213,9 @@ public class PortfolioDetailViewController implements Initializable {
 		portfolioCalculator.init(portfolio, onlineDataJSON, coinlistPath);
 		
 		portfolioCalculator.calculatePortfolio();
-		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioCurrency());
+		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
 		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
-		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioCurrency());
+		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
 
 		refreshPortfolioData();
 	}
@@ -259,7 +259,7 @@ public class PortfolioDetailViewController implements Initializable {
 	public void editPortfolio() {
 
 		//change fiatCurrency of portfolio is not allowed. List<String> = actual portfolio currency
-		mainApp.openPortfolioUpdateView(portfolio, Arrays.asList(portfolio.getPortfolioCurrency()));
+		mainApp.openPortfolioUpdateView(portfolio, Arrays.asList(portfolio.getPortfolioFiatCurrency()));
 		refreshPortfolioData();
 	}
 
@@ -409,16 +409,10 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 		transactionDateColumn.setCellValueFactory(new PropertyValueFactory<Transaction, LocalDate>("transactionDate"));
 		transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<Transaction, String>("type"));
-		transactionCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Transaction, String>("currency"));
-		transactionPriceColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("priceUSD"));
-		transactionPriceColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("priceBTC"));
-		transactionPriceColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("priceEUR"));
-		transactionPriceColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("priceCHF"));
+		transactionCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Transaction, String>("cryptoCurrency"));
+		transactionPriceColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("price"));
 		transactionAmountColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("numberOfCoins"));
-		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("feesUSD"));
-		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("feesBTC"));
-		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("feesEUR"));
-		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("feesCHF"));
+		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("fees"));
 		transactionTotalColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("total"));
 
 		/**
@@ -449,7 +443,7 @@ public class PortfolioDetailViewController implements Initializable {
 		 * @author Pascal Rohner
 		 */
 		
-		insightCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Insight, String>("currency"));
+		insightCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Insight, String>("cryptoCurrency"));
 		insightNumberOfCoinsColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("numberOfCoins"));
 		insightTotalColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("total"));
 		insightAveragePriceColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("averagePrice"));

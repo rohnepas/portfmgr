@@ -75,39 +75,39 @@ public class Transaction {
 
 
 	/*
-	 * Method to query the currency
+	 * Method to query the cryptoCurrency
 	 * 
-	 * @return currency as a String
+	 * @return cryptoCurrency as a String
 	 */
-	public String getCurrency() {
+	public String getCryptoCurrency() {
 		return cryptoCurrency;
 	}
 
 	/*
-	 * Method to set the currency
+	 * Method to set the cryptoCurrency
 	 * 
-	 * @param currency as a String
+	 * @param cryptoCurrency as a String
 	 */
-	public void setCurrency(String currency) {
-		this.cryptoCurrency = currency;
+	public void setCryptoCurrency(String cryptoCurrency) {
+		this.cryptoCurrency = cryptoCurrency;
 	}
 	
 	/*
-	 * Method to query the moneytary (= Währung)
+	 * Method to query the fiatCurrencey (for example CHF)
 	 * 
-	 * @return moneytary as a String
+	 * @return fiatCurrencey as a String
 	 */
-	public String getMoneytary() {
+	public String getFiatCurrency() {
 		return fiatCurrency;
 	}
 	
 	/*
-	 * Method to set the moneytary
+	 * Method to set the fiatCurrencey
 	 * 
-	 * @param moneytary as a String
+	 * @param fiatCurrencey as a String
 	 */
-	public void setMoneytary(String moneytary) {
-		this.fiatCurrency = moneytary;
+	public void setFiatCurrency(String fiatCurrency) {
+		this.fiatCurrency = fiatCurrency;
 	}
 
 	/*
@@ -228,13 +228,21 @@ public class Transaction {
 	}
 	
 	/*
+	 * Method to get the total
+	 * 
+	 */
+	public Double getTotal() {
+		return this.total;
+	}
+	
+	/*
 	 * Method overrides the toString-Method
 	 * 
-	 * @return id, currency and portfolio
+	 * @return id, cryptoCurrency and portfolio
 	 */
 	@Override
 	public String toString() {
-		return "Transaction [id=" + id + ", currency=" + cryptoCurrency + ", portfolio=" + portfolio + "]";
+		return "Transaction [id=" + id + ", cryptoCurrency=" + cryptoCurrency + ", portfolio=" + portfolio + "]";
 	}
 	
 	

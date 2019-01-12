@@ -58,7 +58,7 @@ public class TransactionViewController implements Initializable {
 	private List<String> cryptocurrencyList;
 
 	@FXML
-	private ChoiceBox fiatCurrency;
+	private Label fiatCurrency;
 
 	@FXML
 	private TextField cryptoCurrency;
@@ -89,13 +89,13 @@ public class TransactionViewController implements Initializable {
 	 * @author: Pascal Rohner, Marc Steiner
 	 */
 	public void handleAddition() {
-		String tempfiatCurrency = fiatCurrency.getValue().toString();
-		String tempcryptoCurrency = cryptoCurrency.getText().toUpperCase();
+		//String tempfiatCurrency = fiatCurrency.getValue().toString();
+		String tempCryptoCurrency = cryptoCurrency.getText().toUpperCase();
 
-		tempcryptoCurrency = validateCryptoInput(tempcryptoCurrency);
+		tempCryptoCurrency = validateCryptoInput(tempCryptoCurrency);
 
 		// Simple validation if the entered Crypto Currency exists.
-		if (tempcryptoCurrency == null) {
+		if (tempCryptoCurrency == null) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(dialogStage);
 			alert.setTitle("Eingabefehler");
@@ -110,11 +110,13 @@ public class TransactionViewController implements Initializable {
 					Double.valueOf(numberOfCoins.getText()), Double.valueOf(fees.getText()));
 
 			if (transaction == null) {
-				saveTransaction(cryptocurrencyData, fiatCurrency.getValue().toString(), tempcryptoCurrency, type.getValue().toString(),
+				saveTransaction(Double.valueOf(price.getText()), fiatCurrency.getText(), tempCryptoCurrency, type.getValue().toString(),
 						Double.valueOf(numberOfCoins.getText()),
 						Double.valueOf(fees.getText()), tempTotal);
 			} else {
-				updateTransaction(transaction);
+				updateTransaction(transaction, Double.valueOf(price.getText()), fiatCurrency.getText(), tempCryptoCurrency, type.getValue().toString(),
+						Double.valueOf(numberOfCoins.getText()),
+						Double.valueOf(fees.getText()), tempTotal);
 			}
 			mainApp.openPortfolioDetailView();
 
@@ -223,38 +225,19 @@ public class TransactionViewController implements Initializable {
 	 *
 	 */
 
-	public void saveTransaction(JSONObject cryptocurrencyData, String moneytary, String currency, String type, Double numberOfCoins,
+	public void saveTransaction(Double price, String fiatCurrency, String cryptoCurrency, String type, Double numberOfCoins,
 			Double fees, Double total) {
 
 		Transaction transaction = new Transaction();
-		transaction.setCurrency(currency);
-		transaction.setMoneytary(moneytary);
-		transaction.setType(type);
+		transaction.setCryptoCurrency(cryptoCurrency);
+		transaction.setFiatCurrency(fiatCurrency);
 		transaction.setNumberOfCoins(numberOfCoins);
+		transaction.setPrice(price);
 		transaction.setTransactionDate(LocalDate.now());
-		transaction.setPortfolio(this.portfolio);
+		transaction.setType(type);
+		transaction.setFees(fees);
 		transaction.setTotal(total);
-		transaction.setPriceCHF(cryptocurrencyData.getDouble("CHF"));
-		transaction.setPriceUSD(cryptocurrencyData.getDouble("USD"));
-		transaction.setPriceEUR(cryptocurrencyData.getDouble("EUR"));
-
-
-		if (moneytary == "CHF") {
-			transaction.setPriceCHF(cryptocurrencyData.getDouble("CHF"));
-			transaction.setFeesCHF(fees);
-		}
-
-		if (moneytary == "EUR") {
-			transaction.setPriceCHF(cryptocurrencyData.getDouble("EUR"));
-			transaction.setFeesEUR(fees);
-
-		}
-
-		if (moneytary == "USD") {
-			transaction.setPriceCHF(cryptocurrencyData.getDouble("USD"));
-			transaction.setFeesUSD(fees);
-
-		}
+		transaction.setPortfolio(this.portfolio);
 
 		transRepo.save(transaction);
 		dialogStage.close();
@@ -267,7 +250,15 @@ public class TransactionViewController implements Initializable {
 	 * @author Pascal Rohner
 	 */
 
-	public void updateTransaction(Transaction transaction) {
+	public void updateTransaction(Transaction transaction, Double price, String fiatCurrency, String cryptoCurrency, String type, Double numberOfCoins,
+			Double fees, Double total) {
+		transaction.setPrice(price);
+		transaction.setFiatCurrency(fiatCurrency);
+		transaction.setCryptoCurrency(cryptoCurrency);
+		transaction.setType(type);
+		transaction.setNumberOfCoins(numberOfCoins);
+		transaction.setFees(fees);
+		transaction.setTotal(total);
 		transRepo.save(transaction);
 		dialogStage.close();
 	}
@@ -285,12 +276,12 @@ public class TransactionViewController implements Initializable {
 		this.transaction = transaction;
 
 		if (transaction != null) {
-			fiatCurrency.setValue(transaction.getMoneytary());
-			cryptoCurrency.setText(transaction.getCurrency());
+			fiatCurrency.setText(transaction.getFiatCurrency());
+			cryptoCurrency.setText(transaction.getCryptoCurrency());
 			type.setValue(transaction.getType());
-			price.setText(String.valueOf(transaction.getPriceCHF()));
+			price.setText(String.valueOf(transaction.getPrice()));
 			numberOfCoins.setText(String.valueOf(transaction.getNumberOfCoins()));
-			fees.setText(String.valueOf(transaction.getFeesCHF()));
+			fees.setText(String.valueOf(transaction.getFees()));
 		}
 
 	}
@@ -307,7 +298,8 @@ public class TransactionViewController implements Initializable {
 
 	public void setPortfolio(Portfolio portfolio) {
 		this.portfolio = portfolio;
-		moneytary.getItems().addAll(portfolio.getPortfolioCurrency());
+		fiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
+		
 
 	}
 
@@ -330,6 +322,7 @@ public class TransactionViewController implements Initializable {
 		this.mainApp = mainApp;
 		this.currencyList = currencyList;
 		type.getItems().addAll("Kauf", "Verkauf");
+		
 	}
 
 	/**
@@ -343,6 +336,8 @@ public class TransactionViewController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		
 
 
 

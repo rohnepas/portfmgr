@@ -119,7 +119,7 @@ public class PortfolioViewController implements Initializable {
 	 * Creates four portfolios and stores them in the database if they do not
 	 * already exist, the names of the portfolios are set and the loadPortfolio
 	 * Method is called
-	 * @author: pascal.rohner Marc Steiner
+	 * @author: Pasccal Rohner, Marc Steiner
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -132,7 +132,7 @@ public class PortfolioViewController implements Initializable {
 			for (int i = 0; i < numberOfPortfolios; i++) {
 				portfArray[i] = new Portfolio();
 				portfArray[i].setPortfolioName("leeres Portfolio");
-				portfArray[i].setPortfolioCurrency("CHF");
+				portfArray[i].setPortfolioFiatCurrency("CHF");
 
 				portRepo.save(portfArray[i]);
 			}

@@ -189,7 +189,7 @@
                                     <Insets />
                                  </GridPane.margin>
                               </Text>
-                              <Label fx:id="portfolioCurrency" prefHeight="23.0" prefWidth="51.0" text="portfolioCurrency" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                              <Label fx:id="portfolioFiatCurrency" prefHeight="23.0" prefWidth="51.0" text="portfolioCurrency" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

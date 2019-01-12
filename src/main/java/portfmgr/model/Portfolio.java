@@ -24,7 +24,7 @@ public class Portfolio {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String portfolioName;
-	private String portfolioCurrency;
+	private String portfolioFiatCurrency;
 
 	/*
 	 * Method to query the primary key
@@ -54,12 +54,12 @@ public class Portfolio {
 	}
 
 	/*
-	 * Method to query the portfolio currency
+	 * Method to query the portfolio fiat currency (for exmaple CHF)
 	 * 
 	 * @return curreny of the portfolio as a String
 	 */
-	public String getPortfolioCurrency() {
-		return portfolioCurrency;
+	public String getPortfolioFiatCurrency() {
+		return portfolioFiatCurrency;
 	}
 
 	/*
@@ -67,8 +67,8 @@ public class Portfolio {
 	 * 
 	 * @param currency of the portfolio as a String
 	 */
-	public void setPortfolioCurrency(String portfolioCurrency) {
-		this.portfolioCurrency = portfolioCurrency;
+	public void setPortfolioFiatCurrency(String portfolioFiatCurrency) {
+		this.portfolioFiatCurrency = portfolioFiatCurrency;
 	}
 
 	/*
@@ -78,7 +78,7 @@ public class Portfolio {
 	 */
 	@Override
 	public String toString() {
-		return "Portfolio [id=" + id + ", portfolioName=" + portfolioName + ", portfolioCurrency=" + portfolioCurrency
+		return "Portfolio [id=" + id + ", portfolioName=" + portfolioName + ", portfolioFiatCurrency=" + portfolioFiatCurrency
 				+ "]";
 	}
 
