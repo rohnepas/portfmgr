@@ -27,15 +27,13 @@ import org.springframework.stereotype.Service;
 public class PortfolioCalculator {
 	private JSONObject onlineDataJSON;
 	private Portfolio portfolio;
-	private List<Transaction> transactionList;
 	private String coinlistPath;
 	private static String BaseLinkUrl = "https://www.cryptocompare.com";
 	private String profitOrLoss = "-";
 	private String profitOrLossPercentage = "-";
 	private String totalPortfolioValue = "-";
-	private String totalSpent = "0.00";
+	private Double totalSpent;
 	private boolean profit;
-
 
 	@Autowired
 	TransactionRepository transRepo;
@@ -45,20 +43,11 @@ public class PortfolioCalculator {
 		this.coinlistPath = coinlistPath;
 		this.onlineDataJSON = onlineDataJSON;
 		profit = true;
-		setTransactionList();
+		totalSpent = 0.00;
 	}
 
 	/**
-	 * Find all transactions whithin this portfolio
-	 */
-	public void setTransactionList() {
-		transactionList = transRepo.findByPortfolio(portfolio);
-	}
-
-	/**
-	 * Extract JSON data from JSON Object and calculate the portfolio statistics
-	 *
-	 * TO DO: basierend auf dem Portfolio alles berechnen
+	 * calculate all the portfolio statistics
 	 *
 	 */
 public void calculatePortfolio() {
@@ -68,15 +57,16 @@ public void calculatePortfolio() {
 		Double tempProfitOrLossPercentage = 0.0;
 		DecimalFormat df = new DecimalFormat("####0.00");
 		
-		if (transRepo.sumTotalSpent() != null) {
-			totalSpent = df.format(transRepo.sumTotalSpent());
+		if (transRepo.sumTotalSpent(portfolio.getId()) != null) {
+			totalSpent = transRepo.sumTotalSpent(portfolio.getId());
 		} 
 		
 		List<Map<String, Double>> dataList = new ArrayList<Map<String, Double>>();
 		
-		Map<String,Double> mapTotalPortfolioValue = convertData(transRepo.sumAndGroupTotalNumberOfCoins());
-		Map<String,Double> mapProfitOrLoss = convertData(transRepo.sumAndGroupTotalSpent());
-	
+		
+		Map<String,Double> mapTotalPortfolioValue = convertData(transRepo.sumAndGroupTotalNumberOfCoins(portfolio.getId()));
+		Map<String,Double> mapProfitOrLoss = convertData(transRepo.sumAndGroupTotalSpent(portfolio.getId()));
+		
 		dataList.add(mapTotalPortfolioValue);
 		dataList.add(mapProfitOrLoss);
 		
@@ -161,7 +151,7 @@ public void calculatePortfolio() {
 	}
 	
 	public String getTotalSpent() {
-		return totalSpent;
+		return totalSpent.toString();
 	}
 	
 	public boolean getProfit() {

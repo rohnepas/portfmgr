@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.persistence.EntityManager;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -227,7 +229,7 @@ public class TransactionViewController implements Initializable {
 
 	public void saveTransaction(Double price, String fiatCurrency, String cryptoCurrency, String type, Double numberOfCoins,
 			Double fees, Double total) {
-
+		
 		Transaction transaction = new Transaction();
 		transaction.setCryptoCurrency(cryptoCurrency);
 		transaction.setFiatCurrency(fiatCurrency);
@@ -240,6 +242,8 @@ public class TransactionViewController implements Initializable {
 		transaction.setPortfolio(this.portfolio);
 
 		transRepo.save(transaction);
+		
+		
 		dialogStage.close();
 	}
 

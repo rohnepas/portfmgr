@@ -1,10 +1,13 @@
 package portfmgr.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * Entity class for persistence of portfolio information in an embedded database
@@ -26,6 +29,8 @@ public class Portfolio {
 	private String portfolioName;
 	private String portfolioFiatCurrency;
 
+	@OneToMany(mappedBy = "portfolio")
+	private List<Transaction> transactions;
 	/*
 	 * Method to query the primary key
 	 * 

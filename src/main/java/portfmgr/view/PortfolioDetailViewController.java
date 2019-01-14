@@ -149,7 +149,6 @@ public class PortfolioDetailViewController implements Initializable {
 	 * Setup the main app and initalize portfolio values
 	 * 
 	 * @param mainApp
-	 * @throws IOException
 	 * @author Marc Steiner
 	 */
 	public void setMainApp(portfmgrApplication mainApp) {
@@ -183,32 +182,6 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Refresh the portfolio without calculation.
-	 * 
-	 * @author Marc Steiner
-	 */
-	public void refreshPortfolioData() {
-
-		portfolioName.setText(portfolio.getPortfolioName());
-		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
-		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
-		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
-		
-		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
-		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
-		
-		if (portfolioCalculator.getProfit()) {
-			
-			profitOrLoss.setTextFill(Color.GREEN);
-			profitOrLossPercentage.setTextFill(Color.GREEN);
-			
-		} else {
-			profitOrLoss.setTextFill(Color.RED);
-			profitOrLossPercentage.setTextFill(Color.RED);
-		}
-	}
-
-	/**
 	 * Method called if refresh button is clicked. It finds all symbols of crypto
 	 * currencies in this portfolio, let calculate the portfolio value and statistics and display the results
 	 * 
@@ -232,6 +205,34 @@ public class PortfolioDetailViewController implements Initializable {
 		
 		refreshPortfolioData();
 	}
+	
+	/**
+	 * Refresh the portfolio without calculation.
+	 * 
+	 * @author Marc Steiner
+	 */
+	public void refreshPortfolioData() {
+
+		portfolioName.setText(portfolio.getPortfolioName());
+		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
+		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
+		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
+		
+		System.out.println("PORTFOLIO AUSGABEN: " + portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
+		
+		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
+		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
+		
+		if (portfolioCalculator.getProfit()) {
+			
+			profitOrLoss.setTextFill(Color.GREEN);
+			profitOrLossPercentage.setTextFill(Color.GREEN);
+			
+		} else {
+			profitOrLoss.setTextFill(Color.RED);
+			profitOrLossPercentage.setTextFill(Color.RED);
+		}
+	}
 
 	/**
 	 * Extract all the crypto currencies which are within the portfolio and add them
@@ -239,8 +240,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 * 
 	 * @author Marc Steiner
 	 */
-	public void setCryptoCurrencyList() {
-		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency();
+	public void setCryptoCurrencyList() {	
+		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency(portfolio.getId());
 	}
 
 	/**
