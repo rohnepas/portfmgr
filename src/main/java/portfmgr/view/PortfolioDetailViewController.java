@@ -183,7 +183,7 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Refresh the portfolio name and currency.
+	 * Refresh the portfolio without calculation.
 	 * 
 	 * @author Marc Steiner
 	 */
@@ -252,11 +252,6 @@ public class PortfolioDetailViewController implements Initializable {
 		return cryptoCurrencyList;
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @author Marc Steiner
-	 */
 	public List<String> getfiatCurrencyList() {
 		return fiatCurrencyList;
 	}

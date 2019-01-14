@@ -80,15 +80,12 @@ public void calculatePortfolio() {
 		dataList.add(mapTotalPortfolioValue);
 		dataList.add(mapProfitOrLoss);
 		
+		// Calculate for every data set
 		for (Map<String, Double> map: dataList) {
-			
-			if (map != null) {
-								
+			if (map != null) {		
 				try {
-					
 					// Loop over every element in the Map
-					for (Map.Entry<String, Double> symbol: map.entrySet()) {
-										
+					for (Map.Entry<String, Double> symbol: map.entrySet()) {	
 						/*
 						 * Extract the underlying JSONObject from the main JSONObject
 						 * and get the fiat values for the specific symbol (e.g BTC).
@@ -114,16 +111,13 @@ public void calculatePortfolio() {
 							tempProfitOrLoss = tempProfitOrLoss + (cryptoCurrencyPrice * totalNumberOfCoins - symbol.getValue());
 							tempProfitOrLossPercentage = tempProfitOrLossPercentage + (((cryptoCurrencyPrice * totalNumberOfCoins) - symbol.getValue()) / symbol.getValue());
 						}
-						
 					}
 				
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 			}
-			
 		}
 		
 		totalPortfolioValue = df.format(tempTotalPortfolioValue);
