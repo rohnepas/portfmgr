@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +27,13 @@ import org.springframework.stereotype.Service;
 public class PortfolioCalculator {
 	private JSONObject onlineDataJSON;
 	private Portfolio portfolio;
-	private List<Transaction> transactionList;
 	private String coinlistPath;
 	private static String BaseLinkUrl = "https://www.cryptocompare.com";
-	private double profitOrLoss;
-	private double profitOrLossPercentage;
+	private String profitOrLoss = "-";
+	private String profitOrLossPercentage = "-";
 	private String totalPortfolioValue = "-";
-
+	private String totalSpent;
+	private boolean profit;
 
 	@Autowired
 	TransactionRepository transRepo;
@@ -41,77 +42,124 @@ public class PortfolioCalculator {
 		this.portfolio = portfolio;
 		this.coinlistPath = coinlistPath;
 		this.onlineDataJSON = onlineDataJSON;
-		setTransactionList();
+		profit = true;
 	}
 
 	/**
-	 * Find all transactions whithin this portfolio
+	 * calculate all the portfolio statistics
+	 *
 	 */
-	public void setTransactionList() {
-		transactionList = transRepo.findByPortfolio(portfolio);
+public void calculatePortfolio() {
+		
+		Double tempTotalPortfolioValue = 0.0;
+		Double tempProfitOrLoss = 0.0;
+		Double tempProfitOrLossPercentage = 0.0;
+		Double tempTotalSpent = 0.0;
+		DecimalFormat df = new DecimalFormat("####0.00");
+		
+		if (transRepo.sumTotalSpent(portfolio.getId()) != null) {
+			tempTotalSpent = transRepo.sumTotalSpent(portfolio.getId());
+		} 
+		
+		totalSpent = df.format(tempTotalSpent);
+		
+		List<Map<String, Double>> dataList = new ArrayList<Map<String, Double>>();
+		
+		
+		Map<String,Double> mapTotalPortfolioValue = convertData(transRepo.sumAndGroupTotalNumberOfCoins(portfolio.getId()));
+		Map<String,Double> mapProfitOrLoss = convertData(transRepo.sumAndGroupTotalSpent(portfolio.getId()));
+		
+		dataList.add(mapTotalPortfolioValue);
+		dataList.add(mapProfitOrLoss);
+		
+		// Calculate for every data set
+		for (Map<String, Double> map: dataList) {
+			if (map != null) {		
+				try {
+					// Loop over every element in the Map
+					for (Map.Entry<String, Double> symbol: map.entrySet()) {	
+						/*
+						 * Extract the underlying JSONObject from the main JSONObject
+						 * and get the fiat values for the specific symbol (e.g BTC).
+						 * Example: {"BTC":{"CHF": 1000, "USD: 1100, "EUR"; 800}}
+						 */
+						JSONObject values = onlineDataJSON.getJSONObject(symbol.getKey());
+						
+						/*
+						 * Extract the value of the specific crypto currency (e.g BTC)
+						 * in the specified portfolio currency (e.g CHF)
+						 * Example: cryptoCurrencyPrice = 1000 (CHF for 1 BTC) 
+						 */
+						double cryptoCurrencyPrice = values.getDouble(portfolio.getPortfolioFiatCurrency());
+						
+						// symbol.getValue() = 
+						if (map == mapTotalPortfolioValue) {
+							tempTotalPortfolioValue = tempTotalPortfolioValue + cryptoCurrencyPrice * symbol.getValue();
+						}
+						
+						// symbol.getValue() = total (price + fees) spent to buy this crypto currency
+						if (map == mapProfitOrLoss) {
+							Double totalNumberOfCoins = dataList.get(0).get(symbol.getKey());							
+							tempProfitOrLoss = tempProfitOrLoss + (cryptoCurrencyPrice * totalNumberOfCoins - symbol.getValue());
+							tempProfitOrLossPercentage = tempProfitOrLossPercentage + (((cryptoCurrencyPrice * totalNumberOfCoins) - symbol.getValue()) / symbol.getValue());
+						}
+					}
+				
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		totalPortfolioValue = df.format(tempTotalPortfolioValue);
+		profitOrLoss = df.format(tempProfitOrLoss);
+		profitOrLossPercentage = df.format(100 * tempProfitOrLossPercentage);
+		
+		if (tempProfitOrLossPercentage < 0) {
+			profit = false;
+		} 
 	}
-
+	
 	/**
-	 * Extract JSON data from JSON Object and calculate the portfolio statistics
-	 *
-	 * TO DO: basierend auf dem Portfolio alles berechnen
-	 *
+	 * Convert a list into a map with key and value. Code in separate method 
+	 * to avoid code duplication
+	 * 
+	 * @param list
+	 * @return map of list
 	 */
-	public void calculatePortfolio() {
-		calculateTotalPortfolioValue();
-	}
-
-	/**
-	 * Calculate the total portfolio value based on data from database
-	 *
-	 */
-	public void calculateTotalPortfolioValue() {
-
-		List<Object[]> list = transRepo.sumAndGroupTotalNumberOfCoins();
-
-		//Convert list into accessible map
+	public Map<String, Double> convertData(List<Object[]> list) {
 		Map<String,Double> map = null;
 		if(list != null && !list.isEmpty()) {
 			map = new HashMap<String,Double>();
-
 			for (Object[] object : list) {
-	            map.put(((String)object[1]),(Double)object[0]);
-	          }
-	    }
-
-		if (map != null) {
-			Double tempTotalPortfolioValue = 0.0;
-
-			try {
-
-				for (Map.Entry<String, Double> symbol: map.entrySet()) {
-
-					/*
-					 * Extract the underlying JSONObject from the main JSONObject
-					 * and get the fiat values for the specific symbol (e.g BTC).
-					 */
-					JSONObject values = onlineDataJSON.getJSONObject(symbol.getKey());
-
-					/*
-					 * Extract the value of the specific crypto currency (e.g BTC)
-					 * in the specified portfolio currency (e.g CHF)
-					 */
-					double result = values.getDouble(portfolio.getPortfolioFiatCurrency());
-					tempTotalPortfolioValue = tempTotalPortfolioValue + result * symbol.getValue();
-				}
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				map.put(((String)object[1]),(Double)object[0]);
 			}
-
-			// Format double to two decimal
-			DecimalFormat df = new DecimalFormat("####0.00");
-			totalPortfolioValue = df.format(tempTotalPortfolioValue);
+			return map;
 		}
+		return null;
+	}	
+
+	public String getProfitOrLoss() {
+		return profitOrLoss;
 	}
 
+	public String getProfitOrLossPercentage() {
+		return profitOrLossPercentage;
+	}
 
+	public String getTotalPortfolioValue() {
+		return totalPortfolioValue;
+	}
+	
+	public String getTotalSpent() {
+		return totalSpent.toString();
+	}
+	
+	public boolean getProfit() {
+		return profit;
+	}
+	
 	/**
 	 * reads the file in coinlistPath and extracts the URL for the picture and name of the specific crypto currency
 	 * "Data" is the key in the JSON file for the symbol of the currency.
@@ -145,19 +193,6 @@ public class PortfolioCalculator {
 			e.printStackTrace();
 		}
 		return null;
-
-	}
-
-	public Double getProfitOrLoss() {
-		return profitOrLoss;
-	}
-
-	public Double getProfitOrLossPercentage() {
-		return profitOrLossPercentage;
-	}
-
-	public String getTotalPortfolioValue() {
-		return totalPortfolioValue;
 	}
 
 }

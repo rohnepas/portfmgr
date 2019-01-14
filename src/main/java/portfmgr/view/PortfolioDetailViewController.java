@@ -24,6 +24,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -115,6 +116,8 @@ public class PortfolioDetailViewController implements Initializable {
 	@FXML
 	private Label totalPortoflioValue;
 	@FXML
+	private Label totalSpent;
+	@FXML
 	private Button addTransaction;
 	@FXML
 	private Button editTransaction;
@@ -146,7 +149,6 @@ public class PortfolioDetailViewController implements Initializable {
 	 * Setup the main app and initalize portfolio values
 	 * 
 	 * @param mainApp
-	 * @throws IOException
 	 * @author Marc Steiner
 	 */
 	public void setMainApp(portfmgrApplication mainApp) {
@@ -180,18 +182,6 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Refresh the portfolio name and currency.
-	 * 
-	 * @author Marc Steiner
-	 */
-	public void refreshPortfolioData() {
-
-		portfolioName.setText(portfolio.getPortfolioName());
-		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
-
-	}
-
-	/**
 	 * Method called if refresh button is clicked. It finds all symbols of crypto
 	 * currencies in this portfolio, let calculate the portfolio value and statistics and display the results
 	 * 
@@ -211,13 +201,34 @@ public class PortfolioDetailViewController implements Initializable {
 		}
 
 		portfolioCalculator.init(portfolio, onlineDataJSON, coinlistPath);
-		
 		portfolioCalculator.calculatePortfolio();
+		
+		refreshPortfolioData();
+	}
+	
+	/**
+	 * Refresh the portfolio without calculation.
+	 * 
+	 * @author Marc Steiner
+	 */
+	public void refreshPortfolioData() {
+
+		portfolioName.setText(portfolio.getPortfolioName());
+		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
+		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
+		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
 		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
 		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
-		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
-
-		refreshPortfolioData();
+		
+		if (portfolioCalculator.getProfit()) {
+			
+			profitOrLoss.setTextFill(Color.GREEN);
+			profitOrLossPercentage.setTextFill(Color.GREEN);
+			
+		} else {
+			profitOrLoss.setTextFill(Color.RED);
+			profitOrLossPercentage.setTextFill(Color.RED);
+		}
 	}
 
 	/**
@@ -226,8 +237,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 * 
 	 * @author Marc Steiner
 	 */
-	public void setCryptoCurrencyList() {
-		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency();
+	public void setCryptoCurrencyList() {	
+		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency(portfolio.getId());
 	}
 
 	/**
@@ -239,11 +250,6 @@ public class PortfolioDetailViewController implements Initializable {
 		return cryptoCurrencyList;
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @author Marc Steiner
-	 */
 	public List<String> getfiatCurrencyList() {
 		return fiatCurrencyList;
 	}
