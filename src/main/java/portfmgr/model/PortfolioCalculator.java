@@ -33,6 +33,7 @@ public class PortfolioCalculator {
 	private String profitOrLoss = "-";
 	private String profitOrLossPercentage = "-";
 	private String totalPortfolioValue = "-";
+	private String totalSpent = "0.00";
 
 
 	@Autowired
@@ -63,6 +64,11 @@ public void calculatePortfolio() {
 		Double tempTotalPortfolioValue = 0.0;
 		Double tempProfitOrLoss = 0.0;
 		Double tempProfitOrLossPercentage = 0.0;
+		DecimalFormat df = new DecimalFormat("####0.00");
+		
+		if (transRepo.sumTotalSpent() != null) {
+			totalSpent = df.format(transRepo.sumTotalSpent());
+		} 
 		
 		List<Map<String, Double>> dataList = new ArrayList<Map<String, Double>>();
 		
@@ -118,7 +124,6 @@ public void calculatePortfolio() {
 			
 		}
 		
-		DecimalFormat df = new DecimalFormat("####0.00");
 		totalPortfolioValue = df.format(tempTotalPortfolioValue);
 		profitOrLoss = df.format(tempProfitOrLoss);
 		
@@ -127,7 +132,6 @@ public void calculatePortfolio() {
 		} else {
 			profitOrLossPercentage = df.format(100 * tempProfitOrLossPercentage);
 		}
-	
 	}
 	
 	/**
@@ -149,6 +153,21 @@ public void calculatePortfolio() {
 		return null;
 	}	
 
+	public String getProfitOrLoss() {
+		return profitOrLoss;
+	}
+
+	public String getProfitOrLossPercentage() {
+		return profitOrLossPercentage;
+	}
+
+	public String getTotalPortfolioValue() {
+		return totalPortfolioValue;
+	}
+	
+	public String getTotalSpent() {
+		return totalSpent;
+	}
 	
 	/**
 	 * reads the file in coinlistPath and extracts the URL for the picture and name of the specific crypto currency
@@ -183,19 +202,6 @@ public void calculatePortfolio() {
 			e.printStackTrace();
 		}
 		return null;
-
-	}
-
-	public String getProfitOrLoss() {
-		return profitOrLoss;
-	}
-
-	public String getProfitOrLossPercentage() {
-		return profitOrLossPercentage;
-	}
-
-	public String getTotalPortfolioValue() {
-		return totalPortfolioValue;
 	}
 
 }

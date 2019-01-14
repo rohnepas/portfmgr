@@ -115,6 +115,8 @@ public class PortfolioDetailViewController implements Initializable {
 	@FXML
 	private Label totalPortoflioValue;
 	@FXML
+	private Label totalSpent;
+	@FXML
 	private Button addTransaction;
 	@FXML
 	private Button editTransaction;
@@ -188,6 +190,10 @@ public class PortfolioDetailViewController implements Initializable {
 
 		portfolioName.setText(portfolio.getPortfolioName());
 		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
+		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
+		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
+		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
+		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
 
 	}
 
@@ -211,12 +217,8 @@ public class PortfolioDetailViewController implements Initializable {
 		}
 
 		portfolioCalculator.init(portfolio, onlineDataJSON, coinlistPath);
-		
 		portfolioCalculator.calculatePortfolio();
-		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
-		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
-		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
-
+		
 		refreshPortfolioData();
 	}
 

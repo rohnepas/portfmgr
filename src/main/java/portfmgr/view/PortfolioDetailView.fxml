@@ -15,9 +15,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -116,80 +115,20 @@
                      <children>
                         <GridPane prefHeight="125.0" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="508.3333435058594" minWidth="10.0" prefWidth="441.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="163.6666717529297" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="308.3333435058594" minWidth="10.0" prefWidth="304.3333435058594" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.33331298828125" minWidth="10.0" prefWidth="208.66665649414062" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="profitOrLossPercentage" text="profitOrLossPercentage" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                                 <GridPane.margin>
-                                    <Insets left="40.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label fx:id="profitOrLoss" text="profitOrLoss" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                                 <GridPane.margin>
-                                    <Insets left="95.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <ImageView fitHeight="42.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
-                                 <image>
-                                    <Image url="@../../images/value.png" />
-                                 </image>
-                                 <GridPane.margin>
-                                    <Insets left="10.0" />
-                                 </GridPane.margin>
-                              </ImageView>
-                              <Label fx:id="totalPortoflioValue" text="totalPortoflioValue" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                                 <GridPane.margin>
-                                    <Insets left="30.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <ImageView fitHeight="42.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                 <image>
-                                    <Image url="@../../images/plusminus.png" />
-                                 </image>
-                                 <GridPane.margin>
-                                    <Insets right="50.0" />
-                                 </GridPane.margin>
-                              </ImageView>
-                              <ImageView fitHeight="42.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <image>
-                                    <Image url="@../../images/percentage.png" />
-                                 </image>
-                                 <GridPane.margin>
-                                    <Insets left="130.0" />
-                                 </GridPane.margin>
-                              </ImageView>
-                              <Label fx:id="portfolioName" alignment="CENTER" text="portfolioName" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                                 <GridPane.margin>
-                                    <Insets left="135.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Portfolio Name:" GridPane.columnIndex="1">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </Text>
-                              <Label fx:id="portfolioFiatCurrency" prefHeight="23.0" prefWidth="51.0" text="portfolioCurrency" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                              <Label fx:id="profitOrLossPercentage" text="profitOrLossPercentage" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -197,14 +136,73 @@
                                     <Insets />
                                  </GridPane.margin>
                               </Label>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Portfolio Währung:" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                              <Label fx:id="profitOrLoss" text="profitOrLoss" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets right="52.0" />
+                                    <Insets />
                                  </GridPane.margin>
-                              </Text>
+                              </Label>
+                              <Label fx:id="totalPortoflioValue" text="totalPortoflioValue" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="portfolioName" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="73.0" text="portfolioName" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets right="15.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="portfolioFiatCurrency" prefHeight="23.0" prefWidth="51.0" text="portfolioCurrency" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets right="32.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Total Ausgaben:" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Aktueller Portfoliowert:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Gewinn-/ Verlust:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Gewinn-/ Verlust [%]:" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="totalSpent" text="totalSpent" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Portfolioname:" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Portfoliowährung:" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </GridPane>
                      </children>
