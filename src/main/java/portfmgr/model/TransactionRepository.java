@@ -52,6 +52,17 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	@Query("SELECT sum(numberOfCoins) as nbr, cryptoCurrency FROM Transaction GROUP BY cryptoCurrency")
 	List<Object[]> sumAndGroupTotalNumberOfCoins();
 	
+	/**
+	 * SQL query which groups all transactions by crypto currency and sum the total number of this crypto currencycost.
+	 *  
+	 * @param total (=total amount spent per crypo currency referred to Transaction.java)
+	 * @param currency (=crypto currency referred to Transaction.java)
+	 * @return SQL query return list of objects <Object[]>
+	 * @author Marc Steiner
+	 */
+	@Query("SELECT sum(total) as nbr, cryptoCurrency FROM Transaction GROUP BY cryptoCurrency")
+	List<Object[]> sumAndGroupTotalSpent();
+	
 
 
 }
