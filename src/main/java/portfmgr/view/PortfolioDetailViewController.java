@@ -24,6 +24,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -190,11 +191,21 @@ public class PortfolioDetailViewController implements Initializable {
 
 		portfolioName.setText(portfolio.getPortfolioName());
 		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
+		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
+		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
+		
 		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
 		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
-		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
-		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
-
+		
+		if (portfolioCalculator.getProfit()) {
+			
+			profitOrLoss.setTextFill(Color.GREEN);
+			profitOrLossPercentage.setTextFill(Color.GREEN);
+			
+		} else {
+			profitOrLoss.setTextFill(Color.RED);
+			profitOrLossPercentage.setTextFill(Color.RED);
+		}
 	}
 
 	/**

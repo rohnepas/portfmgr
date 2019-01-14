@@ -34,6 +34,7 @@ public class PortfolioCalculator {
 	private String profitOrLossPercentage = "-";
 	private String totalPortfolioValue = "-";
 	private String totalSpent = "0.00";
+	private boolean profit;
 
 
 	@Autowired
@@ -43,6 +44,7 @@ public class PortfolioCalculator {
 		this.portfolio = portfolio;
 		this.coinlistPath = coinlistPath;
 		this.onlineDataJSON = onlineDataJSON;
+		profit = true;
 		setTransactionList();
 	}
 
@@ -110,7 +112,7 @@ public void calculatePortfolio() {
 						if (map == mapProfitOrLoss) {
 							Double totalNumberOfCoins = dataList.get(0).get(symbol.getKey());							
 							tempProfitOrLoss = tempProfitOrLoss + (cryptoCurrencyPrice * totalNumberOfCoins - symbol.getValue());
-							tempProfitOrLossPercentage = tempProfitOrLossPercentage + (1- (cryptoCurrencyPrice * totalNumberOfCoins) / symbol.getValue());
+							tempProfitOrLossPercentage = tempProfitOrLossPercentage + (((cryptoCurrencyPrice * totalNumberOfCoins) - symbol.getValue()) / symbol.getValue());
 						}
 						
 					}
@@ -126,12 +128,11 @@ public void calculatePortfolio() {
 		
 		totalPortfolioValue = df.format(tempTotalPortfolioValue);
 		profitOrLoss = df.format(tempProfitOrLoss);
+		profitOrLossPercentage = df.format(100 * tempProfitOrLossPercentage);
 		
-		if (tempProfitOrLossPercentage < 1.0) {
-			profitOrLossPercentage = df.format(-100 * tempProfitOrLossPercentage);
-		} else {
-			profitOrLossPercentage = df.format(100 * tempProfitOrLossPercentage);
-		}
+		if (tempProfitOrLossPercentage < 0) {
+			profit = false;
+		} 
 	}
 	
 	/**
@@ -167,6 +168,10 @@ public void calculatePortfolio() {
 	
 	public String getTotalSpent() {
 		return totalSpent;
+	}
+	
+	public boolean getProfit() {
+		return profit;
 	}
 	
 	/**
