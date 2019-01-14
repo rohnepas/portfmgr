@@ -32,7 +32,7 @@ public class PortfolioCalculator {
 	private String profitOrLoss = "-";
 	private String profitOrLossPercentage = "-";
 	private String totalPortfolioValue = "-";
-	private Double totalSpent;
+	private String totalSpent;
 	private boolean profit;
 
 	@Autowired
@@ -43,7 +43,6 @@ public class PortfolioCalculator {
 		this.coinlistPath = coinlistPath;
 		this.onlineDataJSON = onlineDataJSON;
 		profit = true;
-		totalSpent = 0.00;
 	}
 
 	/**
@@ -55,11 +54,14 @@ public void calculatePortfolio() {
 		Double tempTotalPortfolioValue = 0.0;
 		Double tempProfitOrLoss = 0.0;
 		Double tempProfitOrLossPercentage = 0.0;
+		Double tempTotalSpent = 0.0;
 		DecimalFormat df = new DecimalFormat("####0.00");
 		
 		if (transRepo.sumTotalSpent(portfolio.getId()) != null) {
-			totalSpent = transRepo.sumTotalSpent(portfolio.getId());
+			tempTotalSpent = transRepo.sumTotalSpent(portfolio.getId());
 		} 
+		
+		totalSpent = df.format(tempTotalSpent);
 		
 		List<Map<String, Double>> dataList = new ArrayList<Map<String, Double>>();
 		

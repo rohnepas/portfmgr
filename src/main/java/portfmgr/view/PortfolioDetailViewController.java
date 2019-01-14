@@ -217,9 +217,6 @@ public class PortfolioDetailViewController implements Initializable {
 		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
 		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
 		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
-		
-		System.out.println("PORTFOLIO AUSGABEN: " + portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
-		
 		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
 		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
 		
