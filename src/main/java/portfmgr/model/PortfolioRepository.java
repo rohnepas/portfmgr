@@ -15,5 +15,5 @@ import org.springframework.stereotype.Repository;
 @Repository("portfmgr.model.PortfolioRepository")
 public interface PortfolioRepository extends CrudRepository<Portfolio, Long> {
 	
-	List<Portfolio> findByPortfolioCurrency(String portfolioCurrency);
+	List<Portfolio> findByPortfolioFiatCurrency(String portfolioFiatCurrency);
 }

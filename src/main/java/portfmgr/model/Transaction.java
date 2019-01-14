@@ -27,19 +27,13 @@ public class Transaction {
 	@Column(unique = true)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String currency;
-	private String moneytary;
+	private String cryptoCurrency;
+	private String fiatCurrency;
 	private Double numberOfCoins;
-	private Double priceUSD;
-	private Double priceBTC;
-	private Double priceEUR;
-	private Double priceCHF;
+	private Double price;
 	private LocalDate transactionDate;
 	private String type;
-	private Double feesUSD;
-	private Double feesBTC;
-	private Double feesEUR;
-	private Double feesCHF;
+	private Double fees;
 	private Double total;
 	
 	@ManyToOne
@@ -56,16 +50,16 @@ public class Transaction {
 	 * 
 	 */
 	
-	public Transaction(String currency, String moneytary, Double numberOfCoins, Double priceCHF, LocalDate transactionDate, String type,
-			Double feesCHF, Double total) {
+	public Transaction(String cryptoCurrency, String fiatCurrency, Double numberOfCoins, Double price, LocalDate transactionDate, String type,
+			Double fees, Double total) {
 		super();
-		this.currency = currency;
-		this.moneytary = moneytary;
+		this.cryptoCurrency = cryptoCurrency;
+		this.fiatCurrency = fiatCurrency;
 		this.numberOfCoins = numberOfCoins;
-		this.priceCHF = priceCHF;
+		this.price = price;
 		this.transactionDate = transactionDate;
 		this.type = type;
-		this.feesCHF = feesCHF;
+		this.fees = fees;
 		this.total = total;
 	}
 	
@@ -81,39 +75,39 @@ public class Transaction {
 
 
 	/*
-	 * Method to query the currency
+	 * Method to query the cryptoCurrency
 	 * 
-	 * @return currency as a String
+	 * @return cryptoCurrency as a String
 	 */
-	public String getCurrency() {
-		return currency;
+	public String getCryptoCurrency() {
+		return cryptoCurrency;
 	}
 
 	/*
-	 * Method to set the currency
+	 * Method to set the cryptoCurrency
 	 * 
-	 * @param currency as a String
+	 * @param cryptoCurrency as a String
 	 */
-	public void setCurrency(String currency) {
-		this.currency = currency;
+	public void setCryptoCurrency(String cryptoCurrency) {
+		this.cryptoCurrency = cryptoCurrency;
 	}
 	
 	/*
-	 * Method to query the moneytary (= Währung)
+	 * Method to query the fiatCurrencey (for example CHF)
 	 * 
-	 * @return moneytary as a String
+	 * @return fiatCurrencey as a String
 	 */
-	public String getMoneytary() {
-		return moneytary;
+	public String getFiatCurrency() {
+		return fiatCurrency;
 	}
 	
 	/*
-	 * Method to set the moneytary
+	 * Method to set the fiatCurrencey
 	 * 
-	 * @param moneytary as a String
+	 * @param fiatCurrencey as a String
 	 */
-	public void setMoneytary(String moneytary) {
-		this.moneytary = moneytary;
+	public void setFiatCurrency(String fiatCurrency) {
+		this.fiatCurrency = fiatCurrency;
 	}
 
 	/*
@@ -135,75 +129,21 @@ public class Transaction {
 	}
 
 	/*
-	 * Method to query the price in USD
+	 * Method to query the price
 	 * 
-	 * @return price in USD as Double
+	 * @return price as Double
 	 */
-	public Double getPriceUSD() {
-		return priceUSD;
+	public Double getPrice() {
+		return price;
 	}
 	
 	/*
-	 * Method to set the price in USD
+	 * Method to set the price 
 	 * 
-	 * @param price in USD as Double
+	 * @param price as Double
 	 */
-	public void setPriceUSD(Double priceUSD) {
-		this.priceUSD = priceUSD;
-	}
-
-	/*
-	 * Method to query the price in BTC
-	 * 
-	 * @return price in BTC as Double
-	 */
-	public Double getPriceBTC() {
-		return priceBTC;
-	}
-
-	/*
-	 * Method to set the price in BTC
-	 * 
-	 * @param price in BTC as Double
-	 */
-	public void setPriceBTC(Double priceBTC) {
-		this.priceBTC = priceBTC;
-	}
-
-	/*
-	 * Method to query the price in EUR
-	 * 
-	 * @return price in EUR as Double
-	 */
-	public Double getPriceEUR() {
-		return priceEUR;
-	}
-
-	/*
-	 * Method to set the price in EUR
-	 * 
-	 * @param price in EUR as Double
-	 */
-	public void setPriceEUR(Double priceEUR) {
-		this.priceEUR = priceEUR;
-	}
-	
-	/*
-	 * Method to query the price in CHF
-	 * 
-	 * @return price in CHF as Double
-	 */
-	public Double getPriceCHF() {
-		return priceCHF;
-	}
-
-	/*
-	 * Method to set the price in CHF
-	 * 
-	 * @param price in CHF as Double
-	 */
-	public void setPriceCHF(Double priceCHF) {
-		this.priceCHF = priceCHF;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	/*
@@ -243,93 +183,21 @@ public class Transaction {
 	}
 
 	/*
-	 * Method to query the fees in USD
+	 * Method to query the fees
 	 * 
-	 * @return fees in USD as Double
+	 * @return fees as Double
 	 */
-	public Double getFeesUSD() {
-		return feesUSD;
+	public Double getFees() {
+		return fees;
 	}
 
 	/*
-	 * Method to set the fees in USD
+	 * Method to set the fees 
 	 * 
-	 * @param fees in USD as Double
+	 * @param fees as Double
 	 */
-	public void setFeesUSD(Double feesUSD) {
-		this.feesUSD = feesUSD;
-	}
-
-	/*
-	 * Method to query the fees in BTC
-	 * 
-	 * @return fees in BTC as Double
-	 */
-	public Double getFeesBTC() {
-		return feesBTC;
-	}
-
-	/*
-	 * Method to set the fees in BTC
-	 * 
-	 * @param fees in BTC as Double
-	 */
-	public void setFeesBTC(Double feesBTC) {
-		this.feesBTC = feesBTC;
-	}
-
-	/*
-	 * Method to query the fees in EUR
-	 * 
-	 * @return fees in EUR as Double
-	 */
-	public Double getFeesEUR() {
-		return feesEUR;
-	}
-
-	/*
-	 * Method to set the fees in EUR
-	 * 
-	 * @param fees in EUR as Double
-	 */
-	public void setFeesEUR(Double feesEUR) {
-		this.feesEUR = feesEUR;
-	}
-
-	/*
-	 * Method to query the fees in CHF
-	 * 
-	 * @return fees in CHF as Double
-	 */
-	public Double getFeesCHF() {
-		return feesCHF;
-	}
-
-	/*
-	 * Method to set the fees in CHF
-	 * 
-	 * @param fees in CHF as Double
-	 */
-	public void setFeesCHF(Double feesCHF) {
-		this.feesCHF = feesCHF;
-	}
-	
-	/*
-	 * Method to query the total in CHF
-	 * 
-	 * @return fees in CHF as Double
-	 */
-	public Double getTotal() {
-		return total;
-	}
-	
-	/*
-	 * Method to set the fees in CHF
-	 * 
-	 * @param fees in CHF as Double
-	 */
-	public void setTotal(Double total) {
-		this.total = total;
+	public void setFees(Double fees) {
+		this.fees = fees;
 	}
 
 	/*
@@ -350,16 +218,31 @@ public class Transaction {
 		this.portfolio = portfolio;
 	}
 	
+	/*
+	 * Method to set the total
+	 * 
+	 * @param total as Double
+	 */
+	public void setTotal(Double total) {
+		this.total = total;
+	}
 	
-
+	/*
+	 * Method to get the total
+	 * 
+	 */
+	public Double getTotal() {
+		return this.total;
+	}
+	
 	/*
 	 * Method overrides the toString-Method
 	 * 
-	 * @return id, currency and portfolio
+	 * @return id, cryptoCurrency and portfolio
 	 */
 	@Override
 	public String toString() {
-		return "Transaction [id=" + id + ", currency=" + currency + ", portfolio=" + portfolio + "]";
+		return "Transaction [id=" + id + ", cryptoCurrency=" + cryptoCurrency + ", portfolio=" + portfolio + "]";
 	}
 	
 	

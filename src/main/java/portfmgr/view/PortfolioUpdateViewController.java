@@ -30,7 +30,7 @@ public class PortfolioUpdateViewController implements Initializable {
 	private portfmgrApplication mainApp;
 	
 	private String portfolioName;
-	private String portfolioCurrency;
+	private String portfolioFiatCurrency;
 	private Portfolio portfolio;
 	
 	@Autowired
@@ -60,14 +60,14 @@ public class PortfolioUpdateViewController implements Initializable {
         if (isInputValid()) {
         	
         	portfolio.setPortfolioName(newPortfolioName.getText());
-        	portfolio.setPortfolioCurrency(currencyBox.getValue());        	
+        	portfolio.setPortfolioFiatCurrency(currencyBox.getValue());        	
         	portRepo.save(portfolio);
         	dialogStage.close();
         }
     }
     
     /**
-     * Checks if the input for name and currency is correct, otherwise prompt alert
+     * Checks if the input for name and cryptoCurrency is correct, otherwise prompt alert
      */
     private boolean isInputValid() {
     	
@@ -95,7 +95,7 @@ public class PortfolioUpdateViewController implements Initializable {
     	this.portfolio = portfolio;
     	
     	currencyBox.setItems(FXCollections.observableArrayList(currencyList));
-    	currencyBox.setValue(portfolio.getPortfolioCurrency());
+    	currencyBox.setValue(portfolio.getPortfolioFiatCurrency());
     	newPortfolioName.setText(portfolio.getPortfolioName());
     	
     }
@@ -104,8 +104,8 @@ public class PortfolioUpdateViewController implements Initializable {
     	return portfolioName;
     }
     
-    public String getPortfolioCurrency() {
-    	return portfolioCurrency;
+    public String getPortfolioFiatCurrency() {
+    	return portfolioFiatCurrency;
     }
     
     public void setDialogStage(Stage dialogStage) {

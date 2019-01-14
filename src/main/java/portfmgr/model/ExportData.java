@@ -108,7 +108,7 @@ public class ExportData {
 	 */
 	public void exportData() throws IOException {
 
-        String fiatCurrency = portfolio.getPortfolioCurrency();
+        String fiatCurrency = portfolio.getPortfolioFiatCurrency();
         extractData();
             
         //Iterate over data and write to sheet.

@@ -26,7 +26,6 @@
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.0" minWidth="10.0" prefWidth="101.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.4000244140625" minWidth="0.0" prefWidth="160.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.4000244140625" minWidth="10.0" prefWidth="130.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -40,7 +39,6 @@
             <Label text="Währung" />
             <Label text="Kryptowährung" GridPane.rowIndex="1" />
             <Label text="Preis" GridPane.rowIndex="3" />
-            <ChoiceBox fx:id="moneytary" prefWidth="150.0" GridPane.columnIndex="1" />
             <TextField fx:id="price" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Anzahl" GridPane.rowIndex="4" />
             <Label text="Gebühren" GridPane.rowIndex="5" />
@@ -49,9 +47,10 @@
             <Label text="Typ" GridPane.rowIndex="2" />
             <ChoiceBox fx:id="type" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="cryptoCurrency" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="fiatCurrency" text="fiatCurrency" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <Button fx:id="save" layoutX="84.0" layoutY="307.0" mnemonicParsing="false" onAction="#handleAddition" text="Speichern" />
-      <Button fx:id="cancel" layoutX="194.0" layoutY="307.0" mnemonicParsing="false" onAction="#handleCancel" text="Abbrechen" />
+      <Button fx:id="save" layoutX="136.0" layoutY="303.0" mnemonicParsing="false" onAction="#handleAddition" text="Speichern" />
+      <Button fx:id="cancel" layoutX="246.0" layoutY="303.0" mnemonicParsing="false" onAction="#handleCancel" text="Abbrechen" />
    </children>
 </AnchorPane>
