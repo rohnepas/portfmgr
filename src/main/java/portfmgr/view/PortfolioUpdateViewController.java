@@ -7,13 +7,18 @@ import java.util.ResourceBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.Portfolio;
@@ -34,6 +39,7 @@ public class PortfolioUpdateViewController implements Initializable {
 	private String portfolioName;
 	private String portfolioFiatCurrency;
 	private Portfolio portfolio;
+	private Stage dialogStage;
 	
 	@Autowired
 	PortfolioRepository portRepo;
@@ -42,25 +48,39 @@ public class PortfolioUpdateViewController implements Initializable {
 	private ComboBox<String> currencyBox;
 	@FXML
 	private TextField newPortfolioName;
-	 
-	private Stage dialogStage;
+	@FXML
+	private Button submit;
 	
+	@FXML
+	public void handleKeyPressed(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			newPortfolioName.setText(newPortfolioName.getText());
+			submit.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedSubmit(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			handleSubmit();
+		}
+	}
       
     /**
      * Called when the user clicks submit button. It writes the new portfolio name and currency direct into the database
      */
     @FXML
     private void handleSubmit() {
-    	
+    	    	
         if (isInputValid()) {
         	
         	portfolio.setPortfolioName(newPortfolioName.getText());
         	portfolio.setPortfolioFiatCurrency(currencyBox.getValue());        	
         	portRepo.save(portfolio);
         	dialogStage.close();
-        	
-        }
+        } else newPortfolioName.requestFocus();
     }
+    
     
     /**
      * Checks if the input for name and cryptoCurrency is correct, otherwise prompt alert
@@ -112,6 +132,8 @@ public class PortfolioUpdateViewController implements Initializable {
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 	}
+	
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
