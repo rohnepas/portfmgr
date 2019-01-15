@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 /**
  * documentation:
  * https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
- *
+ * https://www.w3schools.com/sql/
  *@author: Pascal Rohners und Marc Steiner
  */
 @Repository("portfmgr.model.TransactionRepository")
