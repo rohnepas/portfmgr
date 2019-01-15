@@ -6,6 +6,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -295,14 +297,23 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Set back the portfolio to default and delete all data from the portfolio
+	 * Set back the portfolio to default name and currency and delete all data from that portfolio
 	 * @author Marc Steiner
 	 */
 	public void deletePortfolio() {
-		System.out.println("Portfolio DELETE");
-		/*
-		 * TO DO: Delete Portfolio
-		 */
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Portfolio löschen");
+		alert.setHeaderText("Portfolio wirklich löschen?");
+		alert.setContentText(null);
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		if(result.get() == ButtonType.OK){
+			transRepo.deleteAllTransactions(portfolio.getId());
+			portfolio.setPortfolioFiatCurrency("CHF");
+			portfolio.setPortfolioName("leeres Portfolio");
+			mainApp.openPortfolioView();	
+		}
 	}
 
 	/**

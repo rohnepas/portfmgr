@@ -25,14 +25,9 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="submit" mnemonicParsing="false" onAction="#handleSubmit" text="Speichern" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="submit" mnemonicParsing="false" onKeyPressed="#handleKeyPressedSubmit" onMouseClicked="#handleSubmit" text="Speichern" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets top="10.0" />
-               </GridPane.margin>
-            </Button>
-            <Button fx:id="cancel" mnemonicParsing="false" onAction="#handleCancel" text="Abbruch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets right="30.0" top="10.0" />
                </GridPane.margin>
             </Button>
             <Label text="Währung:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
@@ -45,7 +40,7 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="newPortfolioName" GridPane.columnIndex="1" />
+            <TextField fx:id="newPortfolioName" onKeyPressed="#handleKeyPressed" GridPane.columnIndex="1" />
             <ComboBox fx:id="currencyBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>

@@ -10,8 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.Portfolio;
@@ -32,6 +35,7 @@ public class PortfolioUpdateViewController implements Initializable {
 	private String portfolioName;
 	private String portfolioFiatCurrency;
 	private Portfolio portfolio;
+	private Stage dialogStage;
 	
 	@Autowired
 	PortfolioRepository portRepo;
@@ -40,31 +44,48 @@ public class PortfolioUpdateViewController implements Initializable {
 	private ComboBox<String> currencyBox;
 	@FXML
 	private TextField newPortfolioName;
-	 
-	private Stage dialogStage;
+	@FXML
+	private Button submit;
 	
-    /**
-     * Called when the user clicks cancel button.
-     */
-    @FXML
-    private void handleCancel() {
-        dialogStage.close();
-    }
-    
+	/**
+	 * Handles the UX for the PortfolioDetailView that pressing ENTER to set new portfolio name is possible
+	 * @param event
+	 */
+	@FXML
+	public void handleKeyPressed(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			newPortfolioName.setText(newPortfolioName.getText());
+			submit.requestFocus();
+		}
+	}
+	
+	/**
+	 * Handles the UX for the PortfolioDetailView that pressing ENTER is possible on Submit button
+	 * @param event
+	 */
+	@FXML
+	public void handleKeyPressedSubmit(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			handleSubmit();
+		}
+	}
+      
     /**
      * Called when the user clicks submit button. It writes the new portfolio name and currency direct into the database
+     * after checking if name is not empty.
      */
     @FXML
     private void handleSubmit() {
-    	
+    	    	
         if (isInputValid()) {
         	
         	portfolio.setPortfolioName(newPortfolioName.getText());
         	portfolio.setPortfolioFiatCurrency(currencyBox.getValue());        	
         	portRepo.save(portfolio);
         	dialogStage.close();
-        }
+        } else newPortfolioName.requestFocus();
     }
+    
     
     /**
      * Checks if the input for name and cryptoCurrency is correct, otherwise prompt alert
@@ -76,9 +97,9 @@ public class PortfolioUpdateViewController implements Initializable {
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);
             alert.setTitle("Eingabefehler");
-            alert.setHeaderText("Portfolioname und WÃ¤hrung darf nicht leer sein");
+            alert.setHeaderText("Portfolioname und Währung darf nicht leer sein");
             alert.showAndWait();
-            
+    
     		return false;
     	}
     	
@@ -90,13 +111,14 @@ public class PortfolioUpdateViewController implements Initializable {
      * @param currencyList: Is the possible selection of currencies (CHF, EUR...)
      * @param portfolio: the actual portfolio
      */
-    public void setPortfolio (Portfolio portfolio, List<String> currencyList) {
+    public void init (Portfolio portfolio, List<String> currencyList) {
 
     	this.portfolio = portfolio;
     	
     	currencyBox.setItems(FXCollections.observableArrayList(currencyList));
     	currencyBox.setValue(portfolio.getPortfolioFiatCurrency());
-    	newPortfolioName.setText(portfolio.getPortfolioName());
+    	newPortfolioName.setPromptText(portfolio.getPortfolioName());
+    	newPortfolioName.requestFocus();
     	
     }
     
@@ -115,6 +137,8 @@ public class PortfolioUpdateViewController implements Initializable {
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 	}
+	
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

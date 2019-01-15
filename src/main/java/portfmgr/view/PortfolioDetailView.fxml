@@ -59,7 +59,7 @@
                                     <Insets right="20.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button fx:id="deletePortfolio" mnemonicParsing="false" onAction="#deletePortfolio" prefHeight="30.0" prefWidth="100.0" text="Leeren" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
+                              <Button fx:id="deletePortfolio" mnemonicParsing="false" onAction="#deletePortfolio" prefHeight="30.0" prefWidth="100.0" text="löschen" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
                                  <GridPane.margin>
                                     <Insets right="20.0" />
                                  </GridPane.margin>
