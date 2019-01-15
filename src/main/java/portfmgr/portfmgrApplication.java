@@ -36,6 +36,7 @@ import portfmgr.view.TransactionViewController;
  * @author Pascal Rohner & Marc Steiner
  */
 @SpringBootApplication
+@PropertySource("classpath:application.properties")
 public class portfmgrApplication extends Application implements ApplicationContextAware {
 
 	private ConfigurableApplicationContext springContext;

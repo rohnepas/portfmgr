@@ -7,18 +7,18 @@ public class Insight {
 	@Autowired
 	TransactionRepository transRepo;
 	
-	String currency;
+	String cryptoCurrency;
 	Double numberOfCoins;
 	Double total;
 	Double averagePrice;
 	Double change;
 	
 	
-	public String getCurrency() {
-		return currency;
+	public String getCryptoCurrency() {
+		return cryptoCurrency;
 	}
-	public void setCurrency(String currency) {
-		this.currency = currency;
+	public void setCryptoCurrency(String cryptoCurrency) {
+		this.cryptoCurrency = cryptoCurrency;
 	}
 	public Double getNumberOfCoins() {
 		return numberOfCoins;

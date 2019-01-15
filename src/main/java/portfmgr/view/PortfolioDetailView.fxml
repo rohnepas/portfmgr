@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -223,7 +223,7 @@
                                       <columns>
                                         <TableColumn fx:id="transactionDateColumn" prefWidth="84.79994803667068" text="Datum" />
                                         <TableColumn fx:id="transactionTypeColumn" prefWidth="74.39999389648438" text="Typ" />
-                                          <TableColumn fx:id="transactionCurrencyColumn" prefWidth="67.19998168945312" text="Currency" />
+                                          <TableColumn fx:id="transactionCryptoCurrencyColumn" prefWidth="67.19998168945312" text="Currency" />
                                           <TableColumn fx:id="transactionPriceColumn" prefWidth="75.0" text="Preis" />
                                           <TableColumn fx:id="transactionAmountColumn" prefWidth="57.0" text="Anzahl" />
                                           <TableColumn fx:id="transactionFeesColumn" prefWidth="72.0" text="Gebühren" />
@@ -275,7 +275,7 @@
                                  <children>
                                     <TableView fx:id="insightTable" prefHeight="314.0" prefWidth="473.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columns>
-                                        <TableColumn fx:id="insightCurrencyColumn" prefWidth="63.199951231479645" text="Currency" />
+                                        <TableColumn fx:id="insightCryptoCurrencyColumn" prefWidth="63.199951231479645" text="Currency" />
                                         <TableColumn fx:id="insightNumberOfCoinsColumn" prefWidth="52.800048828125" text="Anzahl" />
                                           <TableColumn fx:id="insightTotalColumn" prefWidth="61.0" text="Wert" />
                                           <TableColumn fx:id="insightAveragePriceColumn" prefWidth="98.4000244140625" text="Durch.Preis" />

@@ -59,14 +59,13 @@ public class PortfolioDetailViewController implements Initializable {
 
 	@Autowired
 	TransactionRepository transRepo;
-	
+
 	@Autowired
 	TransactionViewController transViewController;
-	
+
 	@Autowired
 	PortfolioCalculator portfolioCalculator;
-	
-	
+
 //	@Autowired
 //	Insights insights;
 
@@ -79,7 +78,7 @@ public class PortfolioDetailViewController implements Initializable {
 	@FXML
 	private TableColumn<Transaction, String> transactionTypeColumn;
 	@FXML
-	private TableColumn<Transaction, String> transactionCurrencyColumn;
+	private TableColumn<Transaction, String> transactionCryptoCurrencyColumn;
 	@FXML
 	private TableColumn<Transaction, Double> transactionPriceColumn;
 	@FXML
@@ -90,23 +89,22 @@ public class PortfolioDetailViewController implements Initializable {
 	private TableColumn<Transaction, Double> transactionTotalColumn;
 	@FXML
 	private TableColumn<?, String> overviewCurrencyColumn;
-	
+
 	@FXML
-	private TableColumn<Insight, String> insightCurrencyColumn;
-	
+	private TableColumn<Insight, String> insightCryptoCurrencyColumn;
+
 	@FXML
 	private TableColumn<Insight, Double> insightNumberOfCoinsColumn;
-	
+
 	@FXML
 	private TableColumn<Insight, Double> insightTotalColumn;
-	
+
 	@FXML
 	private TableColumn<Insight, Double> insightAveragePriceColumn;
-	
+
 	@FXML
 	private TableColumn<Insight, Double> insightChangeColumn;
-	
-	
+
 	@FXML
 	private Label portfolioName;
 	@FXML
@@ -132,11 +130,10 @@ public class PortfolioDetailViewController implements Initializable {
 //		insights.setTotal(transRepo.sumUpTotals());
 //		System.out.println("should print the total:");
 //		System.out.println(insights.getTotal());
-		
-		// prints the distinct currencies	
+
+		// prints the distinct currencies
 	}
-	
-	
+
 	/**
 	 * Calls method from mainApp to open the portfolioView
 	 * 
@@ -185,11 +182,12 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Method called if refresh button is clicked. It finds all symbols of crypto
-	 * currencies in this portfolio, let calculate the portfolio value and statistics and display the results
+	 * currencies in this portfolio, let calculate the portfolio value and
+	 * statistics and display the results
 	 * 
 	 * @author Marc Steiner
 	 */
-	
+
 	public void updatePortfolio() {
 
 		setCryptoCurrencyList();
@@ -204,10 +202,10 @@ public class PortfolioDetailViewController implements Initializable {
 
 		portfolioCalculator.init(portfolio, onlineDataJSON, coinlistPath);
 		portfolioCalculator.calculatePortfolio();
-		
+
 		refreshPortfolioData();
 	}
-	
+
 	/**
 	 * Refresh the portfolio without calculation.
 	 * 
@@ -218,15 +216,17 @@ public class PortfolioDetailViewController implements Initializable {
 		portfolioName.setText(portfolio.getPortfolioName());
 		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
 		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
-		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
-		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
+		totalPortoflioValue
+				.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
+		profitOrLoss.setText(
+				String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
 		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
-		
+
 		if (portfolioCalculator.getProfit()) {
-			
+
 			profitOrLoss.setTextFill(Color.GREEN);
 			profitOrLossPercentage.setTextFill(Color.GREEN);
-			
+
 		} else {
 			profitOrLoss.setTextFill(Color.RED);
 			profitOrLossPercentage.setTextFill(Color.RED);
@@ -239,7 +239,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * 
 	 * @author Marc Steiner
 	 */
-	public void setCryptoCurrencyList() {	
+	public void setCryptoCurrencyList() {
 		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency(portfolio.getId());
 	}
 
@@ -266,7 +266,8 @@ public class PortfolioDetailViewController implements Initializable {
 	 */
 	public void editPortfolio() {
 
-		//change fiatCurrency of portfolio is not allowed. List<String> = actual portfolio currency
+		// change fiatCurrency of portfolio is not allowed. List<String> = actual
+		// portfolio currency
 		mainApp.openPortfolioUpdateView(portfolio, Arrays.asList(portfolio.getPortfolioFiatCurrency()));
 		refreshPortfolioData();
 	}
@@ -279,8 +280,8 @@ public class PortfolioDetailViewController implements Initializable {
 	public void exportPortfolio() {
 		// Opens the file chooser function and give back the destination file
 		File file = mainApp.openFileExportView();
-		
-		if(file != null) {
+
+		if (file != null) {
 			try {
 				new ExportData(portfolio, file);
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -288,7 +289,7 @@ public class PortfolioDetailViewController implements Initializable {
 				alert.setHeaderText(null);
 				alert.setContentText("Excel File wurde erfolgreich erstellt");
 				alert.showAndWait();
-				
+
 			} catch (IOException e) {
 				System.out.println("Problem with writing or closing of EXCEL sheet");
 				e.printStackTrace();
@@ -297,7 +298,9 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Set back the portfolio to default name and currency and delete all data from that portfolio
+	 * Set back the portfolio to default name and currency and delete all data from
+	 * that portfolio
+	 * 
 	 * @author Marc Steiner
 	 */
 	public void deletePortfolio() {
@@ -307,24 +310,24 @@ public class PortfolioDetailViewController implements Initializable {
 		alert.setHeaderText("Portfolio wirklich löschen?");
 		alert.setContentText(null);
 		Optional<ButtonType> result = alert.showAndWait();
-		
-		if(result.get() == ButtonType.OK){
+
+		if (result.get() == ButtonType.OK) {
 			transRepo.deleteAllTransactions(portfolio.getId());
 			portfolio.setPortfolioFiatCurrency("CHF");
 			portfolio.setPortfolioName("leeres Portfolio");
-			mainApp.openPortfolioView();	
+			mainApp.openPortfolioView();
 		}
 	}
 
 	/**
-	 * Opens the transaction dialog to add a transaction. Because there is no 
+	 * Opens the transaction dialog to add a transaction. Because there is no
 	 * transaction at this point, the parameter null is passed.
 	 * 
 	 * @author Pascal Rohner und Marc Steiner
 	 */
 	public void addTransaction() {
 		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath, fiatCurrencyList);
-		
+
 	}
 
 	/**
@@ -356,13 +359,14 @@ public class PortfolioDetailViewController implements Initializable {
 	 */
 
 	public void editTransaction() {
-		Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();		
-		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath, fiatCurrencyList);	
+		Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();
+		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath, fiatCurrencyList);
 
 	}
 
 	/**
-	 * Sets the actual portfolio. Is needed to assign a transaction to the portfolio when it is created.
+	 * Sets the actual portfolio. Is needed to assign a transaction to the portfolio
+	 * when it is created.
 	 * 
 	 * @author Pascal Rohner
 	 */
@@ -370,13 +374,12 @@ public class PortfolioDetailViewController implements Initializable {
 		this.portfolio = portfolio;
 	}
 
-	
 	/**
 	 * 
 	 * @param list
 	 * @author Marc Steiner
 	 */
-	public void setFiatCurrencyList (List<String> list) {
+	public void setFiatCurrencyList(List<String> list) {
 		fiatCurrencyList = list;
 	}
 
@@ -389,31 +392,47 @@ public class PortfolioDetailViewController implements Initializable {
 	public ObservableList<Transaction> getTransaction() {
 		ObservableList<Transaction> transaction = FXCollections.observableArrayList();
 
-		
 		transaction.addAll(transRepo.findByPortfolio(portfolio));
 
 		return transaction;
 	}
-	
+
 	/**
 	 * Manually added insight object
 	 * 
 	 */
-	
+
 	public ObservableList<Insight> getInsight() {
 		ObservableList<Insight> insight = FXCollections.observableArrayList();
-		
-		// an manual an insight
-		Insight insightObject = new Insight();
-		insightObject.setCurrency("BTC");
-		insightObject.setNumberOfCoins(2.3);
-		insightObject.setAveragePrice(3232.0);
-		insightObject.setTotal(8988.23);
-		insightObject.setChange(79.9);
-		
-		insight.add(insightObject);
+
+		// create for each crypto currency on row in the table
+		List<String> cryptoCurrencySymbols = transRepo.findDistinctCryptoCurrency(this.portfolio.getId());
+
+		for (String string : cryptoCurrencySymbols) {
+			Insight insightObject = new Insight();
+			insightObject.setCryptoCurrency(string);
+
+			// total number of coins for a specific currency
+			Double tempSum = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), string);
+			insightObject.setNumberOfCoins(tempSum);
+
+			insightObject.setAveragePrice(3232.0);
+
+			// total amout of a specific currency
+			Double totalAmount = transRepo.sumUpTotalForCryptoCurrency(this.portfolio.getId(), string);
+			insightObject.setTotal(totalAmount);
+			insightObject.setChange(79.9);
+
+			insight.add(insightObject);
+
+		}
+
+		// calculate something if necessary and if it can be done in the database
+		// directly
+
+		//insight.add(insightObject);
 		return insight;
-		
+		// an manual an insight
 
 	}
 
@@ -426,7 +445,8 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 		transactionDateColumn.setCellValueFactory(new PropertyValueFactory<Transaction, LocalDate>("transactionDate"));
 		transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<Transaction, String>("type"));
-		transactionCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Transaction, String>("cryptoCurrency"));
+		transactionCryptoCurrencyColumn
+				.setCellValueFactory(new PropertyValueFactory<Transaction, String>("cryptoCurrency"));
 		transactionPriceColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("price"));
 		transactionAmountColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("numberOfCoins"));
 		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("fees"));
@@ -447,25 +467,25 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 
 		transactionTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		
+
 		/**
 		 * Sets up the columns for the insight table
 		 * 
 		 * @author Pascal Rohner
 		 */
-		
+
 		/**
 		 * Sets up the columns for the insights table
 		 * 
 		 * @author Pascal Rohner
 		 */
-		
-		insightCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Insight, String>("cryptoCurrency"));
+
+		insightCryptoCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Insight, String>("cryptoCurrency"));
 		insightNumberOfCoinsColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("numberOfCoins"));
 		insightTotalColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("total"));
 		insightAveragePriceColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("averagePrice"));
 		insightChangeColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("change"));
-		
+
 		/**
 		 * Gets all the insights which need to been shown in the insight table
 		 * 
@@ -473,8 +493,6 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 
 		insightTable.setItems(getInsight());
-		
-
 
 	}
 
