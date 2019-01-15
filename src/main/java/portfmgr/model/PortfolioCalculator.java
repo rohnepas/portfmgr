@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -55,7 +57,10 @@ public void calculatePortfolio() {
 		Double tempProfitOrLoss = 0.0;
 		Double tempProfitOrLossPercentage = 0.0;
 		Double tempTotalSpent = 0.0;
-		DecimalFormat df = new DecimalFormat("####0.00");
+		NumberFormat nf = NumberFormat.getNumberInstance(new Locale("de","CH"));
+		nf.setMaximumFractionDigits(2);
+		DecimalFormat df = (DecimalFormat)nf;
+
 		
 		if (transRepo.sumTotalSpent(portfolio.getId()) != null) {
 			tempTotalSpent = transRepo.sumTotalSpent(portfolio.getId());
