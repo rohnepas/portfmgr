@@ -2,6 +2,7 @@ package portfmgr.view;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -43,14 +45,7 @@ public class PortfolioUpdateViewController implements Initializable {
 	 
 	private Stage dialogStage;
 	
-    /**
-     * Called when the user clicks cancel button.
-     */
-    @FXML
-    private void handleCancel() {
-        dialogStage.close();
-    }
-    
+      
     /**
      * Called when the user clicks submit button. It writes the new portfolio name and currency direct into the database
      */
@@ -63,6 +58,7 @@ public class PortfolioUpdateViewController implements Initializable {
         	portfolio.setPortfolioFiatCurrency(currencyBox.getValue());        	
         	portRepo.save(portfolio);
         	dialogStage.close();
+        	
         }
     }
     
@@ -76,9 +72,9 @@ public class PortfolioUpdateViewController implements Initializable {
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);
             alert.setTitle("Eingabefehler");
-            alert.setHeaderText("Portfolioname und WÃ¤hrung darf nicht leer sein");
+            alert.setHeaderText("Portfolioname und Währung darf nicht leer sein");
             alert.showAndWait();
-            
+    
     		return false;
     	}
     	
@@ -90,13 +86,14 @@ public class PortfolioUpdateViewController implements Initializable {
      * @param currencyList: Is the possible selection of currencies (CHF, EUR...)
      * @param portfolio: the actual portfolio
      */
-    public void setPortfolio (Portfolio portfolio, List<String> currencyList) {
+    public void init (Portfolio portfolio, List<String> currencyList) {
 
     	this.portfolio = portfolio;
     	
     	currencyBox.setItems(FXCollections.observableArrayList(currencyList));
     	currencyBox.setValue(portfolio.getPortfolioFiatCurrency());
-    	newPortfolioName.setText(portfolio.getPortfolioName());
+    	newPortfolioName.setPromptText(portfolio.getPortfolioName());
+    	newPortfolioName.requestFocus();
     	
     }
     

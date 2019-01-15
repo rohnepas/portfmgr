@@ -30,11 +30,6 @@
                   <Insets top="10.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="cancel" mnemonicParsing="false" onAction="#handleCancel" text="Abbruch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets right="30.0" top="10.0" />
-               </GridPane.margin>
-            </Button>
             <Label text="Währung:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <padding>
                   <Insets right="5.0" />

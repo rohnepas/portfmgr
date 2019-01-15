@@ -171,7 +171,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			PortfolioUpdateViewController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setMainApp(this);
-			controller.setPortfolio(portfolio, fiatCurrencyList);
+			controller.init(portfolio, fiatCurrencyList);
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();
