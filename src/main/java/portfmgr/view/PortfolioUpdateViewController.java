@@ -47,6 +47,10 @@ public class PortfolioUpdateViewController implements Initializable {
 	@FXML
 	private Button submit;
 	
+	/**
+	 * Handles the UX for the PortfolioDetailView that pressing ENTER to set new portfolio name is possible
+	 * @param event
+	 */
 	@FXML
 	public void handleKeyPressed(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
@@ -55,6 +59,10 @@ public class PortfolioUpdateViewController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Handles the UX for the PortfolioDetailView that pressing ENTER is possible on Submit button
+	 * @param event
+	 */
 	@FXML
 	public void handleKeyPressedSubmit(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
@@ -64,6 +72,7 @@ public class PortfolioUpdateViewController implements Initializable {
       
     /**
      * Called when the user clicks submit button. It writes the new portfolio name and currency direct into the database
+     * after checking if name is not empty.
      */
     @FXML
     private void handleSubmit() {
