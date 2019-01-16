@@ -27,7 +27,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -41,7 +40,7 @@ import portfmgr.model.TransactionRepository;
 /**
  * This class represents one of the main controllers and manage the detail view
  * about the portfolios.
- * 
+ *
  * @author Marc Steiner & Pascal Rohner
  */
 
@@ -77,7 +76,7 @@ public class PortfolioDetailViewController implements Initializable {
 	private TableColumn<Transaction, String> transactionTypeColumn;
 	@FXML
 	private TableColumn<Transaction, String> transactionCryptoCurrencyColumn;
-	
+
 	@FXML
 	private TableColumn<Transaction, Double> transactionPriceColumn;
 	@FXML
@@ -91,7 +90,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	@FXML
 	private TableColumn<Insight, String> insightCryptoCurrencyColumn;
-	
+
 	@FXML
 	private TableColumn<Insight, Double> insightSpotPriceColumn;
 
@@ -106,7 +105,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	@FXML
 	private TableColumn<Insight, Double> insightChangePercentColumn;
-	
+
 	@FXML
 	private TableColumn<Insight, Double> insightChanageFiatColumn;
 
@@ -132,7 +131,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Calls method from mainApp to open the portfolioView
-	 * 
+	 *
 	 * @author Pascal Rohner
 	 */
 	public void openPortfolioView() {
@@ -142,7 +141,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Setup the main app and initalize portfolio values
-	 * 
+	 *
 	 * @param mainApp
 	 * @author Marc Steiner
 	 */
@@ -155,7 +154,7 @@ public class PortfolioDetailViewController implements Initializable {
 	/**
 	 * Checks if the choosen portfolio has a proper name and currency set. If not
 	 * opens updateView pop-up
-	 * 
+	 *
 	 * @author Marc Steiner
 	 */
 	public void checkAndSetPortfolioSettings() {
@@ -180,7 +179,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * Method called if refresh button is clicked. It finds all symbols of crypto
 	 * currencies in this portfolio, let calculate the portfolio value and
 	 * statistics and display the results
-	 * 
+	 *
 	 * @author Marc Steiner
 	 */
 
@@ -204,7 +203,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Refresh the portfolio without calculation.
-	 * 
+	 *
 	 * @author Marc Steiner
 	 */
 	public void refreshPortfolioData() {
@@ -220,19 +219,19 @@ public class PortfolioDetailViewController implements Initializable {
 
 		if (portfolioCalculator.getProfit()) {
 
-			profitOrLoss.setTextFill(Color.GREEN);
-			profitOrLossPercentage.setTextFill(Color.GREEN);
+			profitOrLoss.setStyle("-fx-text-fill:green");
+			profitOrLossPercentage.setStyle("-fx-text-fill:green");
 
 		} else {
-			profitOrLoss.setTextFill(Color.RED);
-			profitOrLossPercentage.setTextFill(Color.RED);
+			profitOrLoss.setStyle("-fx-text-fill:red");
+			profitOrLossPercentage.setStyle("-fx-text-fill:red");
 		}
 	}
 
 	/**
 	 * Extract all the crypto currencies which are within the portfolio and add them
 	 * to a list
-	 * 
+	 *
 	 * @author Marc Steiner
 	 */
 	public void setCryptoCurrencyList() {
@@ -240,7 +239,7 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 * @author Marc Steiner
 	 */
@@ -257,7 +256,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * UpdateViewController. If the name or the currency has been changed in the
 	 * update view, the data will be saved directly to the database by the
 	 * UpdateViewController
-	 * 
+	 *
 	 * @author Marc Steiner
 	 */
 	public void editPortfolio() {
@@ -270,7 +269,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Export the portfolio into a Excel Sheet with Apache POI
-	 * 
+	 *
 	 * @author Marc Steiner
 	 */
 	public void exportPortfolio() {
@@ -296,14 +295,14 @@ public class PortfolioDetailViewController implements Initializable {
 	/**
 	 * Set back the portfolio to default name and currency and delete all data from
 	 * that portfolio
-	 * 
+	 *
 	 * @author Marc Steiner
 	 */
 	public void deletePortfolio() {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Portfolio löschen");
-		alert.setHeaderText("Portfolio wirklich löschen?");
+		alert.setTitle("Portfolio lï¿½schen");
+		alert.setHeaderText("Portfolio wirklich lï¿½schen?");
 		alert.setContentText(null);
 		Optional<ButtonType> result = alert.showAndWait();
 
@@ -318,7 +317,7 @@ public class PortfolioDetailViewController implements Initializable {
 	/**
 	 * Opens the transaction dialog to add a transaction. Because there is no
 	 * transaction at this point, the parameter null is passed.
-	 * 
+	 *
 	 * @author Pascal Rohner und Marc Steiner
 	 */
 	public void addTransaction() {
@@ -328,7 +327,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Deletes a transaction from the transaction table and from the database
-	 * 
+	 *
 	 * @author Pascal Rohner
 	 */
 	public void deleteTransaction() {
@@ -350,7 +349,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Opens the transaction view to edit a given transaction
-	 * 
+	 *
 	 * @author Pascal Rohner
 	 */
 
@@ -363,7 +362,7 @@ public class PortfolioDetailViewController implements Initializable {
 	/**
 	 * Sets the actual portfolio. Is needed to assign a transaction to the portfolio
 	 * when it is created.
-	 * 
+	 *
 	 * @author Pascal Rohner
 	 */
 	public void setActualPortoflio(Portfolio portfolio) {
@@ -371,7 +370,7 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param list
 	 * @author Marc Steiner
 	 */
@@ -381,7 +380,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Returns an ObservableList of Transaction objects to fill the transaction table
-	 * 
+	 *
 	 * @return ObversableList of transactions
 	 * @author Pascal Rohner
 	 */
@@ -395,10 +394,10 @@ public class PortfolioDetailViewController implements Initializable {
 
 	/**
 	 * Returns an ObservableList of Insight objects to fill the insights table
-	 * 
+	 *
 	 * @return ObversableList of insights
 	 * @author Pascal Rohner
-	 * 
+	 *
 	 */
 
 	public ObservableList<Insight> getInsight() {
@@ -406,14 +405,14 @@ public class PortfolioDetailViewController implements Initializable {
 
 		// create for each crypto currency on row in the table
 		List<String> cryptoCurrencySymbols = transRepo.findDistinctCryptoCurrency(this.portfolio.getId());
-		
+
 
 		for (String string : cryptoCurrencySymbols) {
 			Insight insightObject = new Insight();
 			insightObject.setCryptoCurrency(string);
-			
-			
-			
+
+
+
 			// TODO -> temp fix 4000 is used
 			Double tempSpotPrice = 4000.0;
 			insightObject.setSpotPrice(tempSpotPrice);
@@ -421,27 +420,27 @@ public class PortfolioDetailViewController implements Initializable {
 			// total number of coins for a specific currency
 			Double tempSumNbrOfCoins = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), string);
 			insightObject.setNumberOfCoins(tempSumNbrOfCoins);
-			
-			
-			// Total Käufe durch Anzahl Coins Kauf * Aktuelle Anzahl
-			
-			
-			
-			
+
+
+			// Total Kï¿½ufe durch Anzahl Coins Kauf * Aktuelle Anzahl
+
+
+
+
 			// total amout spent of a specific currency
 			Double tempTotalAmount = transRepo.sumUpTotalForCryptoCurrency(this.portfolio.getId(), string);
 			insightObject.setTotal(tempTotalAmount);
-			
+
 			// avarage price paied for a specific currency
 			Double tempAvaragePrice = tempTotalAmount / tempSumNbrOfCoins;
 			insightObject.setAveragePrice(tempAvaragePrice);
-			
+
 			// change in percent. calls a separate method to calculate the change
 			insightObject.setChangePercent(getChangeinPercentage(tempSpotPrice * tempSumNbrOfCoins, tempTotalAmount));
-			
+
 			// change in absolute numbers (fiat)
 			insightObject.setChangeFiat((tempSpotPrice * tempSumNbrOfCoins) - tempTotalAmount);
-			
+
 
 			insight.add(insightObject);
 
@@ -450,10 +449,10 @@ public class PortfolioDetailViewController implements Initializable {
 		return insight;
 
 	}
-	
+
 	/**
 	 * Calculates the percentage change of two values
-	 * 
+	 *
 	 * @param newValue
 	 * @param oldValue
 	 * @return changen in percent as Double
@@ -476,7 +475,7 @@ public class PortfolioDetailViewController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		/**
 		 * Sets up the columns for the transaction table
-		 * 
+		 *
 		 * @author Pascal Rohner
 		 */
 		transactionDateColumn.setCellValueFactory(new PropertyValueFactory<Transaction, LocalDate>("transactionDate"));
@@ -490,7 +489,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 		/**
 		 * Gets all the transactions which need to been shown in the transaction table
-		 * 
+		 *
 		 * @author Pascal Rohner
 		 */
 
@@ -498,7 +497,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 		/**
 		 * Allows the user to just select a single rows in the transaction table
-		 * 
+		 *
 		 * @author Pascal Rohner
 		 */
 
@@ -506,13 +505,13 @@ public class PortfolioDetailViewController implements Initializable {
 
 		/**
 		 * Sets up the columns for the insight table
-		 * 
+		 *
 		 * @author Pascal Rohner
 		 */
 
 		/**
 		 * Sets up the columns for the insights table
-		 * 
+		 *
 		 * @author Pascal Rohner
 		 */
 
@@ -526,7 +525,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 		/**
 		 * Gets all the insights which need to been shown in the insight table
-		 * 
+		 *
 		 * @author Pascal Rohner
 		 */
 

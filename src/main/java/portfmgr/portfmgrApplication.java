@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.PropertySource;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +24,8 @@ import portfmgr.view.PortfolioDetailViewController;
 import portfmgr.view.PortfolioUpdateViewController;
 import portfmgr.view.PortfolioViewController;
 import portfmgr.view.TransactionViewController;
+
+
 
 /**
  * This method sets the spring application context, creates a FXMLLoader and
@@ -140,6 +141,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 
 			// Opens the portfolioDetailView within the rootLayout
 			rootLayout.setCenter(portfolioDetailView);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
