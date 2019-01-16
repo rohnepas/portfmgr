@@ -412,6 +412,8 @@ public class PortfolioDetailViewController implements Initializable {
 			Insight insightObject = new Insight();
 			insightObject.setCryptoCurrency(string);
 			
+			
+			
 			// TODO -> temp fix 4000 is used
 			Double tempSpotPrice = 4000.0;
 			insightObject.setSpotPrice(tempSpotPrice);
@@ -419,6 +421,12 @@ public class PortfolioDetailViewController implements Initializable {
 			// total number of coins for a specific currency
 			Double tempSumNbrOfCoins = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), string);
 			insightObject.setNumberOfCoins(tempSumNbrOfCoins);
+			
+			
+			// Total Käufe durch Anzahl Coins Kauf * Aktuelle Anzahl
+			
+			
+			
 			
 			// total amout spent of a specific currency
 			Double tempTotalAmount = transRepo.sumUpTotalForCryptoCurrency(this.portfolio.getId(), string);
