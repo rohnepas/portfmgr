@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.json.JSONObject;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -66,9 +67,6 @@ public class PortfolioDetailViewController implements Initializable {
 	@Autowired
 	PortfolioCalculator portfolioCalculator;
 
-//	@Autowired
-//	Insights insights;
-
 	@FXML
 	private TableView<Transaction> transactionTable;
 	@FXML
@@ -79,6 +77,7 @@ public class PortfolioDetailViewController implements Initializable {
 	private TableColumn<Transaction, String> transactionTypeColumn;
 	@FXML
 	private TableColumn<Transaction, String> transactionCryptoCurrencyColumn;
+	
 	@FXML
 	private TableColumn<Transaction, Double> transactionPriceColumn;
 	@FXML
@@ -92,6 +91,9 @@ public class PortfolioDetailViewController implements Initializable {
 
 	@FXML
 	private TableColumn<Insight, String> insightCryptoCurrencyColumn;
+	
+	@FXML
+	private TableColumn<Insight, Double> insightSpotPriceColumn;
 
 	@FXML
 	private TableColumn<Insight, Double> insightNumberOfCoinsColumn;
@@ -103,7 +105,10 @@ public class PortfolioDetailViewController implements Initializable {
 	private TableColumn<Insight, Double> insightAveragePriceColumn;
 
 	@FXML
-	private TableColumn<Insight, Double> insightChangeColumn;
+	private TableColumn<Insight, Double> insightChangePercentColumn;
+	
+	@FXML
+	private TableColumn<Insight, Double> insightChanageFiatColumn;
 
 	@FXML
 	private Label portfolioName;
@@ -123,16 +128,7 @@ public class PortfolioDetailViewController implements Initializable {
 	private Button editTransaction;
 	@FXML
 	private Button deleteTransaction;
-	@FXML
-	private Button testQuery;
 
-	public void testQueryMethod() {
-//		insights.setTotal(transRepo.sumUpTotals());
-//		System.out.println("should print the total:");
-//		System.out.println(insights.getTotal());
-
-		// prints the distinct currencies
-	}
 
 	/**
 	 * Calls method from mainApp to open the portfolioView
@@ -384,7 +380,7 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Returns an ObservableList of Transaction objects
+	 * Returns an ObservableList of Transaction objects to fill the transaction table
 	 * 
 	 * @return ObversableList of transactions
 	 * @author Pascal Rohner
@@ -398,7 +394,10 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Manually added insight object
+	 * Returns an ObservableList of Insight objects to fill the insights table
+	 * 
+	 * @return ObversableList of insights
+	 * @author Pascal Rohner
 	 * 
 	 */
 
@@ -407,33 +406,62 @@ public class PortfolioDetailViewController implements Initializable {
 
 		// create for each crypto currency on row in the table
 		List<String> cryptoCurrencySymbols = transRepo.findDistinctCryptoCurrency(this.portfolio.getId());
+		
 
 		for (String string : cryptoCurrencySymbols) {
 			Insight insightObject = new Insight();
 			insightObject.setCryptoCurrency(string);
+			
+			// TODO -> temp fix 4000 is used
+			Double tempSpotPrice = 4000.0;
+			insightObject.setSpotPrice(tempSpotPrice);
 
 			// total number of coins for a specific currency
-			Double tempSum = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), string);
-			insightObject.setNumberOfCoins(tempSum);
-
-			insightObject.setAveragePrice(3232.0);
-
-			// total amout of a specific currency
-			Double totalAmount = transRepo.sumUpTotalForCryptoCurrency(this.portfolio.getId(), string);
-			insightObject.setTotal(totalAmount);
-			insightObject.setChange(79.9);
+			Double tempSumNbrOfCoins = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), string);
+			insightObject.setNumberOfCoins(tempSumNbrOfCoins);
+			
+			// total amout spent of a specific currency
+			Double tempTotalAmount = transRepo.sumUpTotalForCryptoCurrency(this.portfolio.getId(), string);
+			insightObject.setTotal(tempTotalAmount);
+			
+			// avarage price paied for a specific currency
+			Double tempAvaragePrice = tempTotalAmount / tempSumNbrOfCoins;
+			insightObject.setAveragePrice(tempAvaragePrice);
+			
+			// change in percent. calls a separate method to calculate the change
+			insightObject.setChangePercent(getChangeinPercentage(tempSpotPrice * tempSumNbrOfCoins, tempTotalAmount));
+			
+			// change in absolute numbers (fiat)
+			insightObject.setChangeFiat((tempSpotPrice * tempSumNbrOfCoins) - tempTotalAmount);
+			
 
 			insight.add(insightObject);
 
 		}
 
-		// calculate something if necessary and if it can be done in the database
-		// directly
-
-		//insight.add(insightObject);
 		return insight;
-		// an manual an insight
 
+	}
+	
+	/**
+	 * Calculates the percentage change of two values
+	 * 
+	 * @param newValue
+	 * @param oldValue
+	 * @return changen in percent as Double
+	 * @author Pascal Rohner
+	 */
+	public Double getChangeinPercentage(Double newValue, Double oldValue) {
+		// New value - old value to get the absolute amount
+		Double absolutAmount = newValue - oldValue;
+		System.out.println(absolutAmount);
+		// Divide old value from the absolut amount to get the change in decimal
+		Double changeInDecimal = absolutAmount / oldValue;
+		System.out.println(changeInDecimal);
+		// multiply change in decimal with 100 to get the change in percente
+		Double changeInPercent = changeInDecimal * 100.0;
+		System.out.println(changeInPercent);
+		return changeInPercent;
 	}
 
 	@Override
@@ -481,10 +509,12 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 
 		insightCryptoCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Insight, String>("cryptoCurrency"));
+		insightSpotPriceColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("spotPrice"));
 		insightNumberOfCoinsColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("numberOfCoins"));
 		insightTotalColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("total"));
 		insightAveragePriceColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("averagePrice"));
-		insightChangeColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("change"));
+		insightChangePercentColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("changePercent"));
+		insightChanageFiatColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("changeFiat"));
 
 		/**
 		 * Gets all the insights which need to been shown in the insight table

@@ -275,19 +275,17 @@
                                  <children>
                                     <TableView fx:id="insightTable" prefHeight="314.0" prefWidth="473.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columns>
-                                        <TableColumn fx:id="insightCryptoCurrencyColumn" prefWidth="63.199951231479645" text="Currency" />
-                                        <TableColumn fx:id="insightNumberOfCoinsColumn" prefWidth="52.800048828125" text="Anzahl" />
-                                          <TableColumn fx:id="insightTotalColumn" prefWidth="61.0" text="Wert" />
-                                          <TableColumn fx:id="insightAveragePriceColumn" prefWidth="98.4000244140625" text="Durch.Preis" />
-                                          <TableColumn fx:id="insightChangeColumn" prefWidth="109.5999755859375" text="Veränderung-%" />
-                                          <TableColumn prefWidth="128.0" text="Veränderung" />
+                                        <TableColumn fx:id="insightCryptoCurrencyColumn" prefWidth="57.0" text="Currency" />
+                                          <TableColumn fx:id="insightSpotPriceColumn" prefWidth="68.0" text="Spot price" />
+                                        <TableColumn fx:id="insightNumberOfCoinsColumn" prefWidth="66.0" text="Anzahl" />
+                                          <TableColumn fx:id="insightTotalColumn" prefWidth="59.0" text="Wert" />
+                                          <TableColumn fx:id="insightAveragePriceColumn" prefWidth="77.0" text="Durch.Preis" />
+                                          <TableColumn fx:id="insightChangePercentColumn" text="V. in %" />
+                                          <TableColumn fx:id="insightChanageFiatColumn" prefWidth="83.0" text="V. in Fiat" />
                                       </columns>
                                     </TableView>
                                  </children></AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                 <children>
-                                    <Button fx:id="testQuery" layoutX="53.0" layoutY="14.0" mnemonicParsing="false" onAction="#testQueryMethod" text="query test" />
-                                 </children></AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
                           </items>
                         </SplitPane>
                      </children>
