@@ -26,7 +26,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -224,12 +223,12 @@ public class PortfolioDetailViewController implements Initializable {
 		
 		if (portfolioCalculator.getProfit()) {
 			
-			profitOrLoss.setTextFill(Color.GREEN);
-			profitOrLossPercentage.setTextFill(Color.GREEN);
+			profitOrLoss.setStyle("-fx-text-fill:green");
+			profitOrLossPercentage.setStyle("-fx-text-fill:green");
 			
 		} else {
-			profitOrLoss.setTextFill(Color.RED);
-			profitOrLossPercentage.setTextFill(Color.RED);
+			profitOrLoss.setStyle("-fx-text-fill:red");
+			profitOrLossPercentage.setStyle("-fx-text-fill:red");
 		}
 	}
 
@@ -303,8 +302,8 @@ public class PortfolioDetailViewController implements Initializable {
 	public void deletePortfolio() {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Portfolio löschen");
-		alert.setHeaderText("Portfolio wirklich löschen?");
+		alert.setTitle("Portfolio lï¿½schen");
+		alert.setHeaderText("Portfolio wirklich lï¿½schen?");
 		alert.setContentText(null);
 		Optional<ButtonType> result = alert.showAndWait();
 		
@@ -473,8 +472,6 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 
 		insightTable.setItems(getInsight());
-		
-
 
 	}
 

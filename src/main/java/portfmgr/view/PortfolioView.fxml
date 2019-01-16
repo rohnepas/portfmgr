@@ -1,37 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1080.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioViewController">
    <children>
-      <Text layoutX="32.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Portfolioübersicht">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Text>
+      <Label layoutX="179.0" layoutY="136.0" styleClass="label-main-titel-view" text="Portfolioübersicht" />
       <AnchorPane layoutX="42.0" layoutY="179.0" prefHeight="366.0" prefWidth="906.0" stylesheets="@style.css" AnchorPane.bottomAnchor="54.60000000000002" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="179.0">
          <children>
-            <Rectangle fx:id="portfolio1" arcHeight="5.0" arcWidth="10.0" fill="#e6e9ed" height="143.0" layoutX="128.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" styleClass="button" width="274.0" AnchorPane.leftAnchor="128.0">
+            <Rectangle fx:id="portfolio1" arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="143.0" layoutX="128.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" strokeType="INSIDE" styleClass="button" width="274.0" AnchorPane.leftAnchor="128.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <stroke>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop color="BLACK" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+            </Rectangle>
+            <Rectangle fx:id="portfolio2" arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="143.0" layoutX="497.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0" AnchorPane.rightAnchor="209.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Rectangle>
-            <Rectangle fx:id="portfolio2" arcHeight="5.0" arcWidth="10.0" fill="#e6e9ed" height="143.0" layoutX="497.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0" AnchorPane.rightAnchor="209.0">
+            <Rectangle fx:id="portfolio3" arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="143.0" layoutX="128.0" layoutY="209.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0" AnchorPane.leftAnchor="128.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Rectangle>
-            <Rectangle fx:id="portfolio3" arcHeight="5.0" arcWidth="10.0" fill="#e6e9ed" height="143.0" layoutX="128.0" layoutY="209.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0" AnchorPane.leftAnchor="128.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Rectangle>
-            <Rectangle fx:id="portfolio4" arcHeight="5.0" arcWidth="10.0" fill="#e6e9ed" height="143.0" layoutX="498.0" layoutY="209.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0">
+            <Rectangle fx:id="portfolio4" arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="143.0" layoutX="498.0" layoutY="209.0" onMouseClicked="#openPortfolioDetailView" stroke="BLACK" strokeType="INSIDE" width="274.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
