@@ -282,7 +282,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 		if (file != null) {
 			try {
-				new ExportData(portfolio, file);
+				new ExportData(portfolio, file, getInsight());
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Dialog");
 				alert.setHeaderText(null);
@@ -305,8 +305,8 @@ public class PortfolioDetailViewController implements Initializable {
 	public void deletePortfolio() {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Portfolio lï¿½schen");
-		alert.setHeaderText("Portfolio wirklich lï¿½schen?");
+		alert.setTitle("Portfolio löschen");
+		alert.setHeaderText("Portfolio wirklich löschen?");
 		alert.setContentText(null);
 		Optional<ButtonType> result = alert.showAndWait();
 
