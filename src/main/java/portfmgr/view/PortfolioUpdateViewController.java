@@ -97,7 +97,7 @@ public class PortfolioUpdateViewController implements Initializable {
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);
             alert.setTitle("Eingabefehler");
-            alert.setHeaderText("Portfolioname und Währung darf nicht leer sein");
+            alert.setHeaderText("Portfolioname und Waehrung darf nicht leer sein");
             alert.showAndWait();
     
     		return false;

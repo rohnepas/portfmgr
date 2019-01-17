@@ -20,7 +20,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.Tab;
 
 /**
  * This class handles the Excel sheet export

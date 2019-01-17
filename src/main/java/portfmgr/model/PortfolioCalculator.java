@@ -55,19 +55,8 @@ public void calculatePortfolio() {
 		
 		Double tempTotalPortfolioValue = 0.0;
 		Double tempProfitOrLoss = 0.0;
-		Double tempProfitOrLossPercentage = 0.0;
 		Double tempTotalSpent = 0.0;
-		NumberFormat nf = NumberFormat.getNumberInstance(new Locale("de","CH"));
-		nf.setMaximumFractionDigits(2);
-		DecimalFormat df = (DecimalFormat)nf;
-
-		
-		if (transRepo.sumTotalSpent(portfolio.getId()) != null) {
-			tempTotalSpent = transRepo.sumTotalSpent(portfolio.getId());
-		} 
-		
-		totalSpent = df.format(tempTotalSpent);
-		
+				
 		List<Map<String, Double>> dataList = new ArrayList<Map<String, Double>>();
 		
 		
@@ -106,7 +95,6 @@ public void calculatePortfolio() {
 						if (map == mapProfitOrLoss) {
 							Double totalNumberOfCoins = dataList.get(0).get(symbol.getKey());							
 							tempProfitOrLoss = tempProfitOrLoss + (cryptoCurrencyPrice * totalNumberOfCoins - symbol.getValue());
-							tempProfitOrLossPercentage = tempProfitOrLossPercentage + (((cryptoCurrencyPrice * totalNumberOfCoins) - symbol.getValue()) / symbol.getValue());
 						}
 					}
 				
@@ -117,11 +105,24 @@ public void calculatePortfolio() {
 			}
 		}
 		
+		
+		NumberFormat nf = NumberFormat.getNumberInstance(new Locale("de","CH"));
+		nf.setMaximumFractionDigits(2);
+		DecimalFormat df = (DecimalFormat)nf;
+
+		
+		if (transRepo.sumTotalSpent(portfolio.getId()) != null) {
+			tempTotalSpent = transRepo.sumTotalSpent(portfolio.getId());
+		} 
+
+		totalSpent = df.format(tempTotalSpent);
 		totalPortfolioValue = df.format(tempTotalPortfolioValue);
 		profitOrLoss = df.format(tempProfitOrLoss);
-		profitOrLossPercentage = df.format(100 * tempProfitOrLossPercentage);
+		profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));
 		
-		if (tempProfitOrLossPercentage < 0) {
+		System.out.println(profitOrLossPercentage);
+		
+		if (tempProfitOrLoss < 0) {
 			profit = false;
 		} 
 	}

@@ -1,7 +1,6 @@
 package portfmgr.view;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
