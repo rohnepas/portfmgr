@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.PropertySource;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +38,7 @@ import portfmgr.view.TransactionViewController;
  * @author Pascal Rohner & Marc Steiner
  */
 @SpringBootApplication
+@PropertySource("classpath:application.properties")
 public class portfmgrApplication extends Application implements ApplicationContextAware {
 
 	private ConfigurableApplicationContext springContext;

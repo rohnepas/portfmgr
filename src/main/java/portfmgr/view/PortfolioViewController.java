@@ -1,6 +1,7 @@
 package portfmgr.view;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,8 +126,12 @@ public class PortfolioViewController implements Initializable {
 	public void initialize(URL location, ResourceBundle resourceBundle) {
 
 		int numberOfPortfolios = 4;
+		
+		
+		
 
 		if (portRepo.count() == 0) {
+			// Makes an Array of size 4 with type of content portfolio 
 			portfArray = new Portfolio[4];
 
 			for (int i = 0; i < numberOfPortfolios; i++) {
@@ -137,6 +142,16 @@ public class PortfolioViewController implements Initializable {
 				portRepo.save(portfArray[i]);
 			}
 
+		} else {
+			// Makes an Array of size 4 with type of content portfolio 
+			int i = 0;
+			portfArray = new Portfolio[4];
+			Iterable<Portfolio> portfolioList = portRepo.findAll();
+			
+			for (Portfolio portfolio : portfolioList) {
+				portfArray[i] = portfolio;
+				i++;
+			}
 		}
 		
 		// Remark: When using a For-loop, the labels cannot be set correctly.
