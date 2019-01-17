@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.persistence.EntityManager;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +53,7 @@ public class TransactionViewController implements Initializable {
 	private Portfolio portfolio;
 	private Stage dialogStage;
 	private String coinlistPath;
-	private JSONObject onlineDataJSON;
 	private List<String> currencyList;
-	private List<String> cryptocurrencyList;
 
 	@FXML
 	private Label fiatCurrency;

@@ -3,7 +3,9 @@ package portfmgr.model;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -17,6 +19,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javafx.collections.ObservableList;
+
 /**
  * This class handles the Excel sheet export
  * @author Marc Steiner
@@ -26,9 +30,11 @@ public class ExportData {
 	private Portfolio portfolio;
 	private File file;
 	private int indexTitleRow = 0;
-	private int indexHeaderRow = 2;
-	private int indexDataRow = 3;
+	private int indexDateRow = 1;
+	private int indexHeaderRow = 3;
+	private int indexDataRow = 4;
 	private Map<String, Object[]> data = new TreeMap<String, Object[]>();
+	private ObservableList<Insight> insights;
 	
 	//Create Workbook - XSSF: Used for dealing with files excel 2007 or later(.xlsx)
 	private Workbook workbook = new XSSFWorkbook();
@@ -48,9 +54,10 @@ public class ExportData {
 	private CellStyle titleCellStyle = workbook.createCellStyle();
 
 	
-	public ExportData(Portfolio portfolio, File file) throws IOException {
+	public ExportData(Portfolio portfolio, File file, ObservableList<Insight> insights) throws IOException {
 		this.portfolio = portfolio;
 		this.file = file;
+		this.insights = insights;
 		setup();
 		exportData();
 	}
@@ -89,10 +96,18 @@ public class ExportData {
 
         // Create and write title row
         Row titleRow = sheet.createRow(indexTitleRow);        
-        Cell titleCell = titleRow.createCell(indexTitleRow);
+        Cell titleCell = titleRow.createCell(0);        
         titleCell.setCellValue(calendarYear + " PORTFOLIO: " + portfolio.getPortfolioName());
         titleCell.setCellStyle(titleCellStyle);
-                
+        
+        // Create and write date row
+        Row dateRow = sheet.createRow(indexDateRow);        
+        Cell dateCell = dateRow.createCell(0);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy - HH:mm"); 
+        Date currentTime = new Date(); 
+        dateCell.setCellValue("Export erstellt am: " + formatter.format(currentTime) + "Uhr");
+        dateCell.setCellStyle(normalCellStyle);
+        
 		// Create and write header row
         Row headerRow = sheet.createRow(indexHeaderRow);        
         for(int i = 0; i < columns.length; i++) {
@@ -109,7 +124,7 @@ public class ExportData {
 	public void exportData() throws IOException {
 
         String fiatCurrency = portfolio.getPortfolioFiatCurrency();
-        extractData();
+        data = extractData();
             
         //Iterate over data and write to sheet.
         Set<String> keyid = data.keySet();
@@ -124,7 +139,7 @@ public class ExportData {
               
               // Add portfolio currency to the "money cells"
               if(cellid > 2) {
-            	  cell.setCellValue((String)obj + fiatCurrency);
+            	  cell.setCellValue((String)obj + " " + fiatCurrency);
               } else {
             	  cell.setCellValue((String)obj);
               }
@@ -149,17 +164,27 @@ public class ExportData {
      * This data needs to be written (Object[]). 
      * The number "1", "2"... defines the order in a TreeMap, therefore the
      * order which data will be shown first in the Excel sheet
+	 * @return 
      * 
      * @return data
      * 
      */
-	public void extractData() {
+	public Map<String, Object[]> extractData() {
 		
-		// TO DO: Portfolio Daten abfüllen inkl. Währung übergeben
-        data.put( "1", new Object[] { "Bitcoin", "1", "4000", "4000" });
-        data.put( "2", new Object[] { "Ethereum", "10", "200", "2000" });
-        data.put( "3", new Object[] { "Litecoin", "100", "50", "5000" });
-
+		int index = 1;
+		
+		for (Insight element: insights) {
+			
+			data.put(String.valueOf(index), new Object[] {
+					element.getCryptoCurrency(), 
+					String.valueOf(element.getNumberOfCoins()), 
+					String.valueOf(element.getSpotPrice()), 
+					String.valueOf(element.getTotal())
+					});
+			
+			index++;			
+		}
+        
+        return data;
 	}
-		
 }

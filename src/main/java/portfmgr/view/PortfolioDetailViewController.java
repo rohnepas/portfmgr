@@ -10,10 +10,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.json.JSONObject;
-import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Controller;
 
 import javafx.collections.FXCollections;
@@ -192,8 +189,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 		try {
 			onlineDataJSON = query.getOnlineCourseData();
-			// saves the json object in an instance variable so that it can be used by other methods
-			this.onlineDataJSON = onlineDataJSON;
+			
 		} catch (IOException e) {
 			System.out.println("Problem within getOnlineCourseData()");
 			e.printStackTrace();
@@ -282,7 +278,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 		if (file != null) {
 			try {
-				new ExportData(portfolio, file);
+				new ExportData(portfolio, file, getInsight());
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Dialog");
 				alert.setHeaderText(null);
@@ -305,8 +301,8 @@ public class PortfolioDetailViewController implements Initializable {
 	public void deletePortfolio() {
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Portfolio l�schen");
-		alert.setHeaderText("Portfolio wirklich l�schen?");
+		alert.setTitle("Portfolio loeschen");
+		alert.setHeaderText("Portfolio wirklich loeschen?");
 		alert.setContentText(null);
 		Optional<ButtonType> result = alert.showAndWait();
 
