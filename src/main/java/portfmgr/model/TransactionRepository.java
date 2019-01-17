@@ -103,6 +103,17 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	Double sumUpNumberOfCoinsForCryptoCurrency(@Param("id") Long id, @Param("cryptoCurrency") String cryptoCurrency);
 	
 	/**
+	 * SQL query which sums up the number of coins for a specific cryptoCurrency in a specific portfolio
+	 *  
+	 * @param currency (=crypto currency referred to Transaction.java)
+	 * @param id (portfolio id needed for separate portfolio data)
+	 * @return SQL query returns a Double
+	 * @author Pascal Rohner
+	 */
+	@Query("SELECT sum(numberOfCoins) as nbr FROM Transaction WHERE type = 'Kauf' AND portfolio_id = :id AND cryptoCurrency = :cryptoCurrency")
+	Double sumUpNumberOfCoinsForCryptoCurrencyTypeKauf(@Param("id") Long id, @Param("cryptoCurrency") String cryptoCurrency);
+	
+	/**
 	 * SQL query which sums up the total amount for a specific cryptoCurrency in a specific portfolio
 	 *  
 	 * @param id (portfolio id needed for separate portfolio data)
@@ -110,7 +121,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	 * @return SQL query return a Double
 	 * @author Pascal Rohner
 	 */
-	@Query("SELECT sum(total) FROM Transaction WHERE portfolio_id = :id AND cryptoCurrency = :cryptoCurrency")
+	@Query("SELECT sum(total) FROM Transaction WHERE type = 'Kauf' AND portfolio_id = :id AND cryptoCurrency = :cryptoCurrency")
 	Double sumUpTotalForCryptoCurrency(@Param("id") Long id, @Param("cryptoCurrency") String cryptoCurrency);
 
 }

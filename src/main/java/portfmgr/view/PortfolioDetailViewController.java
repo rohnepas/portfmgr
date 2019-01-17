@@ -12,6 +12,8 @@ import java.util.ResourceBundle;
 import org.json.JSONObject;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Controller;
 
 import javafx.collections.FXCollections;
@@ -190,6 +192,8 @@ public class PortfolioDetailViewController implements Initializable {
 
 		try {
 			onlineDataJSON = query.getOnlineCourseData();
+			// saves the json object in an instance variable so that it can be used by other methods
+			this.onlineDataJSON = onlineDataJSON;
 		} catch (IOException e) {
 			System.out.println("Problem within getOnlineCourseData()");
 			e.printStackTrace();
@@ -404,42 +408,47 @@ public class PortfolioDetailViewController implements Initializable {
 		ObservableList<Insight> insight = FXCollections.observableArrayList();
 
 		// create for each crypto currency on row in the table
-		List<String> cryptoCurrencySymbols = transRepo.findDistinctCryptoCurrency(this.portfolio.getId());
-
-
-		for (String string : cryptoCurrencySymbols) {
+		List<String> cryptoCurrencySymbols = transRepo.findDistinctCryptoCurrency(this.portfolio.getId());		
+		
+		for (String cryptoCurrency : cryptoCurrencySymbols) {
 			Insight insightObject = new Insight();
-			insightObject.setCryptoCurrency(string);
+			
+			insightObject.setCryptoCurrency(cryptoCurrency);
+			
+			/*
+			 *  Switches the desired cryptoCurrencie out of the JSON object
+			 *  (contains all currencies according to the transactions) and saves it in a new JSON object. 
+			 */
+			
+			JSONObject unwrappedCryptoCurrencyPrices = onlineDataJSON.getJSONObject(cryptoCurrency);
+			
+			/*
+			 * The fiatCurrencie of the portfolio is read from the new JSON object and stored in a local
+			 * variable
+			 */
+			
+			Double tempSpotPrice = (Double) unwrappedCryptoCurrencyPrices.get(this.portfolio.getPortfolioFiatCurrency());
+			insightObject.setSpotPrice((Double) unwrappedCryptoCurrencyPrices.get(this.portfolio.getPortfolioFiatCurrency()));
 
-
-
-			// TODO -> temp fix 4000 is used
-			Double tempSpotPrice = 4000.0;
-			insightObject.setSpotPrice(tempSpotPrice);
-
-			// total number of coins for a specific currency
-			Double tempSumNbrOfCoins = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), string);
+			// total number of coins for a specific currency taking into account the types Kauf and Verkauf
+			Double tempSumNbrOfCoins = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), cryptoCurrency);
 			insightObject.setNumberOfCoins(tempSumNbrOfCoins);
 
-
-			// Total K�ufe durch Anzahl Coins Kauf * Aktuelle Anzahl
-
-
-
+			Double tempSumNrbOfCoinsKauf = transRepo.sumUpNumberOfCoinsForCryptoCurrencyTypeKauf(this.portfolio.getId(), cryptoCurrency);
 
 			// total amout spent of a specific currency
-			Double tempTotalAmount = transRepo.sumUpTotalForCryptoCurrency(this.portfolio.getId(), string);
+			Double tempTotalAmount = tempSpotPrice * tempSumNbrOfCoins;
 			insightObject.setTotal(tempTotalAmount);
 
 			// avarage price paied for a specific currency
-			Double tempAvaragePrice = tempTotalAmount / tempSumNbrOfCoins;
+			Double tempAvaragePrice = transRepo.sumUpTotalForCryptoCurrency(this.portfolio.getId(), cryptoCurrency) / tempSumNrbOfCoinsKauf;
 			insightObject.setAveragePrice(tempAvaragePrice);
 
 			// change in percent. calls a separate method to calculate the change
-			insightObject.setChangePercent(getChangeinPercentage(tempSpotPrice * tempSumNbrOfCoins, tempTotalAmount));
+			insightObject.setChangePercent(getChangeinPercentage(tempTotalAmount, tempAvaragePrice * tempSumNbrOfCoins));
 
 			// change in absolute numbers (fiat)
-			insightObject.setChangeFiat((tempSpotPrice * tempSumNbrOfCoins) - tempTotalAmount);
+			insightObject.setChangeFiat(tempTotalAmount - (tempAvaragePrice * tempSumNbrOfCoins));
 
 
 			insight.add(insightObject);
@@ -461,13 +470,10 @@ public class PortfolioDetailViewController implements Initializable {
 	public Double getChangeinPercentage(Double newValue, Double oldValue) {
 		// New value - old value to get the absolute amount
 		Double absolutAmount = newValue - oldValue;
-		System.out.println(absolutAmount);
 		// Divide old value from the absolut amount to get the change in decimal
 		Double changeInDecimal = absolutAmount / oldValue;
-		System.out.println(changeInDecimal);
 		// multiply change in decimal with 100 to get the change in percente
 		Double changeInPercent = changeInDecimal * 100.0;
-		System.out.println(changeInPercent);
 		return changeInPercent;
 	}
 
@@ -480,8 +486,7 @@ public class PortfolioDetailViewController implements Initializable {
 		 */
 		transactionDateColumn.setCellValueFactory(new PropertyValueFactory<Transaction, LocalDate>("transactionDate"));
 		transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<Transaction, String>("type"));
-		transactionCryptoCurrencyColumn
-				.setCellValueFactory(new PropertyValueFactory<Transaction, String>("cryptoCurrency"));
+		transactionCryptoCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Transaction, String>("cryptoCurrency"));
 		transactionPriceColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("price"));
 		transactionAmountColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("numberOfCoins"));
 		transactionFeesColumn.setCellValueFactory(new PropertyValueFactory<Transaction, Double>("fees"));
@@ -528,6 +533,10 @@ public class PortfolioDetailViewController implements Initializable {
 		 *
 		 * @author Pascal Rohner
 		 */
+		
+		
+		// updates the portfolio before loading the table to get the spot prices of the crypto currencies
+		updatePortfolio();
 
 		insightTable.setItems(getInsight());
 
