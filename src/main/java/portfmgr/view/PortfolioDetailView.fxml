@@ -15,15 +15,17 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="1000.0" styleClass="background" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <GridPane prefHeight="376.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <GridPane minWidth="1080.0" BorderPane.alignment="CENTER">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="505.0" minWidth="10.0" prefWidth="505.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="13.0" minWidth="0.0" prefWidth="0.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="490.0" minWidth="10.0" prefWidth="490.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="534.6666564941406" minWidth="10.0" prefWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="500.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="0.0" prefWidth="15.66668701171875" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="500.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.3333740234375" minWidth="10.0" prefWidth="10.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
@@ -32,19 +34,19 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="deleteTransaction" mnemonicParsing="false" onAction="#deleteTransaction" text="Transaktion löschen" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                  <Button fx:id="deleteTransaction" mnemonicParsing="false" onAction="#deleteTransaction" text="Transaktion löschen" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="TOP">
                      <GridPane.margin>
                         <Insets right="5.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="editTransaction" mnemonicParsing="false" onAction="#editTransaction" text="Transaktion bearbeiten" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                  <Button fx:id="editTransaction" mnemonicParsing="false" onAction="#editTransaction" text="Transaktion bearbeiten" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
                      <GridPane.margin>
                         <Insets left="23.0" />
                      </GridPane.margin></Button>
-                  <Button fx:id="addTransaction" mnemonicParsing="false" onAction="#addTransaction" text="Transaktion hinzufügen" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                  <Button fx:id="addTransaction" mnemonicParsing="false" onAction="#addTransaction" text="Transaktion hinzufügen" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="TOP">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin></Button>
-                  <Label contentDisplay="BOTTOM" styleClass="anchor" stylesheets="@Style.css" text="Data under free license from: https://www.cryptocompare.com " GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                  <Label contentDisplay="BOTTOM" styleClass="anchor" stylesheets="@Style.css" text="Data under free license from: https://www.cryptocompare.com " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -55,18 +57,18 @@
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <TableView fx:id="insightTable" prefHeight="277.0" prefWidth="435.0" styleClass="anchor" stylesheets="@Style.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <TableView fx:id="insightTable" prefHeight="277.0" prefWidth="500.0" styleClass="anchor" stylesheets="@Style.css" GridPane.columnIndex="3" GridPane.rowIndex="1">
                     <columns>
-                      <TableColumn fx:id="insightCryptoCurrencyColumn" prefWidth="70.0" text="Currency" />
-                        <TableColumn fx:id="insightSpotPriceColumn" prefWidth="70.0" text="Spot Price" />
-                      <TableColumn fx:id="insightNumberOfCoinsColumn" prefWidth="60.0" text="Anzahl" />
-                        <TableColumn fx:id="insightTotalColumn" prefWidth="70.0" text="Wert" />
-                        <TableColumn fx:id="insightAveragePriceColumn" prefWidth="70.0" text="Ø Preis" />
-                        <TableColumn fx:id="insightChangePercentColumn" prefWidth="70.0" text="V. in %" />
-                        <TableColumn fx:id="insightChanageFiatColumn" maxWidth="100.0" minWidth="-1.0" prefWidth="70.0" text="V.  abs." />
+                      <TableColumn fx:id="insightCryptoCurrencyColumn" prefWidth="74.0" text="Currency" />
+                        <TableColumn fx:id="insightSpotPriceColumn" prefWidth="76.6666259765625" text="Spot Price" />
+                      <TableColumn fx:id="insightNumberOfCoinsColumn" prefWidth="59.3333740234375" text="Anzahl" />
+                        <TableColumn fx:id="insightTotalColumn" prefWidth="69.0" text="Wert" />
+                        <TableColumn fx:id="insightAveragePriceColumn" prefWidth="62.0" text="Ø Preis" />
+                        <TableColumn fx:id="insightChangePercentColumn" prefWidth="78.0" text="V. in %" />
+                        <TableColumn fx:id="insightChanageFiatColumn" maxWidth="100.0" minWidth="-1.0" prefWidth="76.0" text="V.  abs." />
                     </columns>
                   </TableView>
-                  <TableView fx:id="transactionTable" styleClass="anchor" stylesheets="@Style.css" GridPane.rowIndex="1">
+                  <TableView fx:id="transactionTable" styleClass="anchor" stylesheets="@Style.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columns>
                       <TableColumn fx:id="transactionDateColumn" maxWidth="79.0" minWidth="-1.0" prefWidth="79.0" text="Datum" />
                       <TableColumn fx:id="transactionTypeColumn" minWidth="0.0" prefWidth="54.0" text="Typ" />
@@ -77,10 +79,10 @@
                         <TableColumn fx:id="transactionTotalColumn" prefWidth="77.0" text="Total" />
                     </columns>
                   </TableView>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="27.0" stroke="BLACK" strokeType="INSIDE" width="505.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="27.0" stroke="BLACK" strokeType="INSIDE" width="490.0" GridPane.columnIndex="2" />
-                  <Label styleClass="label-titel-view" text="TRANSAKTIONEN" GridPane.halignment="CENTER" />
-                  <Label styleClass="label-titel-view" text="INSIGHTS" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="27.0" stroke="BLACK" strokeType="INSIDE" width="505.0" GridPane.columnIndex="1" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="27.0" stroke="BLACK" strokeType="INSIDE" width="505.0" GridPane.columnIndex="3" />
+                  <Label styleClass="label-titel-view" text="TRANSAKTIONEN" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Label styleClass="label-titel-view" text="INSIGHTS" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
          </center>
@@ -97,10 +99,10 @@
                   <RowConstraints maxHeight="35.0" minHeight="2.0" prefHeight="20.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="53.0" minHeight="0.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="54.0" minHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="59.0" minHeight="8.0" prefHeight="19.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="54.0" minHeight="0.0" prefHeight="23.333335876464844" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="29.666664123535156" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="59.0" minHeight="8.0" prefHeight="29.666671752929688" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="44.33332824707031" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <ImageView fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">

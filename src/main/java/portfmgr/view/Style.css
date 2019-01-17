@@ -17,8 +17,9 @@
     -fx-background-color: #FFFFFF;
 }
 
+/*e.g Statistics "VALUE of Total Ausgaben --> totalSpent" etc */
 .label {
-    -fx-font-size: 11pt;
+    -fx-font-size: 11.5pt;
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: white;
     -fx-opacity: 0.8;
@@ -32,8 +33,9 @@
     -fx-font-weight: bold;
 }
 
+/*e.g Statistics "Total Ausgaben" etc */
 .label-header-mid {
-    -fx-font-size: 11.5pt;
+    -fx-font-size: 12.5pt;
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: white;
     -fx-opacity: 1;
