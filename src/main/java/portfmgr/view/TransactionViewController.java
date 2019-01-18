@@ -220,9 +220,7 @@ public class TransactionViewController implements Initializable {
 	}
 
 	/**
-	 * Creates a new transaction and saves it in the database. It save not only the
-	 * value for the specified currency it also saves for all other fiat currencies
-	 * so that switching between different portfolio currencies is possible.
+	 * Creates a new transaction and saves it in the database.
 	 *
 	 * @param moneytary (= W�hrung), currency bought, type of the transaction
 	 *                  (Kauf oder Verkauf), price paid, number of coins bought,
