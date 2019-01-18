@@ -23,9 +23,6 @@ public class TransactionViewControllerTest {
 	@MockBean
 	PortfolioRepository portRepo;
 	
-	@Autowired
-	TransactionRepository transRepo;
-	
 	/**
 	 * checks whether the total is calculated correctly when a transaction is entered.
 	 * @author Pascal Rohner
