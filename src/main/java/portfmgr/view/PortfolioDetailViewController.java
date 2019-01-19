@@ -21,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -286,7 +287,7 @@ public class PortfolioDetailViewController implements Initializable {
 				alert.setTitle("Information Dialog");
 				alert.setHeaderText(null);
 				alert.setContentText("Excel File wurde erfolgreich erstellt");
-				alert.showAndWait();
+				alert.showAndWait();				
 
 			} catch (IOException e) {
 				System.out.println("Problem with writing or closing of EXCEL sheet");
@@ -313,6 +314,7 @@ public class PortfolioDetailViewController implements Initializable {
 			transRepo.deleteAllTransactions(portfolio.getId());
 			portfolio.setPortfolioFiatCurrency("CHF");
 			portfolio.setPortfolioName("leeres Portfolio");
+			portRepo.save(this.portfolio);
 			mainApp.openPortfolioView();
 		}
 	}

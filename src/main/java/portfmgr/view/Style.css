@@ -8,6 +8,16 @@
     /*FULL BLACK -fx-background-color: #000000;*/
 }
 
+.background-popup {
+    -fx-background-color: #1A1A1A;
+    /*FULL BLACK -fx-background-color: #000000;*/
+}
+
+.background-rectangle {
+    -fx-background-color: #1d1d1d;
+    /*FULL BLACK -fx-background-color: #000000;*/
+}
+
 .background-rectangle {
     -fx-background-color: #1d1d1d;
     /*FULL BLACK -fx-background-color: #000000;*/
@@ -124,6 +134,19 @@
     -fx-text-fill: #d8d8d8;
     -fx-background-insets: 0 0 0 0, 0, 1, 2;
 }
+/* 
+.button:focused {
+    -fx-border-color: #1e90ff;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 10pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+*/
+
 
 .button:hover {
     -fx-background-color: #3a3a3a;
@@ -138,6 +161,51 @@
     -fx-border-color: transparent;
     -fx-background-color: transparent;
 }
+
+.dialog-pane{
+  -fx-border-color:black;
+  -fx-border-width:2.0px;
+ }
+
+/**Costumization of The Bar where the buttons are located**/
+.dialog-pane > .button-bar > .container {
+  -fx-background-color: #1d1d1d;
+}
+
+.dialog-pane > .content.label {
+   -fx-padding: 0.5em 0.5em 0.5em 0.5em;
+   -fx-background-color: yellow;
+   -fx-text-fill: white;
+   -fx-font-size:15.0px;
+}
+
+/**Costumization of DialogPane Header**/
+.dialog-pane:header .header-panel {
+  -fx-background-color: #1d1d1d;
+}
+
+.dialog-pane:header .header-panel .label{
+  -fx-background-color: #1d1d1d;
+  -fx-background-radius:10px;
+  -fx-text-fill: white;
+  -fx-font-size:15.0px;
+}
+
+
+/**Costumization of Buttons**/
+.dialog-pane .button{
+   -fx-background-color: #1d1d1d;
+   -fx-text-fill:white;
+   -fx-wrap-text: true;
+   -fx-effect: dropshadow( three-pass-box, yellow, 10.0, 0.0, 0.0, 0.0);
+   -fx-cursor:hand;
+ }
+
+.dialog-pane .button:hover{     
+  -fx-background-color: white;
+  -fx-text-fill: black;
+  -fx-font-weight:bold; 
+ }
 
 
 
