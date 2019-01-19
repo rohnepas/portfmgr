@@ -28,3 +28,5 @@ hs_err_pid*
 /bin/
 /build/
 *.db
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/outputFiles.bin
