@@ -118,13 +118,17 @@ public void calculatePortfolio() {
 		totalSpent = df.format(tempTotalSpent);
 		totalPortfolioValue = df.format(tempTotalPortfolioValue);
 		profitOrLoss = df.format(tempProfitOrLoss);
-		profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));
 		
-		System.out.println(profitOrLossPercentage);
+		if(tempTotalSpent > 0) {
+			profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));
+			
+		} else profitOrLossPercentage = df.format(0);
+		
 		
 		if (tempProfitOrLoss < 0) {
 			profit = false;
 		} 
+		
 	}
 	
 	/**
