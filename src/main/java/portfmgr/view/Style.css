@@ -134,6 +134,10 @@
   -fx-text-fill: #1d1d1d;
 }
 
+.button-dashboard {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
 
 
 

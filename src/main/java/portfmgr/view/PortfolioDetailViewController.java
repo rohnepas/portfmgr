@@ -163,11 +163,14 @@ public class PortfolioDetailViewController implements Initializable {
 
 		boolean currencyExists = fiatCurrencyList.stream().anyMatch(str -> str.trim().equals(tempPortfolioCurrency));
 
-		if (tempPortfolioName == "leeres Portfolio" || tempPortfolioName == "" || !currencyExists) {
-
+	
+		if (tempPortfolioName.equals("leeres Portfolio") || tempPortfolioName.equals("") || !currencyExists) {
+	
 			mainApp.openPortfolioUpdateView(portfolio, fiatCurrencyList);
 
 		} else {
+			
+			System.out.println("else");
 			portfolioName.setText(portfolio.getPortfolioName());
 			portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
 
