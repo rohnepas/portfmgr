@@ -2,7 +2,6 @@ package portfmgr.view;
 
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -141,7 +139,6 @@ public class PortfolioUpdateViewController implements Initializable {
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 	}
-	
 	
 
 	@Override

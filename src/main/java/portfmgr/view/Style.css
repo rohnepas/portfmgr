@@ -182,5 +182,9 @@
     -fx-fill: #292929;
 }
 
+.choice-box > .label { 
+	-fx-text-fill: black;
+}
+
 
 
