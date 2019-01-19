@@ -20,13 +20,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -286,8 +289,10 @@ public class PortfolioDetailViewController implements Initializable {
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Dialog");
 				alert.setHeaderText(null);
+				alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+		        alert.getDialogPane().getStyleClass().add("dialog-pane");
 				alert.setContentText("Excel File wurde erfolgreich erstellt");
-				alert.showAndWait();				
+				alert.showAndWait();		
 
 			} catch (IOException e) {
 				System.out.println("Problem with writing or closing of EXCEL sheet");
@@ -304,21 +309,23 @@ public class PortfolioDetailViewController implements Initializable {
 	 */
 	public void deletePortfolio() {
 
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Portfolio loeschen");
-		alert.setHeaderText("Portfolio wirklich loeschen?");
-		alert.setContentText(null);
-		Optional<ButtonType> result = alert.showAndWait();
+		  Alert alert = new Alert(AlertType.CONFIRMATION);
+		  alert.setTitle("Portfolio loeschen");
+		  alert.setHeaderText("Portfolio wirklich loeschen?");
+		  alert.setContentText(null); 
+		  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+          alert.getDialogPane().getStyleClass().add("dialog-pane");
+		  
+		  Optional<ButtonType> result = alert.showAndWait();
 
-		if (result.get() == ButtonType.OK) {
-			transRepo.deleteAllTransactions(portfolio.getId());
-			portfolio.setPortfolioFiatCurrency("CHF");
-			portfolio.setPortfolioName("leeres Portfolio");
-			portRepo.save(this.portfolio);
-			mainApp.openPortfolioView();
-		}
+		  if (result.get() == ButtonType.OK) {
+		  transRepo.deleteAllTransactions(portfolio.getId());
+		  portfolio.setPortfolioFiatCurrency("CHF");
+		  portfolio.setPortfolioName("leeres Portfolio");
+		  portRepo.save(this.portfolio); mainApp.openPortfolioView(); }
+		 
 	}
-
+ 
 	/**
 	 * Opens the transaction dialog to add a transaction. Because there is no
 	 * transaction at this point, the parameter null is passed.

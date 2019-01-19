@@ -2,6 +2,7 @@ package portfmgr.view;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -46,7 +48,7 @@ public class PortfolioUpdateViewController implements Initializable {
 	private TextField newPortfolioName;
 	@FXML
 	private Button submit;
-	
+	 
 	/**
 	 * Handles the UX for the PortfolioDetailView that pressing ENTER to set new portfolio name is possible
 	 * @param event
@@ -97,9 +99,11 @@ public class PortfolioUpdateViewController implements Initializable {
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);
             alert.setTitle("Eingabefehler");
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("dialog-pane");
             alert.setHeaderText("Portfolioname und Waehrung darf nicht leer sein");
             alert.showAndWait();
-    
+            
     		return false;
     	}
     	
