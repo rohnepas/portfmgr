@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
@@ -19,7 +20,7 @@
 <AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioViewController">
    <children>
       <Label layoutX="179.0" layoutY="136.0" styleClass="label-main-titel-view" text="Portfolioübersicht" />
-      <AnchorPane layoutX="42.0" layoutY="179.0" prefHeight="366.0" prefWidth="906.0" stylesheets="@style.css" AnchorPane.bottomAnchor="54.60000000000002" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="179.0">
+      <AnchorPane layoutX="50.0" layoutY="185.0" prefHeight="366.0" prefWidth="906.0" stylesheets="@style.css" AnchorPane.bottomAnchor="48.60000000000002" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="185.0">
          <children>
             <Rectangle fx:id="portfolio1" arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="143.0" layoutX="128.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" strokeType="INSIDE" styleClass="button" width="274.0" AnchorPane.leftAnchor="128.0">
                <cursor>
@@ -71,5 +72,6 @@
             </Label>
          </children>
       </AnchorPane>
+      <Button layoutX="179.0" layoutY="551.0" mnemonicParsing="false" onAction="#handleDeletePortfolio" text="Alle Portfolios loeschen" />
    </children>
 </AnchorPane>

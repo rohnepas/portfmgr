@@ -46,7 +46,7 @@ public class PortfolioUpdateViewController implements Initializable {
 	private TextField newPortfolioName;
 	@FXML
 	private Button submit;
-	
+	 
 	/**
 	 * Handles the UX for the PortfolioDetailView that pressing ENTER to set new portfolio name is possible
 	 * @param event
@@ -97,9 +97,11 @@ public class PortfolioUpdateViewController implements Initializable {
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);
             alert.setTitle("Eingabefehler");
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("dialog-pane");
             alert.setHeaderText("Portfolioname und Waehrung darf nicht leer sein");
             alert.showAndWait();
-    
+            
     		return false;
     	}
     	
@@ -137,7 +139,6 @@ public class PortfolioUpdateViewController implements Initializable {
 	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
 	}
-	
 	
 
 	@Override

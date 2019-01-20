@@ -23,7 +23,7 @@ import javafx.collections.ObservableList;
 
 /**
  * This class handles the Excel sheet export
- * @author Marc Steiner
+ * @author Marc Steiner 
  */
 public class ExportData {
 	

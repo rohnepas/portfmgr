@@ -16,12 +16,13 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -62,7 +63,7 @@ public class TransactionViewController implements Initializable {
 	private TextField cryptoCurrency;
 
 	@FXML
-	private ChoiceBox type;
+	private ComboBox<String> type;
 
 	@FXML
 	private TextField price;
@@ -83,7 +84,7 @@ public class TransactionViewController implements Initializable {
 	 * performs a validation and saves the portfolio to the database or updates the
 	 * portfolio.
 	 *
-	 * @author: Pascal Rohner, Marc Steiner
+	 * @author: Pascal Rohner, Marc Steiner 
 	 */
 	public void handleAddition() {
 		// String tempfiatCurrency = fiatCurrency.getValue().toString();
@@ -96,13 +97,16 @@ public class TransactionViewController implements Initializable {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(dialogStage);
 			alert.setTitle("Eingabefehler");
-			alert.setHeaderText("Kryptow�hrung existiert nicht - bitte korrigieren");
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+	        alert.getDialogPane().getStyleClass().add("dialog-pane");
+			alert.setHeaderText("Kryptowaehrung existiert nicht - bitte korrigieren");
 			alert.showAndWait();
 		}
 
 		else {
 
 			// Calls a method for calculating the total
+			
 			Double tempTotal = calculateTotal(type.getValue().toString(), Double.valueOf(price.getText()),
 					Double.valueOf(numberOfCoins.getText()), Double.valueOf(fees.getText()));
 
@@ -324,8 +328,7 @@ public class TransactionViewController implements Initializable {
 	public void setMainApp(portfmgrApplication mainApp, List<String> currencyList) {
 		this.mainApp = mainApp;
 		this.currencyList = currencyList;
-		type.getItems().addAll("Kauf", "Verkauf");
-
+		type.setItems(FXCollections.observableArrayList(Arrays.asList("Kauf", "Verkauf")));
 	}
 
 	/**

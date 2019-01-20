@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioUpdateViewController">
+<AnchorPane prefHeight="250.0" prefWidth="400.0" styleClass="background-popup" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioUpdateViewController">
    <children>
       <GridPane layoutX="34.0" layoutY="51.0" prefHeight="131.0" prefWidth="332.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="51.0">
         <columnConstraints>

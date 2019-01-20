@@ -49,6 +49,9 @@ public class PortfolioViewController implements Initializable {
 
 	@FXML
 	private Button addTransaction;
+	
+	@FXML
+	private Button deletePortfolio;
 
 	@FXML
 	private Rectangle portfolio1;
@@ -74,6 +77,10 @@ public class PortfolioViewController implements Initializable {
 	@FXML
 	private Label labelPortfolio4;
 
+	@FXML
+	public void handleDeletePortfolio() {
+		System.out.println("DELETE");
+	}
 	/**
 	 * Sends the selected portfolio to the portfolioDetailView and calls method from
 	 * mainApp to open the portfolioView.

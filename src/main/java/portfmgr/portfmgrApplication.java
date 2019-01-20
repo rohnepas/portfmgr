@@ -122,7 +122,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	} 
 
 	/**
 	 * Sets up and loads the DetailView
