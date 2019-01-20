@@ -75,7 +75,7 @@ public class PortfolioUpdateViewController implements Initializable {
      * after checking if name is not empty.
      */
     @FXML
-    private void handleSubmit() {
+    public void handleSubmit() {
     	
     	String tempPortfolioName = newPortfolioName.getText();
     	String tempCurrencyBox = currencyBox.getValue();
@@ -96,17 +96,19 @@ public class PortfolioUpdateViewController implements Initializable {
      * @param tempCurrencyBox 
      * @param tempPortfolioName 
      */
-    private boolean isInputValid(String tempPortfolioName, String tempCurrencyBox) {
+    public boolean isInputValid(String tempPortfolioName, String tempCurrencyBox) {
     	
     	if (tempPortfolioName == null || tempPortfolioName.trim().isEmpty() || tempCurrencyBox == null) {
  
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Eingabefehler");
-            alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-            alert.getDialogPane().getStyleClass().add("dialog-pane");
-            alert.setHeaderText("Portfolioname und Waehrung darf nicht leer sein");
-            alert.showAndWait();
+			
+			  Alert alert = new Alert(AlertType.ERROR); alert.initOwner(dialogStage);
+			  alert.setTitle("Eingabefehler");
+			  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css"
+			  ).toExternalForm());
+			  alert.getDialogPane().getStyleClass().add("dialog-pane");
+			  alert.setHeaderText("Portfolioname und Waehrung darf nicht leer sein");
+			  alert.showAndWait();
+			 
             
     		return false;
     	}
