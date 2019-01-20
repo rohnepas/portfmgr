@@ -76,8 +76,12 @@ public class PortfolioUpdateViewController implements Initializable {
      */
     @FXML
     private void handleSubmit() {
+    	
+    	String tempPortfolioName = newPortfolioName.getText();
+    	String tempCurrencyBox = currencyBox.getValue();
+    	
     	    	
-        if (isInputValid()) {
+        if (isInputValid(tempPortfolioName, tempCurrencyBox)) {
         	
         	portfolio.setPortfolioName(newPortfolioName.getText());
         	portfolio.setPortfolioFiatCurrency(currencyBox.getValue());        	
@@ -89,10 +93,12 @@ public class PortfolioUpdateViewController implements Initializable {
     
     /**
      * Checks if the input for name and cryptoCurrency is correct, otherwise prompt alert
+     * @param tempCurrencyBox 
+     * @param tempPortfolioName 
      */
-    private boolean isInputValid() {
+    private boolean isInputValid(String tempPortfolioName, String tempCurrencyBox) {
     	
-    	if (newPortfolioName.getText() == null || newPortfolioName.getText().trim().isEmpty() || currencyBox.getValue() == null) {
+    	if (tempPortfolioName == null || tempPortfolioName.trim().isEmpty() || tempCurrencyBox == null) {
  
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);

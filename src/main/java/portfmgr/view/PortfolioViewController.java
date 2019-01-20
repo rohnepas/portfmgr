@@ -26,6 +26,9 @@ import portfmgr.model.TransactionRepository;
 
 @Controller
 public class PortfolioViewController implements Initializable {
+	
+	private String defaultPortfolioname = "leeres Portfolio";
+	private String defaultPortfolioFiatCurrency = "CHF";
 
 	// Gets the repository instance injected and uses it.
 	@Autowired
@@ -77,9 +80,25 @@ public class PortfolioViewController implements Initializable {
 	@FXML
 	private Label labelPortfolio4;
 
+	/**
+	 * Delete all transactions and setback the portfolio name and fiat currency
+	 * @author Marc Steiner
+	 */
 	@FXML
 	public void handleDeletePortfolio() {
-		System.out.println("DELETE");
+
+		int i = 0;
+		Iterable<Portfolio> portfolioList = portRepo.findAll();
+		
+		for (Portfolio portfolio : portfolioList) {
+			portfArray[i] = portfolio;
+			portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
+			portfArray[i].setPortfolioName(defaultPortfolioname);
+			portRepo.save(portfArray[i]);
+			transRepo.deleteAllTransactions(portfArray[i].getId());
+			i++;
+		}
+		mainApp.openPortfolioView();
 	}
 	/**
 	 * Sends the selected portfolio to the portfolioDetailView and calls method from
@@ -133,17 +152,14 @@ public class PortfolioViewController implements Initializable {
 
 		int numberOfPortfolios = 4;
 		
-		
-		
-
 		if (portRepo.count() == 0) {
 			// Makes an Array of size 4 with type of content portfolio 
 			portfArray = new Portfolio[4];
 
 			for (int i = 0; i < numberOfPortfolios; i++) {
 				portfArray[i] = new Portfolio();
-				portfArray[i].setPortfolioName("leeres Portfolio");
-				portfArray[i].setPortfolioFiatCurrency("CHF");
+				portfArray[i].setPortfolioName(defaultPortfolioname);
+				portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
 
 				portRepo.save(portfArray[i]);
 			}
