@@ -3,6 +3,7 @@ package portfmgr.view;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +24,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -353,6 +356,11 @@ public class PortfolioDetailViewController implements Initializable {
 			allTransactions.remove(transaction);
 			transRepo.delete(transaction);
 		}
+		
+		updatePortfolio();
+		
+		insightTable.setItems(getInsight());
+		
 	}
 
 	/**
@@ -396,7 +404,11 @@ public class PortfolioDetailViewController implements Initializable {
 		ObservableList<Transaction> transaction = FXCollections.observableArrayList();
 
 		transaction.addAll(transRepo.findByPortfolio(portfolio));
-
+		
+		// formats all the total values withing the transactionList
+		for (Transaction singleTransaction : transaction) {
+			singleTransaction.setTotal(formatDouble(singleTransaction.getTotal()));
+		}
 		return transaction;
 	}
 
@@ -442,17 +454,17 @@ public class PortfolioDetailViewController implements Initializable {
 
 			// total amout spent of a specific currency
 			Double tempTotalAmount = tempSpotPrice * tempSumNbrOfCoins;
-			insightObject.setTotal(tempTotalAmount);
+			insightObject.setTotal(formatDouble(tempTotalAmount));
 
 			// avarage price paied for a specific currency
 			Double tempAvaragePrice = transRepo.sumUpTotalForCryptoCurrency(this.portfolio.getId(), cryptoCurrency) / tempSumNrbOfCoinsKauf;
-			insightObject.setAveragePrice(tempAvaragePrice);
+			insightObject.setAveragePrice(formatDouble(tempAvaragePrice));
 
 			// change in percent. calls a separate method to calculate the change
-			insightObject.setChangePercent(getChangeinPercentage(tempTotalAmount, tempAvaragePrice * tempSumNbrOfCoins));
+			insightObject.setChangePercent(formatDouble(getChangeinPercentage(tempTotalAmount, tempAvaragePrice * tempSumNbrOfCoins)));
 
 			// change in absolute numbers (fiat)
-			insightObject.setChangeFiat(tempTotalAmount - (tempAvaragePrice * tempSumNbrOfCoins));
+			insightObject.setChangeFiat(formatDouble(tempTotalAmount - (tempAvaragePrice * tempSumNbrOfCoins)));
 
 
 			insight.add(insightObject);
@@ -461,6 +473,21 @@ public class PortfolioDetailViewController implements Initializable {
 
 		return insight;
 
+	}
+	
+	/**
+	 * Formats a double value by converting the double to a string and then parsing it as a double again.
+	 * The formatter is used to format the values in the transaction and insight tables.
+	 * 
+	 * @param Double -> value to be formatted
+	 * @return formatted value as double
+	 * @author Pascal Rohner
+	 */
+	
+	public Double formatDouble(Double value) {
+		DecimalFormat df = new DecimalFormat("####0.00");
+		String valueAsString = df.format(value);
+		return Double.parseDouble(valueAsString);
 	}
 
 	/**
@@ -481,6 +508,8 @@ public class PortfolioDetailViewController implements Initializable {
 		return changeInPercent;
 	}
 
+	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		/**
@@ -523,7 +552,7 @@ public class PortfolioDetailViewController implements Initializable {
 		 *
 		 * @author Pascal Rohner
 		 */
-
+		
 		insightCryptoCurrencyColumn.setCellValueFactory(new PropertyValueFactory<Insight, String>("cryptoCurrency"));
 		insightSpotPriceColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("spotPrice"));
 		insightNumberOfCoinsColumn.setCellValueFactory(new PropertyValueFactory<Insight, Double>("numberOfCoins"));
