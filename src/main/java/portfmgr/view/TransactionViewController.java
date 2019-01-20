@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -66,6 +68,12 @@ public class TransactionViewController implements Initializable {
 	private ComboBox<String> type;
 
 	@FXML
+	private Label date;
+	
+	@FXML
+	private DatePicker datePicker;
+	
+	@FXML
 	private TextField price;
 
 	@FXML
@@ -73,6 +81,7 @@ public class TransactionViewController implements Initializable {
 
 	@FXML
 	private TextField fees;
+	
 	@FXML
 	private Button save;
 
@@ -87,40 +96,69 @@ public class TransactionViewController implements Initializable {
 	 * @author: Pascal Rohner, Marc Steiner 
 	 */
 	public void handleAddition() {
-		// String tempfiatCurrency = fiatCurrency.getValue().toString();
 		String tempCryptoCurrency = cryptoCurrency.getText().toUpperCase();
-
 		tempCryptoCurrency = validateCryptoInput(tempCryptoCurrency);
-
-		// Simple validation if the entered Crypto Currency exists.
-		if (tempCryptoCurrency == null) {
+		
+		// is set to false in case a textField is empty 
+		boolean inputComplete = true;
+		List<TextField> labelList = new ArrayList<>();
+		
+		// list of textFields which should be validate for input
+		labelList.add(price);
+		labelList.add(numberOfCoins);
+		labelList.add(fees);
+		
+		// validates if the textField input is empty
+		for (TextField textField : labelList) {
+			System.out.println(textField.getText());
+			if (textField.getText().trim().isEmpty()) {
+				inputComplete = false;
+			}
+		}
+		
+		if (inputComplete == false) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.initOwner(dialogStage);
+			alert.setTitle("Eingabefehler");
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+			alert.getDialogPane().getStyleClass().add("dialog-pane");
+			alert.setHeaderText("Eingabe ist unvollständig");
+			alert.showAndWait();
+		} else if (tempCryptoCurrency == null) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(dialogStage);
 			alert.setTitle("Eingabefehler");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 	        alert.getDialogPane().getStyleClass().add("dialog-pane");
-			alert.setHeaderText("Kryptowaehrung existiert nicht - bitte korrigieren");
+			alert.setHeaderText("Symbol für Coin existiert nicht");
 			alert.showAndWait();
 		}
-
 		else {
+			// if no type is entered, "Kauf" is automatically set
+			if (type.getValue() == null){
+				type.setValue("Kauf");
+			}
+			
+			if (datePicker.getValue() == null) {
+				datePicker.setValue(LocalDate.now());
+			}
 
 			// Calls a method for calculating the total
-			
 			Double tempTotal = calculateTotal(type.getValue().toString(), Double.valueOf(price.getText()),
 					Double.valueOf(numberOfCoins.getText()), Double.valueOf(fees.getText()));
 
 			Double tempNbrOfCoins = Double.valueOf(numberOfCoins.getText());
 
+			
 			if (type.getValue().toString() == "Verkauf") {
 				tempNbrOfCoins = tempNbrOfCoins * -1;
 			}
 
 			if (transaction == null) {
-				saveTransaction(Double.valueOf(price.getText()), fiatCurrency.getText(), tempCryptoCurrency,
+				saveTransaction(Double.valueOf(price.getText()), fiatCurrency.getText(), datePicker.getValue(), tempCryptoCurrency,
 						type.getValue().toString(), tempNbrOfCoins, Double.valueOf(fees.getText()), tempTotal);
 			} else {
-				updateTransaction(transaction, Double.valueOf(price.getText()), fiatCurrency.getText(),
+				updateTransaction(transaction, Double.valueOf(price.getText()), fiatCurrency.getText(), datePicker.getValue(),
 						tempCryptoCurrency, type.getValue().toString(), tempNbrOfCoins, Double.valueOf(fees.getText()),
 						tempTotal);
 			}
@@ -234,7 +272,7 @@ public class TransactionViewController implements Initializable {
 	 *
 	 */
 
-	public void saveTransaction(Double price, String fiatCurrency, String cryptoCurrency, String type,
+	public void saveTransaction(Double price, String fiatCurrency, LocalDate date, String cryptoCurrency, String type,
 			Double numberOfCoins, Double fees, Double total) {
 
 		Transaction transaction = new Transaction();
@@ -242,7 +280,7 @@ public class TransactionViewController implements Initializable {
 		transaction.setFiatCurrency(fiatCurrency);
 		transaction.setNumberOfCoins(numberOfCoins);
 		transaction.setPrice(price);
-		transaction.setTransactionDate(LocalDate.now());
+		transaction.setTransactionDate(date);
 		transaction.setType(type);
 		transaction.setFees(fees);
 		transaction.setTotal(total);
@@ -260,12 +298,13 @@ public class TransactionViewController implements Initializable {
 	 * @author Pascal Rohner
 	 */
 
-	public void updateTransaction(Transaction transaction, Double price, String fiatCurrency, String cryptoCurrency,
+	public void updateTransaction(Transaction transaction, Double price, String fiatCurrency, LocalDate date, String cryptoCurrency,
 			String type, Double numberOfCoins, Double fees, Double total) {
 		transaction.setPrice(price);
 		transaction.setFiatCurrency(fiatCurrency);
 		transaction.setCryptoCurrency(cryptoCurrency);
 		transaction.setType(type);
+		transaction.setTransactionDate(date);
 		transaction.setNumberOfCoins(numberOfCoins);
 		transaction.setFees(fees);
 		transaction.setTotal(total);
@@ -289,6 +328,7 @@ public class TransactionViewController implements Initializable {
 			fiatCurrency.setText(transaction.getFiatCurrency());
 			cryptoCurrency.setText(transaction.getCryptoCurrency());
 			type.setValue(transaction.getType());
+			datePicker.setValue(transaction.getTransactionDate());
 			price.setText(String.valueOf(transaction.getPrice()));
 			numberOfCoins.setText(String.valueOf(transaction.getNumberOfCoins()));
 			fees.setText(String.valueOf(transaction.getFees()));
@@ -343,6 +383,7 @@ public class TransactionViewController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
 
 	}
 }
