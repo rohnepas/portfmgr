@@ -356,6 +356,8 @@ public class PortfolioDetailViewController implements Initializable {
 		
 		updatePortfolio();
 		
+		insightTable.setItems(getInsight());
+		
 	}
 
 	/**
