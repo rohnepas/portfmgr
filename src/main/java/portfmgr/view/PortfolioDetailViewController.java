@@ -353,6 +353,9 @@ public class PortfolioDetailViewController implements Initializable {
 			allTransactions.remove(transaction);
 			transRepo.delete(transaction);
 		}
+		
+		updatePortfolio();
+		
 	}
 
 	/**
