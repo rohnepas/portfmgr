@@ -24,11 +24,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -173,7 +171,6 @@ public class PortfolioDetailViewController implements Initializable {
 
 		} else {
 			
-			System.out.println("else");
 			portfolioName.setText(portfolio.getPortfolioName());
 			portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
 
@@ -201,8 +198,8 @@ public class PortfolioDetailViewController implements Initializable {
 			e.printStackTrace();
 		}
 
-		portfolioCalculator.init(portfolio, onlineDataJSON, coinlistPath);
-		portfolioCalculator.calculatePortfolio();
+		portfolioCalculator.init(portfolio);
+		portfolioCalculator.calculatePortfolio(onlineDataJSON);
 
 		refreshPortfolioData();
 	}
@@ -244,11 +241,7 @@ public class PortfolioDetailViewController implements Initializable {
 		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency(portfolio.getId());
 	}
 
-	/**
-	 *
-	 * @return
-	 * @author Marc Steiner
-	 */
+	
 	public List<String> getCryptoCurrencyList() {
 		return cryptoCurrencyList;
 	}
@@ -267,8 +260,6 @@ public class PortfolioDetailViewController implements Initializable {
 	 */
 	public void editPortfolio() {
 
-		// change fiatCurrency of portfolio is not allowed. List<String> = actual
-		// portfolio currency
 		mainApp.openPortfolioUpdateView(portfolio, Arrays.asList(portfolio.getPortfolioFiatCurrency()));
 		refreshPortfolioData();
 	}
