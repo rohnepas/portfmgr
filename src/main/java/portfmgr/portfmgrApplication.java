@@ -225,7 +225,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			// Gives the controller class access to the mainApp in order to set the scene
 			// within the rootLayout.
 			TransactionViewController controller = loader.getController();
-			controller.setMainApp(this, currencyList);
+			controller.setMainApp(this);
 			controller.setDialogStage(dialogStage);
 			controller.setPortfolio(portfolio);
 			controller.setTransaction(transaction);

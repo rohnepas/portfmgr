@@ -46,7 +46,7 @@ public class OnlineCourseQuery {
 	public JSONObject getOnlineCourseData() throws IOException {
 		
 		
-		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + symbols + "&tsyms=" + currencies +"&api_key="+ APIKey);
+		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + this.symbols + "&tsyms=" + this.currencies +"&api_key="+ this.APIKey);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.setConnectTimeout(5000);
