@@ -1,20 +1,21 @@
 package portfmgr.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import portfmgr.view.PortfolioUpdateViewController;
 
 
 /**
@@ -25,6 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class PortfolioCalculatorTest {
+	PortfolioCalculator portCalculator;
 	
 	
 	// Is used to insert a Portfolio in the database and reading it via the find by name API
@@ -33,26 +35,19 @@ public class PortfolioCalculatorTest {
 	
 	@Autowired
 	private PortfolioRepository portRepo;
+	
+	@Autowired
 	private TransactionRepository transRepo;
 
 	private JSONObject JSONdata;
 	private Transaction transaction;
 	private Portfolio portfolio;
 
-	/**
-	 * Creates a portfolio, assigns it to an instance variable, and stores it in the
-	 * database to use the portfolio in subsequent tests.
-	 * 
-	 * @author Pascal Rohner und Marc Steiner
-	 */
+	
 	@Before
-	public void createAndSavePortfolio() {
-		Portfolio portfolio = new Portfolio();
-		portfolio.setPortfolioName("Test");
-		portfolio.setPortfolioFiatCurrency("CHF");
-		this.portfolio = portfolio;
-		entityManager.persist(portfolio);
-		entityManager.flush();
+	public void init() {
+		PortfolioCalculator portCalculator = new PortfolioCalculator();
+		this.portCalculator = portCalculator;		
 	}
 	
 	/**
@@ -60,7 +55,15 @@ public class PortfolioCalculatorTest {
 	 * @author Marc Steiner
 	 */
 	@Before
-	public void createAndSaveTransaction() {
+	public void setupPortfolioAndTransaction() {
+		
+		Portfolio portfolio = new Portfolio();
+		portfolio.setPortfolioFiatCurrency("CHF");
+		portfolio.setPortfolioName("Test");
+		this.portfolio = portfolio;
+		entityManager.persist(portfolio);
+		entityManager.flush();
+		
 		Transaction transaction = new Transaction();
 		transaction.setFiatCurrency("CHF");
 		transaction.setCryptoCurrency("BTC");
@@ -69,6 +72,7 @@ public class PortfolioCalculatorTest {
 		transaction.setNumberOfCoins(1.0);
 		transaction.setPrice(500.0);
 		transaction.setTransactionDate(null);
+		transaction.setPortfolio(portfolio);
 		this.transaction = transaction;
 		entityManager.persist(transaction);
 		entityManager.flush();
@@ -88,6 +92,21 @@ public class PortfolioCalculatorTest {
 		JSONObject jDataObject = new JSONObject();
 		jDataObject.put("BTC", jObject);
 		this.JSONdata = jDataObject;
+	}
+	
+	/**
+	 * Test if the convertion from List<Object> into Map works by checking
+	 * one value (total spent) of the transaction
+	 * @author Marc Steiner
+	 * 
+	 */
+	@Test
+	public void convertDataTest() {		
+		List<Object[]> found = transRepo.sumAndGroupTotalSpent(this.portfolio.getId());
+		Map<String,Double> tempMap = portCalculator.convertData(found);			
+		
+		//Map<k,v> result example: {BTC=1.0, LTC=10.0}
+		assertEquals(this.transaction.getTotal(), tempMap.get("BTC"));
 	}
 	
 	/**

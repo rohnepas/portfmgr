@@ -55,7 +55,6 @@ public class PortfolioCalculator {
 				
 		List<Map<String, Double>> dataList = new ArrayList<Map<String, Double>>();
 		
-		
 		Map<String,Double> mapTotalPortfolioValue = convertData(transRepo.sumAndGroupTotalNumberOfCoins(portfolio.getId()));
 		Map<String,Double> mapProfitOrLoss = convertData(transRepo.sumAndGroupTotalSpent(portfolio.getId()));
 		

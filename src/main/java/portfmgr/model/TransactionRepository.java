@@ -23,6 +23,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 
 	List<Transaction> findByPortfolio(Portfolio portfolio);
 	
+
 	/**
 	 * SQL query which sum up the number of coins for one specific crypto currency
 	 * 
@@ -44,7 +45,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	List<String> findDistinctCryptoCurrency(@Param("id") Long id);
 	
 	/**
-	 * SQL query which groups all transactions by crypto currency and sum the total number of this crypto currencycost.
+	 * SQL query which groups all transactions by crypto currency and sum the total number of this crypto currency.
 	 *  
 	 * @param numberOfCoins (=total amount of coins per transaction referred to Transaction.java)
 	 * @param currency (=crypto currency referred to Transaction.java)
@@ -56,7 +57,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	List<Object[]> sumAndGroupTotalNumberOfCoins(@Param("id") Long id);
 		
 	/**
-	 * SQL query which groups all transactions by crypto currency and sum the total number of this crypto currencycost.
+	 * SQL query which groups all transactions by crypto currency and sum the total number of  cost for this crypto currency.
 	 *  
 	 * @param total (=total amount spent per crypo currency referred to Transaction.java)
 	 * @param currency (=crypto currency referred to Transaction.java)
