@@ -100,16 +100,13 @@ public class PortfolioUpdateViewController implements Initializable {
     	
     	if (tempPortfolioName == null || tempPortfolioName.trim().isEmpty() || tempCurrencyBox == null) {
  
-			
-			  Alert alert = new Alert(AlertType.ERROR); alert.initOwner(dialogStage);
+			  Alert alert = new Alert(AlertType.ERROR);
 			  alert.setTitle("Eingabefehler");
-			  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css"
-			  ).toExternalForm());
+			  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 			  alert.getDialogPane().getStyleClass().add("dialog-pane");
 			  alert.setHeaderText("Portfolioname und Waehrung darf nicht leer sein");
 			  alert.showAndWait();
 			 
-            
     		return false;
     	}
     	
