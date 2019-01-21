@@ -1,7 +1,5 @@
 package portfmgr.view;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,9 +24,10 @@ public class PortfolioUpdateViewControllerTest {
 	}
 	
 	/**
-	 * Would test if input is valid, but couldn't build the test because of 
-	 * not finding out how to initialize the DialogPane and Alert. These two causing a
-	 * failure trace in JUNI test in code boolean isValid = portUpdateViewController.isInputValid("Test", "CHF") .
+	 * Test if the input is valid
+	 * 
+	 * ACTUAL PROBLEM (TO BE SOLVED): Failure because of missing imlementation of DialogPane and Alert
+	 * These two causing a failure trace in JUNI test in code boolean isValid = portUpdateViewController.isInputValid("Test", "CHF") .
 	 * @author Marc Steiner
 	 */
 	@Test

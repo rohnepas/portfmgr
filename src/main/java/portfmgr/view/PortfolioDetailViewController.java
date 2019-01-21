@@ -191,33 +191,33 @@ public class PortfolioDetailViewController implements Initializable {
 		OnlineCourseQuery query = new OnlineCourseQuery(cryptoCurrencyList, fiatCurrencyList);
 
 		try {
-			onlineDataJSON = query.getOnlineCourseData();
+			this.onlineDataJSON = query.getOnlineCourseData();
 			
 		} catch (IOException e) {
 			System.out.println("Problem within getOnlineCourseData()");
 			e.printStackTrace();
 		}
 
+		// do not instance portfolioCalulator because of @Autowired
 		portfolioCalculator.init(portfolio);
-		portfolioCalculator.calculatePortfolio(onlineDataJSON);
+		portfolioCalculator.calculatePortfolio(this.onlineDataJSON);
 
 		refreshPortfolioData();
 	}
 
 	/**
 	 * Refresh the portfolio without calculation.
+	 * Do not instance portfolioCalulator because of @Autowired
 	 *
 	 * @author Marc Steiner
 	 */
 	public void refreshPortfolioData() {
 
-		portfolioName.setText(portfolio.getPortfolioName());
-		portfolioFiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
-		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + portfolio.getPortfolioFiatCurrency());
-		totalPortoflioValue
-				.setText(portfolioCalculator.getTotalPortfolioValue() + " " + portfolio.getPortfolioFiatCurrency());
-		profitOrLoss.setText(
-				String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + portfolio.getPortfolioFiatCurrency());
+		portfolioName.setText(this.portfolio.getPortfolioName());
+		portfolioFiatCurrency.setText(this.portfolio.getPortfolioFiatCurrency());
+		totalSpent.setText(portfolioCalculator.getTotalSpent() + " " + this.portfolio.getPortfolioFiatCurrency());
+		totalPortoflioValue.setText(portfolioCalculator.getTotalPortfolioValue() + " " + this.portfolio.getPortfolioFiatCurrency());
+		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + this.portfolio.getPortfolioFiatCurrency());
 		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
 
 		if (portfolioCalculator.getProfit()) {
@@ -428,7 +428,7 @@ public class PortfolioDetailViewController implements Initializable {
 			 *  (contains all currencies according to the transactions) and saves it in a new JSON object. 
 			 */
 			
-			JSONObject unwrappedCryptoCurrencyPrices = onlineDataJSON.getJSONObject(cryptoCurrency);
+			JSONObject unwrappedCryptoCurrencyPrices = this.onlineDataJSON.getJSONObject(cryptoCurrency);
 			
 			/*
 			 * The fiatCurrencie of the portfolio is read from the new JSON object and stored in a local
