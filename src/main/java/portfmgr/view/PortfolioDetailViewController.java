@@ -187,11 +187,12 @@ public class PortfolioDetailViewController implements Initializable {
 
 	public void updatePortfolio() {
 
+		OnlineCourseQuery query = new OnlineCourseQuery();
+		
 		setCryptoCurrencyList();
-		OnlineCourseQuery query = new OnlineCourseQuery(cryptoCurrencyList, fiatCurrencyList);
 
 		try {
-			this.onlineDataJSON = query.getOnlineCourseData();
+			this.onlineDataJSON = query.getOnlineCourseData(cryptoCurrencyList, fiatCurrencyList);
 			
 		} catch (IOException e) {
 			System.out.println("Problem within getOnlineCourseData()");
