@@ -29,7 +29,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portfmgr.portfmgrApplication;
-import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioRepository;
 import portfmgr.model.Transaction;
@@ -56,7 +55,6 @@ public class TransactionViewController implements Initializable {
 	private Portfolio portfolio;
 	private Stage dialogStage;
 	private String coinlistPath;
-	private List<String> currencyList;
 
 	@FXML
 	private Label fiatCurrency;
@@ -171,33 +169,6 @@ public class TransactionViewController implements Initializable {
 			this.transaction = null;
 
 		}
-	}
-
-	/**
-	 * Calls the API for crypto currencies and give back the values only for one
-	 * specific crypto currency
-	 * 
-	 * @return values (JSON Object with fiat rate of defined crypto currency)
-	 * @param tempCurrency (crypto currency symbol for that the fiat rate will be
-	 *                     called)
-	 * @author Marc Steiner
-	 *
-	 */
-	public JSONObject getCryptoCurrencyData(String tempCurrency) {
-
-		// Convert String to needed List>String>
-		List<String> symbol = Arrays.asList(tempCurrency);
-		OnlineCourseQuery query = new OnlineCourseQuery(symbol, currencyList);
-
-		try {
-			// Get the value for the specific crypto currency
-			JSONObject values = query.getOnlineCourseData().getJSONObject(tempCurrency);
-			return values;
-		} catch (IOException e) {
-			System.out.println("Problem within getOnlineCourseData()");
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	/*
@@ -365,9 +336,8 @@ public class TransactionViewController implements Initializable {
 	 * @param mainApp
 	 * @author Pascal Rohner und Marc Steiner
 	 */
-	public void setMainApp(portfmgrApplication mainApp, List<String> currencyList) {
+	public void setMainApp(portfmgrApplication mainApp) {
 		this.mainApp = mainApp;
-		this.currencyList = currencyList;
 		type.setItems(FXCollections.observableArrayList(Arrays.asList("Kauf", "Verkauf")));
 	}
 

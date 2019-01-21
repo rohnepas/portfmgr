@@ -75,9 +75,13 @@ public class PortfolioUpdateViewController implements Initializable {
      * after checking if name is not empty.
      */
     @FXML
-    private void handleSubmit() {
+    public void handleSubmit() {
+    	
+    	String tempPortfolioName = newPortfolioName.getText();
+    	String tempCurrencyBox = currencyBox.getValue();
+    	
     	    	
-        if (isInputValid()) {
+        if (isInputValid(tempPortfolioName, tempCurrencyBox)) {
         	
         	portfolio.setPortfolioName(newPortfolioName.getText());
         	portfolio.setPortfolioFiatCurrency(currencyBox.getValue());        	
@@ -89,19 +93,20 @@ public class PortfolioUpdateViewController implements Initializable {
     
     /**
      * Checks if the input for name and cryptoCurrency is correct, otherwise prompt alert
+     * @param tempCurrencyBox 
+     * @param tempPortfolioName 
      */
-    private boolean isInputValid() {
+    public boolean isInputValid(String tempPortfolioName, String tempCurrencyBox) {
     	
-    	if (newPortfolioName.getText() == null || newPortfolioName.getText().trim().isEmpty() || currencyBox.getValue() == null) {
+    	if (tempPortfolioName == null || tempPortfolioName.trim().isEmpty() || tempCurrencyBox == null) {
  
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Eingabefehler");
-            alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-            alert.getDialogPane().getStyleClass().add("dialog-pane");
-            alert.setHeaderText("Portfolioname und Waehrung darf nicht leer sein");
-            alert.showAndWait();
-            
+			  Alert alert = new Alert(AlertType.ERROR);
+			  alert.setTitle("Eingabefehler");
+			  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+			  alert.getDialogPane().getStyleClass().add("dialog-pane");
+			  alert.setHeaderText("Portfolioname und Waehrung darf nicht leer sein");
+			  alert.showAndWait();
+			 
     		return false;
     	}
     	

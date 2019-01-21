@@ -1,6 +1,7 @@
 package portfmgr.view;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,11 @@ import org.springframework.stereotype.Controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import portfmgr.portfmgrApplication;
@@ -26,6 +30,9 @@ import portfmgr.model.TransactionRepository;
 
 @Controller
 public class PortfolioViewController implements Initializable {
+	
+	private String defaultPortfolioname = "leeres Portfolio";
+	private String defaultPortfolioFiatCurrency = "CHF";
 
 	// Gets the repository instance injected and uses it.
 	@Autowired
@@ -77,9 +84,36 @@ public class PortfolioViewController implements Initializable {
 	@FXML
 	private Label labelPortfolio4;
 
+	/**
+	 * Delete all transactions and setback the portfolio name and fiat currency
+	 * @author Marc Steiner
+	 */
 	@FXML
 	public void handleDeletePortfolio() {
-		System.out.println("DELETE");
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Portfolio loeschen");
+		alert.setHeaderText("ALLE Portfolios wirklich loeschen?");
+		alert.setContentText(null); 
+		alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+        alert.getDialogPane().getStyleClass().add("dialog-pane");
+		  
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == ButtonType.OK) {
+			int i = 0;
+			Iterable<Portfolio> portfolioList = portRepo.findAll();
+			
+			for (Portfolio portfolio : portfolioList) {
+				portfArray[i] = portfolio;
+				portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
+				portfArray[i].setPortfolioName(defaultPortfolioname);
+				portRepo.save(portfArray[i]);
+				transRepo.deleteAllTransactions(portfArray[i].getId());
+				i++;
+			}
+			mainApp.openPortfolioView();
+		}
 	}
 	/**
 	 * Sends the selected portfolio to the portfolioDetailView and calls method from
@@ -133,17 +167,14 @@ public class PortfolioViewController implements Initializable {
 
 		int numberOfPortfolios = 4;
 		
-		
-		
-
 		if (portRepo.count() == 0) {
 			// Makes an Array of size 4 with type of content portfolio 
 			portfArray = new Portfolio[4];
 
 			for (int i = 0; i < numberOfPortfolios; i++) {
 				portfArray[i] = new Portfolio();
-				portfArray[i].setPortfolioName("leeres Portfolio");
-				portfArray[i].setPortfolioFiatCurrency("CHF");
+				portfArray[i].setPortfolioName(defaultPortfolioname);
+				portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
 
 				portRepo.save(portfArray[i]);
 			}

@@ -1,9 +1,5 @@
 package portfmgr.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -27,10 +23,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PortfolioCalculator {
-	private JSONObject onlineDataJSON;
+	
 	private Portfolio portfolio;
-	private String coinlistPath;
-	private static String BaseLinkUrl = "https://www.cryptocompare.com";
 	private String profitOrLoss = "-";
 	private String profitOrLossPercentage = "-";
 	private String totalPortfolioValue = "-";
@@ -40,10 +34,12 @@ public class PortfolioCalculator {
 	@Autowired
 	TransactionRepository transRepo;
 
-	public void init(Portfolio portfolio, JSONObject onlineDataJSON, String coinlistPath) {
+
+	/*
+	 * Funcation not implemented in constructor because of Autowired constructor would not get the correct portfolio
+	 */
+	public void init(Portfolio portfolio) {
 		this.portfolio = portfolio;
-		this.coinlistPath = coinlistPath;
-		this.onlineDataJSON = onlineDataJSON;
 		profit = true;
 	}
 
@@ -51,7 +47,7 @@ public class PortfolioCalculator {
 	 * calculate all the portfolio statistics
 	 *
 	 */
-public void calculatePortfolio() {
+	public void calculatePortfolio(JSONObject onlineDataJSON) {
 		
 		Double tempTotalPortfolioValue = 0.0;
 		Double tempProfitOrLoss = 0.0;
@@ -59,9 +55,8 @@ public void calculatePortfolio() {
 				
 		List<Map<String, Double>> dataList = new ArrayList<Map<String, Double>>();
 		
-		
-		Map<String,Double> mapTotalPortfolioValue = convertData(transRepo.sumAndGroupTotalNumberOfCoins(portfolio.getId()));
-		Map<String,Double> mapProfitOrLoss = convertData(transRepo.sumAndGroupTotalSpent(portfolio.getId()));
+		Map<String,Double> mapTotalPortfolioValue = convertData(transRepo.sumAndGroupTotalNumberOfCoins(this.portfolio.getId()));
+		Map<String,Double> mapProfitOrLoss = convertData(transRepo.sumAndGroupTotalSpent(this.portfolio.getId()));
 		
 		dataList.add(mapTotalPortfolioValue);
 		dataList.add(mapProfitOrLoss);
@@ -105,30 +100,7 @@ public void calculatePortfolio() {
 			}
 		}
 		
-		
-		NumberFormat nf = NumberFormat.getNumberInstance(new Locale("de","CH"));
-		nf.setMaximumFractionDigits(2);
-		DecimalFormat df = (DecimalFormat)nf;
-
-		
-		if (transRepo.sumTotalSpent(portfolio.getId()) != null) {
-			tempTotalSpent = transRepo.sumTotalSpent(portfolio.getId());
-		} 
-
-		totalSpent = df.format(tempTotalSpent);
-		totalPortfolioValue = df.format(tempTotalPortfolioValue);
-		profitOrLoss = df.format(tempProfitOrLoss);
-		
-		if(tempTotalSpent > 0) {
-			profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));
-			
-		} else profitOrLossPercentage = df.format(0);
-		
-		
-		if (tempProfitOrLoss < 0) {
-			profit = false;
-		} 
-		
+		setStatisticValues(tempTotalSpent, tempTotalPortfolioValue, tempProfitOrLoss);		
 	}
 	
 	/**
@@ -150,6 +122,39 @@ public void calculatePortfolio() {
 		return null;
 	}	
 
+	/**
+	 * Set the statistic values of the portfolio
+	 * 
+	 * @param tempTotalSpent
+	 * @param tempTotalPortfolioValue
+	 * @param tempProfitOrLoss
+	 */
+	public void setStatisticValues(Double tempTotalSpent, Double tempTotalPortfolioValue, Double tempProfitOrLoss) {
+		NumberFormat nf = NumberFormat.getNumberInstance(new Locale("de","CH"));
+		nf.setMaximumFractionDigits(2);
+		DecimalFormat df = (DecimalFormat)nf;
+
+		
+		if (transRepo.sumTotalSpent(this.portfolio.getId()) != null) {
+			tempTotalSpent = transRepo.sumTotalSpent(this.portfolio.getId());
+		} 
+
+		totalSpent = df.format(tempTotalSpent);
+		totalPortfolioValue = df.format(tempTotalPortfolioValue);
+		profitOrLoss = df.format(tempProfitOrLoss);
+		
+		if(tempTotalSpent > 0) {
+			profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));
+			
+		} else profitOrLossPercentage = df.format(0);
+		
+		
+		if (tempProfitOrLoss < 0) {
+			profit = false;
+		} 
+	}
+	
+	
 	public String getProfitOrLoss() {
 		return profitOrLoss;
 	}
@@ -163,46 +168,10 @@ public void calculatePortfolio() {
 	}
 	
 	public String getTotalSpent() {
-		return totalSpent.toString();
+		return totalSpent;
 	}
 	
 	public boolean getProfit() {
 		return profit;
 	}
-	
-	/**
-	 * reads the file in coinlistPath and extracts the URL for the picture and name of the specific crypto currency
-	 * "Data" is the key in the JSON file for the symbol of the currency.
-	 * "ImageURL" is the value in the JSON file for the URL of the specific image
-	 * "CoinName" is the value in the JSON file for the specific symbol
-	 *
-	 *@param symbol (crypto currency symbol (e.g. "BTC" for Bitcoin)
-	 *@return String imageURL
-	 *
-	 */
-	public String getImageOfCryptoCurrency(String symbol) {
-		File file = new File(coinlistPath);
-		String content;
-
-		try {
-			content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
-			JSONObject obj = new JSONObject(content);
-
-			// stores all symbols with the values in a new JSON object
-			JSONObject data = obj.getJSONObject("Data");
-
-			String imageURL = BaseLinkUrl + data.getJSONObject(symbol).get("ImageUrl");
-
-			System.out.println(imageURL);
-			System.out.println("COIN NAME :" + data.getJSONObject(symbol).get("CoinName"));
-
-			return imageURL;
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 }

@@ -22,31 +22,24 @@ public class OnlineCourseQuery {
 	private String APIKey = "3b46b9503250d561de3cfa120910d34bada6f4d0587b7e3db6cf15e02a509313";
 	private String symbols;
 	private String currencies;
-	private List<String> cryptoCurrencyList;
-	private List<String> fiatCurrencyList;
+	//private List<String> cryptoCurrencyList;
+	//private List<String> fiatCurrencyList;
 	
-	 
-	public OnlineCourseQuery(List<String> cryptoCurrencyList, List<String> fiatCurrencyList) {
-		this.cryptoCurrencyList = cryptoCurrencyList;
-		this.fiatCurrencyList = fiatCurrencyList;
-		setSymbols(cryptoCurrencyList);
-		setCurrencies (fiatCurrencyList);
-	}
-	
-	public OnlineCourseQuery(String symbol) {
-		setSymbols(cryptoCurrencyList);
-		setCurrencies (fiatCurrencyList);
-	}
 
 	/**
+	 * Calls the online API and get the actual data
 	 * 
+	 * @param fiatCurrencyList 
+	 * @param cryptoCurrencyList 
 	 * @return obj (JSON Object
 	 * @throws IOException
 	 */
-	public JSONObject getOnlineCourseData() throws IOException {
+	public JSONObject getOnlineCourseData(List<String> cryptoCurrencyList, List<String> fiatCurrencyList) throws IOException {
 		
+		setSymbols(cryptoCurrencyList);
+		setCurrencies(fiatCurrencyList);
 		
-		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + symbols + "&tsyms=" + currencies +"&api_key="+ APIKey);
+		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + this.symbols + "&tsyms=" + this.currencies +"&api_key="+ this.APIKey);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.setConnectTimeout(5000);
