@@ -55,8 +55,8 @@ public class PortfolioCalculator {
 				
 		List<Map<String, Double>> dataList = new ArrayList<Map<String, Double>>();
 		
-		Map<String,Double> mapTotalPortfolioValue = convertData(transRepo.sumAndGroupTotalNumberOfCoins(portfolio.getId()));
-		Map<String,Double> mapProfitOrLoss = convertData(transRepo.sumAndGroupTotalSpent(portfolio.getId()));
+		Map<String,Double> mapTotalPortfolioValue = convertData(transRepo.sumAndGroupTotalNumberOfCoins(this.portfolio.getId()));
+		Map<String,Double> mapProfitOrLoss = convertData(transRepo.sumAndGroupTotalSpent(this.portfolio.getId()));
 		
 		dataList.add(mapTotalPortfolioValue);
 		dataList.add(mapProfitOrLoss);
@@ -135,8 +135,8 @@ public class PortfolioCalculator {
 		DecimalFormat df = (DecimalFormat)nf;
 
 		
-		if (transRepo.sumTotalSpent(portfolio.getId()) != null) {
-			tempTotalSpent = transRepo.sumTotalSpent(portfolio.getId());
+		if (transRepo.sumTotalSpent(this.portfolio.getId()) != null) {
+			tempTotalSpent = transRepo.sumTotalSpent(this.portfolio.getId());
 		} 
 
 		totalSpent = df.format(tempTotalSpent);
