@@ -312,8 +312,9 @@ public class PortfolioDetailViewController implements Initializable {
 		  transRepo.deleteAllTransactions(portfolio.getId());
 		  portfolio.setPortfolioFiatCurrency("CHF");
 		  portfolio.setPortfolioName("leeres Portfolio");
-		  portRepo.save(this.portfolio); mainApp.openPortfolioView(); }
-		 
+		  portRepo.save(this.portfolio); mainApp.openPortfolioView(); 
+		  
+		  }
 	}
  
 	/**

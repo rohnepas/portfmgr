@@ -1,6 +1,7 @@
 package portfmgr.view;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,11 @@ import org.springframework.stereotype.Controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import portfmgr.portfmgrApplication;
@@ -86,19 +90,30 @@ public class PortfolioViewController implements Initializable {
 	 */
 	@FXML
 	public void handleDeletePortfolio() {
-
-		int i = 0;
-		Iterable<Portfolio> portfolioList = portRepo.findAll();
 		
-		for (Portfolio portfolio : portfolioList) {
-			portfArray[i] = portfolio;
-			portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
-			portfArray[i].setPortfolioName(defaultPortfolioname);
-			portRepo.save(portfArray[i]);
-			transRepo.deleteAllTransactions(portfArray[i].getId());
-			i++;
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Portfolio loeschen");
+		alert.setHeaderText("ALLE Portfolios wirklich loeschen?");
+		alert.setContentText(null); 
+		alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+        alert.getDialogPane().getStyleClass().add("dialog-pane");
+		  
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == ButtonType.OK) {
+			int i = 0;
+			Iterable<Portfolio> portfolioList = portRepo.findAll();
+			
+			for (Portfolio portfolio : portfolioList) {
+				portfArray[i] = portfolio;
+				portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
+				portfArray[i].setPortfolioName(defaultPortfolioname);
+				portRepo.save(portfArray[i]);
+				transRepo.deleteAllTransactions(portfArray[i].getId());
+				i++;
+			}
+			mainApp.openPortfolioView();
 		}
-		mainApp.openPortfolioView();
 	}
 	/**
 	 * Sends the selected portfolio to the portfolioDetailView and calls method from
