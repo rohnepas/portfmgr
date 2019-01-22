@@ -294,8 +294,8 @@ public class PortfolioDetailViewController implements Initializable {
 	public void deletePortfolio() {
 
 		  Alert alert = new Alert(AlertType.CONFIRMATION);
-		  alert.setTitle("Portfolio loeschen");
-		  alert.setHeaderText("Portfolio wirklich loeschen?");
+		  alert.setTitle("Portfolio löschen");
+		  alert.setHeaderText("Portfolio wirklich löschen?");
 		  alert.setContentText(null); 
 		  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
           alert.getDialogPane().getStyleClass().add("dialog-pane");
