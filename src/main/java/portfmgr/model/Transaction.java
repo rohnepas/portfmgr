@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
 public class Transaction {
 	
 	/*
-	 * Id serves as unique key, it is unique and is automatically generated when
+	 * Id serves as unique key and is automatically generated when
 	 * adding a transaction to the database.
 	 */
 	@Id
@@ -68,7 +68,7 @@ public class Transaction {
 	/*
 	 * Method to query the primary key
 	 * 
-	 * @return Auto-generated primary key as a String
+	 * @return Auto-generated primary key as a Long
 	 */
 	public Long getId() {
 		return id;
