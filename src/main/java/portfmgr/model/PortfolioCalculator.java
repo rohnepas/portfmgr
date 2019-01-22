@@ -33,6 +33,8 @@ public class PortfolioCalculator {
 
 	@Autowired
 	TransactionRepository transRepo;
+	@Autowired
+	PortfolioRepository portRepo;
 
 
 	/*
@@ -142,6 +144,11 @@ public class PortfolioCalculator {
 		totalSpent = df.format(tempTotalSpent);
 		totalPortfolioValue = df.format(tempTotalPortfolioValue);
 		profitOrLoss = df.format(tempProfitOrLoss);
+		
+		//save main statistic value to portfolio
+		portfolio.setProfitOrLoss(profitOrLoss);
+		portfolio.setTotalPortfolioValue(totalPortfolioValue);
+		portRepo.save(portfolio);
 		
 		if(tempTotalSpent > 0) {
 			profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));

@@ -28,6 +28,9 @@ public class Portfolio {
 	private Long id;
 	private String portfolioName;
 	private String portfolioFiatCurrency;
+	private String profitOrLoss = "-";
+	private String totalPortfolioValue = "-";
+	
 
 	@OneToMany(mappedBy = "portfolio")
 	private List<Transaction> transactions;
@@ -85,6 +88,22 @@ public class Portfolio {
 	public String toString() {
 		return "Portfolio [id=" + id + ", portfolioName=" + portfolioName + ", portfolioFiatCurrency=" + portfolioFiatCurrency
 				+ "]";
+	}
+
+	public String getProfitOrLoss() {
+		return profitOrLoss;
+	}
+
+	public void setProfitOrLoss(String profitOrLoss) {
+		this.profitOrLoss = profitOrLoss;
+	}
+
+	public String getTotalPortfolioValue() {
+		return totalPortfolioValue;
+	}
+
+	public void setTotalPortfolioValue(String totalPortfolioValue) {
+		this.totalPortfolioValue = totalPortfolioValue;
 	}
 
 }
