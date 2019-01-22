@@ -76,7 +76,6 @@ public class PortfolioDetailViewController implements Initializable {
 	private TableColumn<Transaction, String> transactionTypeColumn;
 	@FXML
 	private TableColumn<Transaction, String> transactionCryptoCurrencyColumn;
-
 	@FXML
 	private TableColumn<Transaction, Double> transactionPriceColumn;
 	@FXML
@@ -87,28 +86,20 @@ public class PortfolioDetailViewController implements Initializable {
 	private TableColumn<Transaction, Double> transactionTotalColumn;
 	@FXML
 	private TableColumn<?, String> overviewCurrencyColumn;
-
 	@FXML
 	private TableColumn<Insight, String> insightCryptoCurrencyColumn;
-
 	@FXML
 	private TableColumn<Insight, Double> insightSpotPriceColumn;
-
 	@FXML
 	private TableColumn<Insight, Double> insightNumberOfCoinsColumn;
-
 	@FXML
 	private TableColumn<Insight, Double> insightTotalColumn;
-
 	@FXML
 	private TableColumn<Insight, Double> insightAveragePriceColumn;
-
 	@FXML
 	private TableColumn<Insight, Double> insightChangePercentColumn;
-
 	@FXML
 	private TableColumn<Insight, Double> insightChanageFiatColumn;
-
 	@FXML
 	private Label portfolioName;
 	@FXML
@@ -140,7 +131,7 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Setup the main app and initalize portfolio values
+	 * Setup the main app and initialize portfolio values
 	 *
 	 * @param mainApp
 	 * @author Marc Steiner
@@ -152,8 +143,8 @@ public class PortfolioDetailViewController implements Initializable {
 	}
 
 	/**
-	 * Checks if the choosen portfolio has a proper name and currency set. If not
-	 * opens updateView pop-up
+	 * Checks if the chosen portfolio has a proper name and currency set. 
+	 * If not opens updateView pop-up
 	 *
 	 * @author Marc Steiner
 	 */
@@ -239,10 +230,9 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Marc Steiner
 	 */
 	public void setCryptoCurrencyList() {
-		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency(portfolio.getId());
+		cryptoCurrencyList = transRepo.findDistinctCryptoCurrency(this.portfolio.getId());
 	}
 
-	
 	public List<String> getCryptoCurrencyList() {
 		return cryptoCurrencyList;
 	}
@@ -261,7 +251,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 */
 	public void editPortfolio() {
 
-		mainApp.openPortfolioUpdateView(portfolio, Arrays.asList(portfolio.getPortfolioFiatCurrency()));
+		mainApp.openPortfolioUpdateView(this.portfolio, Arrays.asList(this.portfolio.getPortfolioFiatCurrency()));
 		refreshPortfolioData();
 	}
 
@@ -276,7 +266,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 		if (file != null) {
 			try {
-				ExportData exportData = new ExportData(portfolio, file);
+				ExportData exportData = new ExportData(this.portfolio, file);
 				exportData.setup();
 				exportData.exportData(getInsight());
 				
@@ -313,9 +303,9 @@ public class PortfolioDetailViewController implements Initializable {
 		  Optional<ButtonType> result = alert.showAndWait();
 
 		  if (result.get() == ButtonType.OK) {
-		  transRepo.deleteAllTransactions(portfolio.getId());
-		  portfolio.setPortfolioFiatCurrency("CHF");
-		  portfolio.setPortfolioName("leeres Portfolio");
+		  transRepo.deleteAllTransactions(this.portfolio.getId());
+		  this.portfolio.setPortfolioFiatCurrency("CHF");
+		  this.portfolio.setPortfolioName("leeres Portfolio");
 		  portRepo.save(this.portfolio); mainApp.openPortfolioView(); 
 		  
 		  }
@@ -328,7 +318,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Pascal Rohner und Marc Steiner
 	 */
 	public void addTransaction() {
-		mainApp.openTransactionViewAdd(portfolio, null, coinlistPath, fiatCurrencyList);
+		mainApp.openTransactionViewAdd(this.portfolio, null, coinlistPath, fiatCurrencyList);
 
 	}
 
@@ -367,7 +357,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	public void editTransaction() {
 		Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();
-		mainApp.openTransactionViewAdd(portfolio, selectedTransaction, coinlistPath, fiatCurrencyList);
+		mainApp.openTransactionViewAdd(this.portfolio, selectedTransaction, coinlistPath, fiatCurrencyList);
 
 	}
 
@@ -399,7 +389,7 @@ public class PortfolioDetailViewController implements Initializable {
 	public ObservableList<Transaction> getTransaction() {
 		ObservableList<Transaction> transaction = FXCollections.observableArrayList();
 
-		transaction.addAll(transRepo.findByPortfolio(portfolio));
+		transaction.addAll(transRepo.findByPortfolio(this.portfolio));
 		
 		// formats all the total values withing the transactionList
 		for (Transaction singleTransaction : transaction) {

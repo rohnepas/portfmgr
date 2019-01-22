@@ -36,7 +36,7 @@ public class PortfolioCalculator {
 
 
 	/*
-	 * Funcation not implemented in constructor because of Autowired constructor would not get the correct portfolio
+	 * Function not implemented in constructor but with init method because of Autowired constructor would not get the correct portfolio
 	 */
 	public void init(Portfolio portfolio) {
 		this.portfolio = portfolio;
