@@ -186,7 +186,7 @@ public class PortfolioDetailViewController implements Initializable {
 			this.onlineDataJSON = query.getOnlineCourseData(cryptoCurrencyList, fiatCurrencyList);
 			
 		} catch (IOException e) {
-			System.out.println("Problem within getOnlineCourseData()");
+			//System.out.println("Problem within getOnlineCourseData()");
 			e.printStackTrace();
 		}
 
@@ -279,7 +279,7 @@ public class PortfolioDetailViewController implements Initializable {
 				alert.showAndWait();		
 
 			} catch (IOException e) {
-				System.out.println("Problem with writing or closing of EXCEL sheet");
+				//System.out.println("Problem with writing or closing of EXCEL sheet");
 				e.printStackTrace();
 			}
 		}

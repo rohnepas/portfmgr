@@ -219,7 +219,7 @@ public class TransactionViewController implements Initializable {
 			}
 		} catch (IOException e) {
 			String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
-			System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
+			//System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
 			e.printStackTrace();
 		}
 		return null;

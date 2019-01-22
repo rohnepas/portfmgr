@@ -43,7 +43,7 @@ public class OnlineCourseQuery {
 		con.setReadTimeout(5000);
 
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
+		//System.out.println("\nSending 'GET' request to URL : " + url);
 		
 		if(responseCode != 200) {
 			throw new RuntimeException("Problem with HttpResponseCode: " + responseCode);
@@ -51,7 +51,7 @@ public class OnlineCourseQuery {
 		
 		else
 		{
-			System.out.println("Response Code : " + responseCode);
+			//System.out.println("Response Code : " + responseCode);
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
@@ -68,7 +68,7 @@ public class OnlineCourseQuery {
 				
 			} catch (JSONException e) {
 				String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
-				System.out.println("Problem with JSON Object in method " + nameofCurrMethod);
+				//System.out.println("Problem with JSON Object in method " + nameofCurrMethod);
 				
 				e.printStackTrace();
 			}
