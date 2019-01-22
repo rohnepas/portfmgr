@@ -1,6 +1,8 @@
 package portfmgr.view;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -33,6 +35,8 @@ public class PortfolioViewController implements Initializable {
 	
 	private String defaultPortfolioname = "leeres Portfolio";
 	private String defaultPortfolioFiatCurrency = "CHF";
+	private String defaultProfitOrLoss = "-";
+	private String defaultTotalPortfolioValue = "-";
 
 	// Gets the repository instance injected and uses it.
 	@Autowired
@@ -74,15 +78,23 @@ public class PortfolioViewController implements Initializable {
 
 	@FXML
 	private Label labelPortfolio1;
+	@FXML
+	private Label labelPortfolio1Statistic;
 
 	@FXML
 	private Label labelPortfolio2;
+	@FXML
+	private Label labelPortfolio2Statistic;
 
 	@FXML
 	private Label labelPortfolio3;
+	@FXML
+	private Label labelPortfolio3Statistic;
 
 	@FXML
 	private Label labelPortfolio4;
+	@FXML
+	private Label labelPortfolio4Statistic;
 
 	/**
 	 * Delete all transactions and setback the portfolio name and fiat currency
@@ -108,6 +120,8 @@ public class PortfolioViewController implements Initializable {
 				portfArray[i] = portfolio;
 				portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
 				portfArray[i].setPortfolioName(defaultPortfolioname);
+				portfArray[i].setProfitOrLoss(defaultProfitOrLoss);
+				portfArray[i].setTotalPortfolioValue(defaultTotalPortfolioValue);
 				portRepo.save(portfArray[i]);
 				transRepo.deleteAllTransactions(portfArray[i].getId());
 				i++;
@@ -175,7 +189,9 @@ public class PortfolioViewController implements Initializable {
 				portfArray[i] = new Portfolio();
 				portfArray[i].setPortfolioName(defaultPortfolioname);
 				portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
-
+				portfArray[i].setProfitOrLoss(defaultProfitOrLoss);
+				portfArray[i].setTotalPortfolioValue(defaultTotalPortfolioValue);
+				
 				portRepo.save(portfArray[i]);
 			}
 
@@ -185,19 +201,38 @@ public class PortfolioViewController implements Initializable {
 			portfArray = new Portfolio[4];
 			Iterable<Portfolio> portfolioList = portRepo.findAll();
 			
+			
 			for (Portfolio portfolio : portfolioList) {
 				portfArray[i] = portfolio;
 				i++;
 			}
+			
+			
+			//Sort portfArray by portfolio ID
+			
+			Arrays.sort(portfArray, new Comparator<Portfolio>() {
+				@Override
+				public int compare(Portfolio p1, Portfolio p2) {
+					return p1.getId().compareTo(p2.getId());
+				}
+			});
+			
 		}
 		
 		// Remark: When using a For-loop, the labels cannot be set correctly.
 		//Therefore each label is called and set individually.
 
 		labelPortfolio1.setText(portfArray[0].getPortfolioName());
+		labelPortfolio1Statistic.setText("Tot Wert: " + portfArray[0].getTotalPortfolioValue() + " " + portfArray[0].getPortfolioFiatCurrency() + "  Gewinn/Verlust: " + portfArray[0].getProfitOrLoss() + " " + portfArray[0].getPortfolioFiatCurrency() );
+		
 		labelPortfolio2.setText(portfArray[1].getPortfolioName());
+		labelPortfolio2Statistic.setText("Tot Wert: " + portfArray[1].getTotalPortfolioValue() + " " + portfArray[1].getPortfolioFiatCurrency() + "  Gewinn/Verlust: " + portfArray[1].getProfitOrLoss() + " " + portfArray[1].getPortfolioFiatCurrency() );
+		
 		labelPortfolio3.setText(portfArray[2].getPortfolioName());
+		labelPortfolio3Statistic.setText("Tot Wert: " + portfArray[2].getTotalPortfolioValue() + " " + portfArray[2].getPortfolioFiatCurrency() + "  Gewinn/Verlust: " + portfArray[2].getProfitOrLoss() + " " + portfArray[2].getPortfolioFiatCurrency() );
+		
 		labelPortfolio4.setText(portfArray[3].getPortfolioName());
+		labelPortfolio4Statistic.setText("Tot Wert: " + portfArray[3].getTotalPortfolioValue() + " " + portfArray[3].getPortfolioFiatCurrency() + "  Gewinn/Verlust: " + portfArray[3].getProfitOrLoss() + " " + portfArray[3].getPortfolioFiatCurrency() );
 
 	}
 }

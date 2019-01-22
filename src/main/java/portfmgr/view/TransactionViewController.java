@@ -2,7 +2,6 @@ package portfmgr.view;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -108,7 +107,7 @@ public class TransactionViewController implements Initializable {
 		
 		// validates if the textField input is empty
 		for (TextField textField : labelList) {
-			System.out.println(textField.getText());
+			
 			if (textField.getText().trim().isEmpty()) {
 				inputComplete = false;
 			}
@@ -173,12 +172,13 @@ public class TransactionViewController implements Initializable {
 
 	/*
 	 * This method validate the user input of the crypto currencies based on JSON
-	 * list from http://www.cryptocompare.com
+	 * list from http://www.cryptocompare.com. This JSON list is saved in project folder
+	 * src/main/java/coinlist/coinlist.json = coinlistPath
 	 *
 	 * @author Marc Steiner
 	 */
 	public String validateCryptoInput(String input) {
-		File file = new File(coinlistPath);
+		File file = new File(this.coinlistPath);
 		String content;
 
 		try {
@@ -194,12 +194,9 @@ public class TransactionViewController implements Initializable {
 					return key;
 				}
 			}
-
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
+			System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
 			e.printStackTrace();
 		}
 		return null;

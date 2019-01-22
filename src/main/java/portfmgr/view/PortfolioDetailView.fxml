@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="1000.0" styleClass="background" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -224,7 +224,7 @@
             </GridPane>
          </top>
       </BorderPane>
-      <Label fx:id="portfolioName" contentDisplay="CENTER" layoutX="520.0" layoutY="-38.0" prefHeight="27.0" prefWidth="67.0" styleClass="label-header-big" text="NAME">
+      <Label fx:id="portfolioName" contentDisplay="CENTER" layoutX="468.0" layoutY="-39.0" prefHeight="27.0" prefWidth="149.0" styleClass="label-header-big" text="NAME">
          <font>
             <Font size="18.0" />
          </font>
@@ -234,7 +234,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="portfolioName1" contentDisplay="CENTER" layoutX="399.0" layoutY="-38.0" prefHeight="27.0" prefWidth="121.0" styleClass="label-header-big" text="Portfolioname:">
+      <Label fx:id="portfolioName1" contentDisplay="CENTER" layoutX="347.0" layoutY="-39.0" prefHeight="27.0" prefWidth="121.0" styleClass="label-header-big" text="Portfolioname:">
          <font>
             <Font size="21.0" />
          </font>

@@ -33,10 +33,12 @@ public class PortfolioCalculator {
 
 	@Autowired
 	TransactionRepository transRepo;
+	@Autowired
+	PortfolioRepository portRepo;
 
 
 	/*
-	 * Funcation not implemented in constructor because of Autowired constructor would not get the correct portfolio
+	 * Function not implemented in constructor but with init method because of Autowired constructor would not get the correct portfolio
 	 */
 	public void init(Portfolio portfolio) {
 		this.portfolio = portfolio;
@@ -142,6 +144,11 @@ public class PortfolioCalculator {
 		totalSpent = df.format(tempTotalSpent);
 		totalPortfolioValue = df.format(tempTotalPortfolioValue);
 		profitOrLoss = df.format(tempProfitOrLoss);
+		
+		//save main statistic value to portfolio
+		portfolio.setProfitOrLoss(profitOrLoss);
+		portfolio.setTotalPortfolioValue(totalPortfolioValue);
+		portRepo.save(portfolio);
 		
 		if(tempTotalSpent > 0) {
 			profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));

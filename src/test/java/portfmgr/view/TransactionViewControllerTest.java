@@ -18,5 +18,4 @@ public class TransactionViewControllerTest {
 		Double result = transViewController.calculateTotal("Kauf", 1000.0, 2.0, 80.0);
 		assertEquals(2080.0, result, 0);
 	}
-
 }

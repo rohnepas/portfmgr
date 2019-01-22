@@ -111,7 +111,8 @@ public class PortfolioCalculatorTest {
 	 */
 	@Test
 	public void calculatePortfolioTest() {
-		//portCalculator.calculatePortfolio(JSONdata);
+		portCalculator.init(this.portfolio);
+		//portCalculator.calculatePortfolio(this.JSONdata);
 		
 		/*
 		assertEquals("500.00", portCalculator.getProfitOrLoss());
@@ -128,6 +129,7 @@ public class PortfolioCalculatorTest {
 	 */
 	@Test
 	public void setStatisticValuesTest() {
+		portCalculator.init(this.portfolio);
 		//portCalculator.setStatisticValues(300.0, 1000.0, 700.0);
 		
 		/*

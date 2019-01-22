@@ -19,9 +19,6 @@ public class TransactionRepositoryTest {
 	private TestEntityManager entityManager;
 	
 	@Autowired
-	private PortfolioRepository portRepo;
-	
-	@Autowired
 	private TransactionRepository transRepo;
 	
 	private Portfolio portfolio;

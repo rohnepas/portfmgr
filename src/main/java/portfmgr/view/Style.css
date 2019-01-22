@@ -67,6 +67,13 @@
     -fx-text-inner-color: white
 }
 
+.label-small {
+    -fx-font-size: 9.5pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-text-inner-color: white;
+}
+
 
 .table-view {
     -fx-base: #1d1d1d;

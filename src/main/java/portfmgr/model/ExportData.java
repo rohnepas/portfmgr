@@ -33,8 +33,6 @@ public class ExportData {
 	private int indexDateRow = 1;
 	private int indexHeaderRow = 3;
 	private int indexDataRow = 4;
-	private Map<String, Object[]> data = new TreeMap<String, Object[]>();
-	private ObservableList<Insight> insights;
 	
 	//Create Workbook - XSSF: Used for dealing with files excel 2007 or later(.xlsx)
 	private Workbook workbook = new XSSFWorkbook();
@@ -54,12 +52,9 @@ public class ExportData {
 	private CellStyle titleCellStyle = workbook.createCellStyle();
 
 	
-	public ExportData(Portfolio portfolio, File file, ObservableList<Insight> insights) throws IOException {
+	public ExportData(Portfolio portfolio, File file) throws IOException {
 		this.portfolio = portfolio;
 		this.file = file;
-		this.insights = insights;
-		setup();
-		exportData();
 	}
 	
 	/**
@@ -119,19 +114,21 @@ public class ExportData {
        
 	/**
 	 * Call the method to extract the data from the portfolio and write data into the Excel sheet
+	 * @param insights 
 	 * @throws IOException if there is a problem with writing or closing of the excel sheet
 	 */
-	public void exportData() throws IOException {
+	public void exportData(ObservableList<Insight> insights) throws IOException {
 
         String fiatCurrency = portfolio.getPortfolioFiatCurrency();
-        data = extractData();
+        Map<String, Object[]> extractedData = new TreeMap<String, Object[]>();
+        extractedData = extractData(insights);
             
         //Iterate over data and write to sheet.
-        Set<String> keyid = data.keySet();
+        Set<String> keyid = extractedData.keySet();
         
         for (String key : keyid) {
            Row row = sheet.createRow(indexDataRow++);
-           Object [] objectArr = data.get(key);
+           Object [] objectArr = extractedData.get(key);
            int cellid = 0;
 
            for (Object obj : objectArr) {
@@ -164,14 +161,16 @@ public class ExportData {
      * This data needs to be written (Object[]). 
      * The number "1", "2"... defines the order in a TreeMap, therefore the
      * order which data will be shown first in the Excel sheet
+	 * @param insights23 
 	 * @return 
      * 
      * @return data
      * 
      */
-	public Map<String, Object[]> extractData() {
+	public Map<String, Object[]> extractData(ObservableList<Insight> insights) {
 		
 		int index = 1;
+		Map<String, Object[]> data = new TreeMap<String, Object[]>();
 		
 		for (Insight element: insights) {
 			

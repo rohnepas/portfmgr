@@ -20,11 +20,8 @@ import org.json.JSONObject;
 public class OnlineCourseQuery {
 	
 	private String APIKey = "3b46b9503250d561de3cfa120910d34bada6f4d0587b7e3db6cf15e02a509313";
-	private String symbols;
-	private String currencies;
-	//private List<String> cryptoCurrencyList;
-	//private List<String> fiatCurrencyList;
-	
+	private String cryptoCurrencies;
+	private String fiatCurrencies;
 
 	/**
 	 * Calls the online API and get the actual data
@@ -36,10 +33,10 @@ public class OnlineCourseQuery {
 	 */
 	public JSONObject getOnlineCourseData(List<String> cryptoCurrencyList, List<String> fiatCurrencyList) throws IOException {
 		
-		setSymbols(cryptoCurrencyList);
-		setCurrencies(fiatCurrencyList);
+		cryptoCurrencies = String.join(",", cryptoCurrencyList);
+		fiatCurrencies = String.join(",", fiatCurrencyList);
 		
-		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + this.symbols + "&tsyms=" + this.currencies +"&api_key="+ this.APIKey);
+		URL url = new URL("https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + cryptoCurrencies + "&tsyms=" + fiatCurrencies +"&api_key="+ this.APIKey);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.setConnectTimeout(5000);
@@ -49,7 +46,7 @@ public class OnlineCourseQuery {
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		
 		if(responseCode != 200) {
-			throw new RuntimeException("Problem wirh HttpResponseCode: " + responseCode);
+			throw new RuntimeException("Problem with HttpResponseCode: " + responseCode);
 		}
 		
 		else
@@ -70,7 +67,9 @@ public class OnlineCourseQuery {
 				return obj;
 				
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
+				System.out.println("Problem with JSON Object in method " + nameofCurrMethod);
+				
 				e.printStackTrace();
 			}
 			
@@ -78,11 +77,4 @@ public class OnlineCourseQuery {
 		return null;
 	}
 	
-	public void setSymbols (List<String> listOfSymbols) {
-		symbols = String.join(",", listOfSymbols);	
-	}
-	
-	public void setCurrencies (List<String> listOfCurrencies) {
-		currencies = String.join(",", listOfCurrencies);			
-	}
 }
