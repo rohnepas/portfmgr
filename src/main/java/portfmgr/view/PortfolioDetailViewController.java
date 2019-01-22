@@ -276,7 +276,10 @@ public class PortfolioDetailViewController implements Initializable {
 
 		if (file != null) {
 			try {
-				new ExportData(portfolio, file, getInsight());
+				ExportData exportData = new ExportData(portfolio, file);
+				exportData.setup();
+				exportData.exportData(getInsight());
+				
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Dialog");
 				alert.setHeaderText(null);
