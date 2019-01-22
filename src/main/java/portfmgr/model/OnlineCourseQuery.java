@@ -67,7 +67,9 @@ public class OnlineCourseQuery {
 				return obj;
 				
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
+				System.out.println("Problem with JSON Object in method " + nameofCurrMethod);
+				
 				e.printStackTrace();
 			}
 			
