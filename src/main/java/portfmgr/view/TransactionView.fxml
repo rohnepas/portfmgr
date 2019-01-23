@@ -35,23 +35,23 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="cryptoCurrency" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="e.g. BTC" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="cryptoCurrency" maxWidth="150.0" onKeyPressed="#handleKeyPressedCryptoCurrency" prefHeight="26.0" prefWidth="150.0" promptText="e.g. BTC" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox fx:id="type" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="148.0" styleClass="date-picker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="price" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="e.g. 3254.25" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="numberOfCoins" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <DatePicker fx:id="datePicker" onKeyPressed="#handleKeyPressedDatePicker" onMousePressed="#handleKeyPressedDatePicker" prefHeight="25.0" prefWidth="148.0" styleClass="date-picker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="price" maxWidth="150.0" onKeyPressed="#handleKeyPressedPrice" prefHeight="26.0" prefWidth="150.0" promptText="e.g. 3254.25" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="numberOfCoins" maxWidth="150.0" onKeyPressed="#handleKeyPressedNumberOfCoins" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label text="Gebühren" GridPane.rowIndex="6" />
             <Label text="Währung" />
             <Label text="Coin" GridPane.rowIndex="1" />
             <Label text="Preis" GridPane.rowIndex="4" />
             <Label text="Anzahl" GridPane.rowIndex="5" />
-            <TextField fx:id="fees" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="fees" maxWidth="150.0" onKeyPressed="#handleKeyPressedFees" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Label text="Typ" GridPane.rowIndex="2" />
             <Label fx:id="fiatCurrency" text="fiatCurrency" GridPane.columnIndex="1" />
             <Label fx:id="date" text="Datum" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <Button fx:id="save" layoutX="225.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleAddition" text="Speichern" />
+      <Button fx:id="save" layoutX="225.0" layoutY="331.0" mnemonicParsing="false" onKeyPressed="#handleAddition" text="Speichern" />
       <Button fx:id="cancel" layoutX="325.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleCancel" text="Abbrechen" />
    </children>
 </AnchorPane>

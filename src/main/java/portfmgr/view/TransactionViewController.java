@@ -21,6 +21,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -92,6 +94,57 @@ public class TransactionViewController implements Initializable {
 	 *
 	 * @author: Pascal Rohner, Marc Steiner 
 	 */
+	
+	@FXML
+	public void handleKeyPressedCryptoCurrency(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			cryptoCurrency.setText(cryptoCurrency.getText());
+			type.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedType(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			datePicker.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedDatePicker(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			datePicker.setValue(datePicker.getValue());
+			price.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedPrice(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			price.setText(price.getText());
+			numberOfCoins.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedNumberOfCoins(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			numberOfCoins.setText(numberOfCoins.getText());
+			fees.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedFees(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			fees.setText(fees.getText());
+			save.requestFocus();
+		}
+	}
+	
+	
+	
+	
 	public void handleAddition() {
 		String tempCryptoCurrency = cryptoCurrency.getText().toUpperCase();
 		tempCryptoCurrency = validateCryptoInput(tempCryptoCurrency);

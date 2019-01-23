@@ -134,7 +134,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelPortfolio4profitOrLoss" alignment="CENTER" contentDisplay="RIGHT" layoutX="660.0" layoutY="327.0" prefHeight="24.0" prefWidth="110.0" styleClass="label-small" text="Label" textAlignment="CENTER">
+            <Label fx:id="labelPortfolio4profitOrLoss" alignment="CENTER" contentDisplay="RIGHT" layoutX="665.0" layoutY="327.0" prefHeight="24.0" prefWidth="106.0" styleClass="label-small" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
