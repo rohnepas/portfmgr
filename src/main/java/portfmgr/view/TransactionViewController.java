@@ -69,7 +69,7 @@ public class TransactionViewController implements Initializable {
 	
 	@FXML
 	private DatePicker datePicker;
-	
+		
 	@FXML
 	private TextField price;
 

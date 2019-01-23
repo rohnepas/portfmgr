@@ -21,7 +21,7 @@
       <Label layoutX="179.0" layoutY="136.0" styleClass="label-main-titel-view" text="Portfolioübersicht" />
       <AnchorPane layoutX="50.0" layoutY="185.0" prefHeight="366.0" prefWidth="906.0" stylesheets="@style.css" AnchorPane.bottomAnchor="48.60000000000002" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="185.0">
          <children>
-            <Rectangle fx:id="portfolio1" arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="143.0" layoutX="128.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" strokeType="INSIDE" styleClass="button" width="274.0" AnchorPane.leftAnchor="128.0">
+            <Rectangle fx:id="portfolio1" arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="143.0" layoutX="129.0" layoutY="14.0" onMouseClicked="#openPortfolioDetailView" strokeType="INSIDE" styleClass="button" width="274.0" AnchorPane.leftAnchor="129.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -94,7 +94,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelPortfolio2profitOrLoss" alignment="CENTER" contentDisplay="RIGHT" layoutX="661.0" layoutY="135.0" prefHeight="24.0" prefWidth="110.0" styleClass="label-small" text="Label" textAlignment="CENTER">
+            <Label fx:id="labelPortfolio2profitOrLoss" alignment="CENTER" contentDisplay="RIGHT" layoutX="660.0" layoutY="134.0" prefHeight="24.0" prefWidth="110.0" styleClass="label-small" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
@@ -119,7 +119,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelPortfolio3profitOrLoss" alignment="CENTER" contentDisplay="RIGHT" layoutX="292.0" layoutY="328.0" prefHeight="24.0" prefWidth="110.0" styleClass="label-small" text="Label" textAlignment="CENTER">
+            <Label fx:id="labelPortfolio3profitOrLoss" alignment="CENTER" contentDisplay="RIGHT" layoutX="291.0" layoutY="327.0" prefHeight="24.0" prefWidth="110.0" styleClass="label-small" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
@@ -134,7 +134,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelPortfolio4profitOrLoss" alignment="CENTER" contentDisplay="RIGHT" layoutX="661.0" layoutY="328.0" prefHeight="24.0" prefWidth="110.0" styleClass="label-small" text="Label" textAlignment="CENTER">
+            <Label fx:id="labelPortfolio4profitOrLoss" alignment="CENTER" contentDisplay="RIGHT" layoutX="660.0" layoutY="327.0" prefHeight="24.0" prefWidth="110.0" styleClass="label-small" text="Label" textAlignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
