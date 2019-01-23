@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+ * This file is built woth scenebuilder. It shows dashboard overview of the 
+ * portfolio manager with minimal statistics.
+ *
+ * Autohr Marc Steiner, Pascal Rohner
+ *
+-->
+
 <?import java.lang.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>

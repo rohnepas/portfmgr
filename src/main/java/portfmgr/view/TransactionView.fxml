@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is built woth scenebuilder. It shows the transaction update/edit page of the 
+ * portfolio manager where you can set or edit transactions.
+ *
+ * Autohr Pascal Rohner, Marc Steiner
+ *
+-->
 
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>

@@ -92,9 +92,11 @@ public class PortfolioUpdateViewController implements Initializable {
     
     
     /**
-     * Checks if the input for name and cryptoCurrency is correct, otherwise prompt alert
+     * Checks if the input for name and crypto currency is correct, otherwise prompt alert
+     * 
      * @param tempCurrencyBox 
      * @param tempPortfolioName 
+     * @return boolean
      */
     public boolean isInputValid(String tempPortfolioName, String tempCurrencyBox) {
     	

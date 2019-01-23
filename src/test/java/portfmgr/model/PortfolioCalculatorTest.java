@@ -15,7 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * 
+ * Test class for portfolio calculation.
  * @author Marc Steiner
  *
  */
@@ -104,40 +104,4 @@ public class PortfolioCalculatorTest {
 		assertEquals(this.transaction.getTotal(), tempMap.get("BTC"));
 	}
 	
-	/**
-	 * Checks if the calculated portfolio statistic is correct 
-	 * TO DO: NullPointerExcpetion when calling the Database
-	 * @author Marc Steiner
-	 */
-	@Test
-	public void calculatePortfolioTest() {
-		portCalculator.init(this.portfolio);
-		//portCalculator.calculatePortfolio(this.JSONdata);
-		
-		/*
-		assertEquals("500.00", portCalculator.getProfitOrLoss());
-		assertEquals("100.00", portCalculator.getProfitOrLossPercentage());
-		assertEquals("1000", portCalculator.getTotalPortfolioValue());
-		assertEquals("500.00", portCalculator.getTotalSpent());
-		*/
-	}
-	
-	/**
-	 * Checks if the statistic values are set correctly
-	 * TO DO: NullPointerExcpetion when calling the Database
-	 * @author Marc Steiner
-	 */
-	@Test
-	public void setStatisticValuesTest() {
-		portCalculator.init(this.portfolio);
-		//portCalculator.setStatisticValues(300.0, 1000.0, 700.0);
-		
-		/*
-		assertEquals("700.00", portCalculator.getProfitOrLoss());
-		assertEquals("1000", portCalculator.getTotalPortfolioValue());
-		assertEquals("300.00", portCalculator.getTotalSpent());
-		*/
-		
-	}
-
 }

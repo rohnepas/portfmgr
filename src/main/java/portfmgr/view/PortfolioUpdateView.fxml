@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+ * This file is built with scenebuilder. It shows the portfolio update page of the 
+ * portfolio manager where you can set the name of the portfolio.
+ *
+ * Author Marc Steiner
+ *
+-->
+
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>

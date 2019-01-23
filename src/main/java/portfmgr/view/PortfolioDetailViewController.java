@@ -183,7 +183,7 @@ public class PortfolioDetailViewController implements Initializable {
 		setCryptoCurrencyList();
 
 		try {
-			this.onlineDataJSON = query.getOnlineCourseData(cryptoCurrencyList, fiatCurrencyList);
+			this.onlineDataJSON = query.getOnlineCourseData(this.cryptoCurrencyList, fiatCurrencyList);
 			
 		} catch (IOException e) {
 			//System.out.println("Problem within getOnlineCourseData()");
@@ -191,7 +191,7 @@ public class PortfolioDetailViewController implements Initializable {
 		}
 
 		// do not instance portfolioCalulator because of @Autowired
-		portfolioCalculator.init(portfolio);
+		portfolioCalculator.init(this.portfolio);
 		portfolioCalculator.calculatePortfolio(this.onlineDataJSON);
 
 		refreshPortfolioData();
@@ -212,6 +212,7 @@ public class PortfolioDetailViewController implements Initializable {
 		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + this.portfolio.getPortfolioFiatCurrency());
 		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
 
+		// change color of the statistic labels if profit or loss
 		if (portfolioCalculator.getProfit()) {
 
 			profitOrLoss.setStyle("-fx-text-fill:green");
@@ -294,8 +295,8 @@ public class PortfolioDetailViewController implements Initializable {
 	public void deletePortfolio() {
 
 		  Alert alert = new Alert(AlertType.CONFIRMATION);
-		  alert.setTitle("Portfolio löschen");
-		  alert.setHeaderText("Portfolio wirklich löschen?");
+		  alert.setTitle("Portfolio loeschen");
+		  alert.setHeaderText("Portfolio wirklich loeschen?");
 		  alert.setContentText(null); 
 		  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
           alert.getDialogPane().getStyleClass().add("dialog-pane");

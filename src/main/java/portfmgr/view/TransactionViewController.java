@@ -87,14 +87,14 @@ public class TransactionViewController implements Initializable {
 	@FXML
 	private Button cancel;
 
-	/**
-	 * Method is called when "save" is clicked in the transaction view. The method
-	 * performs a validation and saves the portfolio to the database or updates the
-	 * portfolio.
-	 *
-	 * @author: Pascal Rohner, Marc Steiner 
-	 */
 	
+	/**
+	 * Following FXML methods are control feature for the UX. User can use ENTER or
+	 * mouse click for acknowledge. It sets the focus to the next control element as well
+	 * 
+	 * @param event
+	 * @author Marc Steiner
+	 */
 	@FXML
 	public void handleKeyPressedCryptoCurrency(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
@@ -144,7 +144,13 @@ public class TransactionViewController implements Initializable {
 	
 	
 	
-	
+	/**
+	 * Method is called when "save" is clicked in the transaction view. The method
+	 * performs a validation and saves the portfolio to the database or updates the
+	 * portfolio.
+	 *
+	 * @author: Pascal Rohner, Marc Steiner 
+	 */
 	public void handleAddition() {
 		String tempCryptoCurrency = cryptoCurrency.getText().toUpperCase();
 		tempCryptoCurrency = validateCryptoInput(tempCryptoCurrency);
@@ -308,7 +314,7 @@ public class TransactionViewController implements Initializable {
 	/**
 	 * Creates a new transaction and saves it in the database.
 	 *
-	 * @param moneytary (= W�hrung), currency bought, type of the transaction
+	 * @param moneytary (= Waehrung), currency bought, type of the transaction
 	 *                  (Kauf oder Verkauf), price paid, number of coins bought,
 	 *                  fees spent and total amout of money spent for the
 	 *                  transaction

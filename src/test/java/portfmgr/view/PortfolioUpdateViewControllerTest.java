@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
+ * Test class for UpdateViewController.
  * @author Marc Steiner
  *
  */

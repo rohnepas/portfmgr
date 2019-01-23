@@ -47,6 +47,7 @@ public class PortfolioCalculator {
 
 	/**
 	 * calculate all the portfolio statistics
+	 * @param onlineDataJSON (= JSON Object from API)
 	 *
 	 */
 	public void calculatePortfolio(JSONObject onlineDataJSON) {
@@ -83,7 +84,7 @@ public class PortfolioCalculator {
 						 */
 						double cryptoCurrencyPrice = values.getDouble(portfolio.getPortfolioFiatCurrency());
 						
-						// symbol.getValue() = 
+						// symbol.getValue() = total number of coins of the specific crypto currency
 						if (map == mapTotalPortfolioValue) {
 							tempTotalPortfolioValue = tempTotalPortfolioValue + cryptoCurrencyPrice * symbol.getValue();
 						}
