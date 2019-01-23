@@ -53,6 +53,10 @@ public class PortfolioDetailViewController implements Initializable {
 	private static List<String> fiatCurrencyList = Arrays.asList("CHF", "EUR", "USD");
 	private List<String> cryptoCurrencyList;
 	private static String coinlistPath = "src/main/java/coinlist/coinlist.json";
+	private String defaultPortfolioname = "leeres Portfolio";
+	private String defaultPortfolioFiatCurrency = "CHF";
+	private String defaultProfitOrLoss = "-";
+	private String defaultTotalPortfolioValue = "-";
 
 	@Autowired
 	PortfolioRepository portRepo;
@@ -306,8 +310,11 @@ public class PortfolioDetailViewController implements Initializable {
 		  if (result.get() == ButtonType.OK) {
 		  transRepo.deleteAllTransactions(this.portfolio.getId());
 		  updatePortfolio();
-		  this.portfolio.setPortfolioFiatCurrency("CHF");
-		  this.portfolio.setPortfolioName("leeres Portfolio");
+		  this.portfolio.setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
+		  this.portfolio.setPortfolioName(defaultPortfolioname);
+		  this.portfolio.setProfitOrLoss(defaultProfitOrLoss);
+		  this.portfolio.setTotalPortfolioValue(defaultTotalPortfolioValue);
+		  
 		  portRepo.save(this.portfolio); 
 		  mainApp.openPortfolioView(); 
 		  
