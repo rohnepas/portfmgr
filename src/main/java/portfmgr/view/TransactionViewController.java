@@ -123,7 +123,7 @@ public class TransactionViewController implements Initializable {
 			alert.setTitle("Eingabefehler");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 			alert.getDialogPane().getStyleClass().add("dialog-pane");
-			alert.setHeaderText("Eingabe ist unvollständig oder ungültig");
+			alert.setHeaderText("Eingabe ist unvollstaendig oder ungueltig");
 			alert.showAndWait();
 		} else if (tempCryptoCurrency == null) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -131,7 +131,7 @@ public class TransactionViewController implements Initializable {
 			alert.setTitle("Eingabefehler");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 	        alert.getDialogPane().getStyleClass().add("dialog-pane");
-			alert.setHeaderText("Symbol für Coin existiert nicht");
+			alert.setHeaderText("Symbol fuer Coin existiert nicht");
 			alert.showAndWait();
 		}
 		else {
@@ -219,7 +219,7 @@ public class TransactionViewController implements Initializable {
 			}
 		} catch (IOException e) {
 			String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
-			//System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
+			System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
 			e.printStackTrace();
 		}
 		return null;

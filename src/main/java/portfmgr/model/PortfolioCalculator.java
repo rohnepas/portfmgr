@@ -148,7 +148,7 @@ public class PortfolioCalculator {
 		//save main statistic value to portfolio
 		portfolio.setProfitOrLoss(profitOrLoss);
 		portfolio.setTotalPortfolioValue(totalPortfolioValue);
-		portRepo.save(portfolio);
+		
 		
 		if(tempTotalSpent > 0) {
 			profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));
@@ -159,6 +159,9 @@ public class PortfolioCalculator {
 		if (tempProfitOrLoss < 0) {
 			profit = false;
 		} 
+		
+		//save the new statistic values to the DB
+		portRepo.save(portfolio);
 	}
 	
 	

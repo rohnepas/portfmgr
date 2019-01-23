@@ -104,6 +104,6 @@ public class Portfolio {
 
 	public void setTotalPortfolioValue(String totalPortfolioValue) {
 		this.totalPortfolioValue = totalPortfolioValue;
-	}
+	}	 
 
 }

@@ -32,7 +32,7 @@ import portfmgr.model.TransactionRepository;
 
 @Controller
 public class PortfolioViewController implements Initializable {
-	
+
 	private String defaultPortfolioname = "leeres Portfolio";
 	private String defaultPortfolioFiatCurrency = "CHF";
 	private String defaultProfitOrLoss = "-";
@@ -60,7 +60,7 @@ public class PortfolioViewController implements Initializable {
 
 	@FXML
 	private Button addTransaction;
-	
+
 	@FXML
 	private Button deletePortfolio;
 
@@ -79,43 +79,52 @@ public class PortfolioViewController implements Initializable {
 	@FXML
 	private Label labelPortfolio1;
 	@FXML
-	private Label labelPortfolio1Statistic;
+	private Label labelPortfolio1TotValue;
+	@FXML
+	private Label labelPortfolio1profitOrLoss;
 
 	@FXML
 	private Label labelPortfolio2;
 	@FXML
-	private Label labelPortfolio2Statistic;
+	private Label labelPortfolio2TotValue;
+	@FXML
+	private Label labelPortfolio2profitOrLoss;
 
 	@FXML
 	private Label labelPortfolio3;
 	@FXML
-	private Label labelPortfolio3Statistic;
+	private Label labelPortfolio3TotValue;
+	@FXML
+	private Label labelPortfolio3profitOrLoss;
 
 	@FXML
 	private Label labelPortfolio4;
 	@FXML
-	private Label labelPortfolio4Statistic;
+	private Label labelPortfolio4TotValue;
+	@FXML
+	private Label labelPortfolio4profitOrLoss;
 
 	/**
 	 * Delete all transactions and setback the portfolio name and fiat currency
+	 * 
 	 * @author Marc Steiner
 	 */
 	@FXML
 	public void handleDeletePortfolio() {
-		
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Portfolio löschen");
-		alert.setHeaderText("ALLE Portfolios wirklich löschen?");
-		alert.setContentText(null); 
+		alert.setTitle("Portfolio loeschen");
+		alert.setHeaderText("ALLE Portfolios wirklich loeschen?");
+		alert.setContentText(null);
 		alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-        alert.getDialogPane().getStyleClass().add("dialog-pane");
-		  
+		alert.getDialogPane().getStyleClass().add("dialog-pane");
+
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == ButtonType.OK) {
 			int i = 0;
 			Iterable<Portfolio> portfolioList = portRepo.findAll();
-			
+
 			for (Portfolio portfolio : portfolioList) {
 				portfArray[i] = portfolio;
 				portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
@@ -129,6 +138,7 @@ public class PortfolioViewController implements Initializable {
 			mainApp.openPortfolioView();
 		}
 	}
+
 	/**
 	 * Sends the selected portfolio to the portfolioDetailView and calls method from
 	 * mainApp to open the portfolioView.
@@ -160,7 +170,6 @@ public class PortfolioViewController implements Initializable {
 		return listIndex;
 	}
 
-
 	/**
 	 * Initializes the MainApp variable and is called by the MainApp itself.
 	 * 
@@ -174,15 +183,16 @@ public class PortfolioViewController implements Initializable {
 	 * Creates four portfolios and stores them in the database if they do not
 	 * already exist, the names of the portfolios are set and the loadPortfolio
 	 * Method is called
+	 * 
 	 * @author: Pasccal Rohner, Marc Steiner
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resourceBundle) {
 
 		int numberOfPortfolios = 4;
-		
+
 		if (portRepo.count() == 0) {
-			// Makes an Array of size 4 with type of content portfolio 
+			// Makes an Array of size 4 with type of content portfolio
 			portfArray = new Portfolio[4];
 
 			for (int i = 0; i < numberOfPortfolios; i++) {
@@ -191,48 +201,84 @@ public class PortfolioViewController implements Initializable {
 				portfArray[i].setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
 				portfArray[i].setProfitOrLoss(defaultProfitOrLoss);
 				portfArray[i].setTotalPortfolioValue(defaultTotalPortfolioValue);
-				
+				// portfArray[i].setProfit(true);
+
 				portRepo.save(portfArray[i]);
 			}
 
 		} else {
-			// Makes an Array of size 4 with type of content portfolio 
+			// Makes an Array of size 4 with type of content portfolio
 			int i = 0;
 			portfArray = new Portfolio[4];
 			Iterable<Portfolio> portfolioList = portRepo.findAll();
-			
-			
+
 			for (Portfolio portfolio : portfolioList) {
 				portfArray[i] = portfolio;
 				i++;
 			}
-			
-			
-			//Sort portfArray by portfolio ID
-			
+
+			// Sort portfArray by portfolio ID
+
 			Arrays.sort(portfArray, new Comparator<Portfolio>() {
 				@Override
 				public int compare(Portfolio p1, Portfolio p2) {
 					return p1.getId().compareTo(p2.getId());
 				}
 			});
-			
+
 		}
-		
+
 		// Remark: When using a For-loop, the labels cannot be set correctly.
-		//Therefore each label is called and set individually.
+		// Therefore each label is called and set individually.
 
-		labelPortfolio1.setText(portfArray[0].getPortfolioName());
-		labelPortfolio1Statistic.setText("Tot Wert: " + portfArray[0].getTotalPortfolioValue() + " " + portfArray[0].getPortfolioFiatCurrency() + "  Gewinn/Verlust: " + portfArray[0].getProfitOrLoss() + " " + portfArray[0].getPortfolioFiatCurrency() );
 		
-		labelPortfolio2.setText(portfArray[1].getPortfolioName());
-		labelPortfolio2Statistic.setText("Tot Wert: " + portfArray[1].getTotalPortfolioValue() + " " + portfArray[1].getPortfolioFiatCurrency() + "  Gewinn/Verlust: " + portfArray[1].getProfitOrLoss() + " " + portfArray[1].getPortfolioFiatCurrency() );
+		  labelPortfolio1.setText(portfArray[0].getPortfolioName());
+		  labelPortfolio1TotValue.setText(portfArray[0].getTotalPortfolioValue() + " " + portfArray[0].getPortfolioFiatCurrency());
+		  labelPortfolio1profitOrLoss.setText(portfArray[0].getProfitOrLoss() + " " + portfArray[0].getPortfolioFiatCurrency());
 		
-		labelPortfolio3.setText(portfArray[2].getPortfolioName());
-		labelPortfolio3Statistic.setText("Tot Wert: " + portfArray[2].getTotalPortfolioValue() + " " + portfArray[2].getPortfolioFiatCurrency() + "  Gewinn/Verlust: " + portfArray[2].getProfitOrLoss() + " " + portfArray[2].getPortfolioFiatCurrency() );
-		
-		labelPortfolio4.setText(portfArray[3].getPortfolioName());
-		labelPortfolio4Statistic.setText("Tot Wert: " + portfArray[3].getTotalPortfolioValue() + " " + portfArray[3].getPortfolioFiatCurrency() + "  Gewinn/Verlust: " + portfArray[3].getProfitOrLoss() + " " + portfArray[3].getPortfolioFiatCurrency() );
+		  if (portfArray[0].getProfitOrLoss().indexOf('-') >=0) {
+		  
+		  labelPortfolio1profitOrLoss.setStyle("-fx-background-color: red");
+		  
+		  } else { 
+			  labelPortfolio1profitOrLoss.setStyle("-fx-background-color:green");
+			}
+		 
+		  labelPortfolio2.setText(portfArray[1].getPortfolioName());
+		  labelPortfolio2TotValue.setText(portfArray[1].getTotalPortfolioValue() + " " + portfArray[1].getPortfolioFiatCurrency());
+		  labelPortfolio2profitOrLoss.setText(portfArray[1].getProfitOrLoss() + " " + portfArray[1].getPortfolioFiatCurrency());
 
+		  if (portfArray[1].getProfitOrLoss().indexOf('-') >=0) {
+		  
+		  labelPortfolio2profitOrLoss.setStyle("-fx-background-color: red");
+		  
+		  } else { 
+			  labelPortfolio2profitOrLoss.setStyle("-fx-background-color:green");
+			}
+		  
+		  labelPortfolio3.setText(portfArray[2].getPortfolioName());
+		  labelPortfolio3TotValue.setText(portfArray[2].getTotalPortfolioValue() + " " + portfArray[2].getPortfolioFiatCurrency());
+		  labelPortfolio3profitOrLoss.setText(portfArray[2].getProfitOrLoss() + " " + portfArray[2].getPortfolioFiatCurrency());
+
+		  if (portfArray[2].getProfitOrLoss().indexOf('-') >=0) {
+		  
+		  labelPortfolio3profitOrLoss.setStyle("-fx-background-color: red");
+		  
+		  } else { 
+			  labelPortfolio3profitOrLoss.setStyle("-fx-background-color:green");
+			}
+		  
+		  labelPortfolio4.setText(portfArray[3].getPortfolioName());
+		  labelPortfolio4TotValue.setText(portfArray[3].getTotalPortfolioValue() + " " + portfArray[3].getPortfolioFiatCurrency());
+		  labelPortfolio4profitOrLoss.setText(portfArray[3].getProfitOrLoss() + " " + portfArray[3].getPortfolioFiatCurrency());
+
+		  if (portfArray[3].getProfitOrLoss().indexOf('-') >=0) {
+		  
+		  labelPortfolio4profitOrLoss.setStyle("-fx-background-color: red");
+		  
+		  } else { 
+			  labelPortfolio4profitOrLoss.setStyle("-fx-background-color:green");
+			}
+		 
 	}
 }
