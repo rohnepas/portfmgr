@@ -186,7 +186,7 @@ public class PortfolioDetailViewController implements Initializable {
 			this.onlineDataJSON = query.getOnlineCourseData(cryptoCurrencyList, fiatCurrencyList);
 			
 		} catch (IOException e) {
-			System.out.println("Problem within getOnlineCourseData()");
+			//System.out.println("Problem within getOnlineCourseData()");
 			e.printStackTrace();
 		}
 
@@ -279,7 +279,7 @@ public class PortfolioDetailViewController implements Initializable {
 				alert.showAndWait();		
 
 			} catch (IOException e) {
-				System.out.println("Problem with writing or closing of EXCEL sheet");
+				//System.out.println("Problem with writing or closing of EXCEL sheet");
 				e.printStackTrace();
 			}
 		}
@@ -294,8 +294,8 @@ public class PortfolioDetailViewController implements Initializable {
 	public void deletePortfolio() {
 
 		  Alert alert = new Alert(AlertType.CONFIRMATION);
-		  alert.setTitle("Portfolio loeschen");
-		  alert.setHeaderText("Portfolio wirklich loeschen?");
+		  alert.setTitle("Portfolio löschen");
+		  alert.setHeaderText("Portfolio wirklich löschen?");
 		  alert.setContentText(null); 
 		  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
           alert.getDialogPane().getStyleClass().add("dialog-pane");

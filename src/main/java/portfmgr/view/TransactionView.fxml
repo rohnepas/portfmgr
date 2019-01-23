@@ -34,6 +34,7 @@
          <children>
             <TextField fx:id="cryptoCurrency" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="e.g. BTC" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox fx:id="type" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="148.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="price" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="e.g. 3254.25" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="numberOfCoins" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label text="Gebühren" GridPane.rowIndex="6" />
@@ -44,7 +45,6 @@
             <TextField fx:id="fees" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Label text="Typ" GridPane.rowIndex="2" />
             <Label fx:id="fiatCurrency" text="fiatCurrency" GridPane.columnIndex="1" />
-            <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="148.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="date" text="Datum" GridPane.rowIndex="3" />
          </children>
       </GridPane>

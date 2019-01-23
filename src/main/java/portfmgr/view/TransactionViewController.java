@@ -111,6 +111,10 @@ public class TransactionViewController implements Initializable {
 			if (textField.getText().trim().isEmpty()) {
 				inputComplete = false;
 			}
+			
+			if (validateFieldInput(textField.getText()) == false){
+				inputComplete = false;
+			};
 		}
 		
 		if (inputComplete == false) {
@@ -119,7 +123,7 @@ public class TransactionViewController implements Initializable {
 			alert.setTitle("Eingabefehler");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 			alert.getDialogPane().getStyleClass().add("dialog-pane");
-			alert.setHeaderText("Eingabe ist unvollständig");
+			alert.setHeaderText("Eingabe ist unvollständig oder ungültig");
 			alert.showAndWait();
 		} else if (tempCryptoCurrency == null) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -170,6 +174,25 @@ public class TransactionViewController implements Initializable {
 		}
 	}
 
+	/**
+	 * Checks whether the input in the text fields is a number. 
+	 * The number can have one comma and four decimal places.
+	 * @param input from the textField as String
+	 * @return boolean true if input is valid
+	 * 
+	 * @author Pascal Rohner
+	 */
+	public Boolean validateFieldInput(String input) {
+		Boolean valid = false;
+	    if (input.matches("^[0-9]{1,8}([.][0-9]{1,4})?$")) {
+	    	
+	    	valid = true;
+	    }
+	      
+	    return valid;
+	}
+	
+	
 	/*
 	 * This method validate the user input of the crypto currencies based on JSON
 	 * list from http://www.cryptocompare.com. This JSON list is saved in project folder
@@ -196,7 +219,7 @@ public class TransactionViewController implements Initializable {
 			}
 		} catch (IOException e) {
 			String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
-			System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
+			//System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
 			e.printStackTrace();
 		}
 		return null;

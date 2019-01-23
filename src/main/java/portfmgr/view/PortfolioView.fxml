@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioViewController">
    <children>
       <Label layoutX="179.0" layoutY="136.0" styleClass="label-main-titel-view" text="Portfolioübersicht" />
       <AnchorPane layoutX="50.0" layoutY="185.0" prefHeight="366.0" prefWidth="906.0" stylesheets="@style.css" AnchorPane.bottomAnchor="48.60000000000002" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="185.0">
@@ -84,6 +84,6 @@
             </Label>
          </children>
       </AnchorPane>
-      <Button layoutX="179.0" layoutY="551.0" mnemonicParsing="false" onAction="#handleDeletePortfolio" text="Alle Portfolios loeschen" />
+      <Button layoutX="179.0" layoutY="551.0" mnemonicParsing="false" onAction="#handleDeletePortfolio" text="Alle Portfolios löschen" />
    </children>
 </AnchorPane>
