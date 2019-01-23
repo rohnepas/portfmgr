@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+ * This file is built with scenebuilder. It shows the main page of the 
+ * portfolio manager with all the statistics, insight and transactions.
+ *
+ * Author Marc Steiner
+ *
+-->
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -15,7 +30,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1080.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portfmgr.view.PortfolioDetailViewController">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="1000.0" styleClass="background" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -105,45 +120,30 @@
                   <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="44.33332824707031" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                  <ImageView fx:id="imageDashboard" fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="15.0" />
                      </GridPane.margin>
-                     <image>
-                        <Image url="@../../images/dashboard_white.png" />
-                     </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <ImageView fx:id="imageUpdate" fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="20.0" />
                      </GridPane.margin>
-                     <image>
-                        <Image url="@../../images/refresh_white.png" />
-                     </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <ImageView fx:id="imageExport" fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="25.0" />
                      </GridPane.margin>
-                     <image>
-                        <Image url="@../../images/export_white.png" />
-                     </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <ImageView fx:id="imageEdit" fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="38.0" />
                      </GridPane.margin>
-                     <image>
-                        <Image url="@../../images/pen_white.png" />
-                     </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                  <ImageView fx:id="imageDelete" fitHeight="30.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="45.0" />
                      </GridPane.margin>
-                     <image>
-                        <Image url="@../../images/trash_white.png" />
-                     </image>
                   </ImageView>
                   <Button fx:id="updatePortfolio" mnemonicParsing="false" onAction="#updatePortfolio" prefHeight="30.0" prefWidth="100.0" text="Aktualisieren" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <GridPane.margin>

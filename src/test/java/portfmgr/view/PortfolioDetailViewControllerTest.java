@@ -6,6 +6,11 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test class for DetailViewController.
+ *
+ */
+
 public class PortfolioDetailViewControllerTest {
 
 	PortfolioDetailViewController portDetailViewController;

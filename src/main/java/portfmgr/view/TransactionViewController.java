@@ -21,6 +21,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -69,7 +71,7 @@ public class TransactionViewController implements Initializable {
 	
 	@FXML
 	private DatePicker datePicker;
-	
+		
 	@FXML
 	private TextField price;
 
@@ -85,6 +87,63 @@ public class TransactionViewController implements Initializable {
 	@FXML
 	private Button cancel;
 
+	
+	/**
+	 * Following FXML methods are control feature for the UX. User can use ENTER or
+	 * mouse click for acknowledge. It sets the focus to the next control element as well
+	 * 
+	 * @param event
+	 * @author Marc Steiner
+	 */
+	@FXML
+	public void handleKeyPressedCryptoCurrency(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			cryptoCurrency.setText(cryptoCurrency.getText());
+			type.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedType(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			datePicker.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedDatePicker(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			datePicker.setValue(datePicker.getValue());
+			price.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedPrice(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			price.setText(price.getText());
+			numberOfCoins.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedNumberOfCoins(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			numberOfCoins.setText(numberOfCoins.getText());
+			fees.requestFocus();
+		}
+	}
+	
+	@FXML
+	public void handleKeyPressedFees(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			fees.setText(fees.getText());
+			save.requestFocus();
+		}
+	}
+	
+	
+	
 	/**
 	 * Method is called when "save" is clicked in the transaction view. The method
 	 * performs a validation and saves the portfolio to the database or updates the
@@ -123,7 +182,7 @@ public class TransactionViewController implements Initializable {
 			alert.setTitle("Eingabefehler");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 			alert.getDialogPane().getStyleClass().add("dialog-pane");
-			alert.setHeaderText("Eingabe ist unvollständig oder ungültig");
+			alert.setHeaderText("Eingabe ist unvollstaendig oder ungueltig");
 			alert.showAndWait();
 		} else if (tempCryptoCurrency == null) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -131,7 +190,7 @@ public class TransactionViewController implements Initializable {
 			alert.setTitle("Eingabefehler");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 	        alert.getDialogPane().getStyleClass().add("dialog-pane");
-			alert.setHeaderText("Symbol für Coin existiert nicht");
+			alert.setHeaderText("Symbol fuer Coin existiert nicht");
 			alert.showAndWait();
 		}
 		else {
@@ -219,7 +278,7 @@ public class TransactionViewController implements Initializable {
 			}
 		} catch (IOException e) {
 			String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
-			//System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
+			System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
 			e.printStackTrace();
 		}
 		return null;
@@ -255,7 +314,7 @@ public class TransactionViewController implements Initializable {
 	/**
 	 * Creates a new transaction and saves it in the database.
 	 *
-	 * @param moneytary (= Wï¿½hrung), currency bought, type of the transaction
+	 * @param moneytary (= Waehrung), currency bought, type of the transaction
 	 *                  (Kauf oder Verkauf), price paid, number of coins bought,
 	 *                  fees spent and total amout of money spent for the
 	 *                  transaction

@@ -27,6 +27,8 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -53,6 +55,10 @@ public class PortfolioDetailViewController implements Initializable {
 	private static List<String> fiatCurrencyList = Arrays.asList("CHF", "EUR", "USD");
 	private List<String> cryptoCurrencyList;
 	private static String coinlistPath = "src/main/java/coinlist/coinlist.json";
+	private String defaultPortfolioname = "leeres Portfolio";
+	private String defaultPortfolioFiatCurrency = "CHF";
+	private String defaultProfitOrLoss = "-";
+	private String defaultTotalPortfolioValue = "-";
 
 	@Autowired
 	PortfolioRepository portRepo;
@@ -118,6 +124,16 @@ public class PortfolioDetailViewController implements Initializable {
 	private Button editTransaction;
 	@FXML
 	private Button deleteTransaction;
+	@FXML
+	private ImageView imageDashboard;
+	@FXML
+	private ImageView imageUpdate;
+	@FXML
+	private ImageView imageExport;
+	@FXML
+	private ImageView imageEdit;
+	@FXML
+	private ImageView imageDelete;
 
 
 	/**
@@ -183,7 +199,7 @@ public class PortfolioDetailViewController implements Initializable {
 		setCryptoCurrencyList();
 
 		try {
-			this.onlineDataJSON = query.getOnlineCourseData(cryptoCurrencyList, fiatCurrencyList);
+			this.onlineDataJSON = query.getOnlineCourseData(this.cryptoCurrencyList, fiatCurrencyList);
 			
 		} catch (IOException e) {
 			//System.out.println("Problem within getOnlineCourseData()");
@@ -191,7 +207,7 @@ public class PortfolioDetailViewController implements Initializable {
 		}
 
 		// do not instance portfolioCalulator because of @Autowired
-		portfolioCalculator.init(portfolio);
+		portfolioCalculator.init(this.portfolio);
 		portfolioCalculator.calculatePortfolio(this.onlineDataJSON);
 
 		refreshPortfolioData();
@@ -212,6 +228,7 @@ public class PortfolioDetailViewController implements Initializable {
 		profitOrLoss.setText(String.valueOf(portfolioCalculator.getProfitOrLoss()) + " " + this.portfolio.getPortfolioFiatCurrency());
 		profitOrLossPercentage.setText(String.valueOf(portfolioCalculator.getProfitOrLossPercentage()) + " %");
 
+		// change color of the statistic labels if profit or loss
 		if (portfolioCalculator.getProfit()) {
 
 			profitOrLoss.setStyle("-fx-text-fill:green");
@@ -294,8 +311,8 @@ public class PortfolioDetailViewController implements Initializable {
 	public void deletePortfolio() {
 
 		  Alert alert = new Alert(AlertType.CONFIRMATION);
-		  alert.setTitle("Portfolio löschen");
-		  alert.setHeaderText("Portfolio wirklich löschen?");
+		  alert.setTitle("Portfolio loeschen");
+		  alert.setHeaderText("Portfolio wirklich loeschen?");
 		  alert.setContentText(null); 
 		  alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
           alert.getDialogPane().getStyleClass().add("dialog-pane");
@@ -305,8 +322,11 @@ public class PortfolioDetailViewController implements Initializable {
 		  if (result.get() == ButtonType.OK) {
 		  transRepo.deleteAllTransactions(this.portfolio.getId());
 		  updatePortfolio();
-		  this.portfolio.setPortfolioFiatCurrency("CHF");
-		  this.portfolio.setPortfolioName("leeres Portfolio");
+		  this.portfolio.setPortfolioFiatCurrency(defaultPortfolioFiatCurrency);
+		  this.portfolio.setPortfolioName(defaultPortfolioname);
+		  this.portfolio.setProfitOrLoss(defaultProfitOrLoss);
+		  this.portfolio.setTotalPortfolioValue(defaultTotalPortfolioValue);
+		  
 		  portRepo.save(this.portfolio); 
 		  mainApp.openPortfolioView(); 
 		  
@@ -500,6 +520,28 @@ public class PortfolioDetailViewController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		/**
+		 * Set all pictures
+		 * 
+		 * @author Marc Steiner
+		 */
+		Image image1 = new Image("/images/dashboard_white.png");
+		imageDashboard.setImage(image1); 
+		
+		Image image2 = new Image("/images/refresh_white.png");
+		imageUpdate.setImage(image2);
+		
+		Image image3 = new Image("/images/export_white.png");
+		imageExport.setImage(image3);
+		
+		Image image4 = new Image("/images/pen_white.png");
+		imageEdit.setImage(image4);
+		
+		Image image5 = new Image("/images/trash_white.png");
+		imageDelete.setImage(image5);
+		
+		
 		/**
 		 * Sets up the columns for the transaction table
 		 *

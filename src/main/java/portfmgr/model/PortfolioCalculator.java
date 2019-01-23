@@ -47,6 +47,7 @@ public class PortfolioCalculator {
 
 	/**
 	 * calculate all the portfolio statistics
+	 * @param onlineDataJSON (= JSON Object from API)
 	 *
 	 */
 	public void calculatePortfolio(JSONObject onlineDataJSON) {
@@ -83,7 +84,7 @@ public class PortfolioCalculator {
 						 */
 						double cryptoCurrencyPrice = values.getDouble(portfolio.getPortfolioFiatCurrency());
 						
-						// symbol.getValue() = 
+						// symbol.getValue() = total number of coins of the specific crypto currency
 						if (map == mapTotalPortfolioValue) {
 							tempTotalPortfolioValue = tempTotalPortfolioValue + cryptoCurrencyPrice * symbol.getValue();
 						}
@@ -148,7 +149,7 @@ public class PortfolioCalculator {
 		//save main statistic value to portfolio
 		portfolio.setProfitOrLoss(profitOrLoss);
 		portfolio.setTotalPortfolioValue(totalPortfolioValue);
-		portRepo.save(portfolio);
+		
 		
 		if(tempTotalSpent > 0) {
 			profitOrLossPercentage = df.format(100 * (tempProfitOrLoss / tempTotalSpent));
@@ -159,6 +160,9 @@ public class PortfolioCalculator {
 		if (tempProfitOrLoss < 0) {
 			profit = false;
 		} 
+		
+		//save the new statistic values to the DB
+		portRepo.save(portfolio);
 	}
 	
 	
