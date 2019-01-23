@@ -27,6 +27,8 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import portfmgr.portfmgrApplication;
 import portfmgr.model.ExportData;
 import portfmgr.model.Insight;
@@ -122,6 +124,16 @@ public class PortfolioDetailViewController implements Initializable {
 	private Button editTransaction;
 	@FXML
 	private Button deleteTransaction;
+	@FXML
+	private ImageView imageDashboard;
+	@FXML
+	private ImageView imageUpdate;
+	@FXML
+	private ImageView imageExport;
+	@FXML
+	private ImageView imageEdit;
+	@FXML
+	private ImageView imageDelete;
 
 
 	/**
@@ -508,6 +520,28 @@ public class PortfolioDetailViewController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		/**
+		 * Set all pictures
+		 * 
+		 * @author Marc Steiner
+		 */
+		Image image1 = new Image("/images/dashboard_white.png");
+		imageDashboard.setImage(image1); 
+		
+		Image image2 = new Image("/images/refresh_white.png");
+		imageUpdate.setImage(image2);
+		
+		Image image3 = new Image("/images/export_white.png");
+		imageExport.setImage(image3);
+		
+		Image image4 = new Image("/images/pen_white.png");
+		imageEdit.setImage(image4);
+		
+		Image image5 = new Image("/images/trash_white.png");
+		imageDelete.setImage(image5);
+		
+		
 		/**
 		 * Sets up the columns for the transaction table
 		 *
