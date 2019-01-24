@@ -203,12 +203,11 @@ public class portfmgrApplication extends Application implements ApplicationConte
 	 * Function is called by PortfolioDetailViewController and Opens a pop-up window to add/edit a transaction.
 	 * @param portfolio:  The portfolio which should be edit is passed from the PortfolioDetailViewController
 	 * @param transaction: The transaction which should be edit is passed from the PortfolioDetailViewController
-	 * @param coinlistPath: Path to the coinlist is getting passed 
 	 * @author Pascal Rohner und Marc Steiner
 	 * @param currencyList 
 	 * @param cryptocurrencyList 
 	 */ 
-	public void openTransactionViewAdd(Portfolio portfolio, Transaction transaction, String coinlistPath, List<String> currencyList) {
+	public void openTransactionViewAdd(Portfolio portfolio, Transaction transaction, List<String> currencyList) {
 		try {
 			FXMLLoader loader = setupLoader("view/TransactionView.fxml");
 			AnchorPane transactionView = (AnchorPane) loader.load();

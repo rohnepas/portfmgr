@@ -54,7 +54,6 @@ public class PortfolioDetailViewController implements Initializable {
 	private JSONObject onlineDataJSON;
 	private static List<String> fiatCurrencyList = Arrays.asList("CHF", "EUR", "USD");
 	private List<String> cryptoCurrencyList;
-	private static String coinlistPath = "src/main/java/coinlist/coinlist.json";
 	private String defaultPortfolioname = "leeres Portfolio";
 	private String defaultPortfolioFiatCurrency = "CHF";
 	private String defaultProfitOrLoss = "-";
@@ -341,7 +340,7 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @author Pascal Rohner und Marc Steiner
 	 */
 	public void addTransaction() {
-		mainApp.openTransactionViewAdd(this.portfolio, null, coinlistPath, fiatCurrencyList);
+		mainApp.openTransactionViewAdd(this.portfolio, null, fiatCurrencyList);
 
 	}
 
@@ -380,7 +379,7 @@ public class PortfolioDetailViewController implements Initializable {
 
 	public void editTransaction() {
 		Transaction selectedTransaction = transactionTable.getSelectionModel().getSelectedItem();
-		mainApp.openTransactionViewAdd(this.portfolio, selectedTransaction, coinlistPath, fiatCurrencyList);
+		mainApp.openTransactionViewAdd(this.portfolio, selectedTransaction, fiatCurrencyList);
 
 	}
 
