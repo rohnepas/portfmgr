@@ -237,7 +237,8 @@ public class PortfolioDetailViewController implements Initializable {
 		} else {
 			profitOrLoss.setStyle("-fx-text-fill:red");
 			profitOrLossPercentage.setStyle("-fx-text-fill:red");
-		}
+		}	
+		
 	}
 
 	/**
