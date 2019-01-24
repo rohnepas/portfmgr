@@ -266,7 +266,6 @@ public class TransactionViewController implements Initializable {
 	public boolean cryptoCurrencyAmountHold(Double sellingAmount, String cryptoCurrency) {
 		boolean valid = false;
 		Double totalAmountAvailable = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), cryptoCurrency);
-		System.out.println(totalAmountAvailable);
 		if (totalAmountAvailable == null ) {
 			valid = false;
 			
