@@ -228,9 +228,7 @@ public class portfmgrApplication extends Application implements ApplicationConte
 			controller.setMainApp(this);
 			controller.setDialogStage(dialogStage);
 			controller.setPortfolio(portfolio);
-			controller.setTransaction(transaction);
-			controller.setCoinListPath(coinlistPath);
-			
+			controller.setTransaction(transaction);			
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();
