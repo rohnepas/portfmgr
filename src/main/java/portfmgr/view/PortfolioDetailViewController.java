@@ -506,14 +506,19 @@ public class PortfolioDetailViewController implements Initializable {
 	 * @return changen in percent as Double
 	 * @author Pascal Rohner
 	 */
-	public Double getChangeinPercentage(Double newValue, Double oldValue) {
-		// New value - old value to get the absolute amount
-		Double absolutAmount = newValue - oldValue;
-		// Divide old value from the absolut amount to get the change in decimal
-		Double changeInDecimal = absolutAmount / oldValue;
-		// multiply change in decimal with 100 to get the change in percente
-		Double changeInPercent = changeInDecimal * 100.0;
-		return changeInPercent;
+	public Double getChangeinPercentage(Double newValue, Double oldValue) {	
+		if(newValue == 0 && oldValue == 0) {
+			return 0.0;
+		}else {
+			// New value - old value to get the absolute amount
+			Double absolutAmount = newValue - oldValue;
+			// Divide old value from the absolut amount to get the change in decimal
+			Double changeInDecimal = absolutAmount / oldValue;
+			// multiply change in decimal with 100 to get the change in percente
+			Double changeInPercent = changeInDecimal * 100.0;
+			return changeInPercent;
+		}
+		
 	}
 
 	

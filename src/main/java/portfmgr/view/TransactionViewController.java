@@ -157,13 +157,26 @@ public class TransactionViewController implements Initializable {
 		
 		// is set to false in case a textField is empty 
 		boolean inputComplete = true;
+		
+		// Indicates whether the portfolio actually contains the number of coins to be sold
+		boolean sellingAmountOk = true;
+		
+		/*
+		 *  If the crypto currency is to be sold, a method is called that 
+		 *  checks whether the crypto currency to be sold is in the inventory at all.
+		 */
+		if(type.getValue().toString() == "Verkauf" && cryptoCurrency.getText() != null ) {	
+			sellingAmountOk = cryptoCurrencyAmountHold(Double.valueOf(numberOfCoins.getText()), cryptoCurrency.getText());
+		} 
+		
+		
 		List<TextField> labelList = new ArrayList<>();
 		
 		// list of textFields which should be validate for input
 		labelList.add(price);
 		labelList.add(numberOfCoins);
 		labelList.add(fees);
-		
+			
 		// validates if the textField input is empty
 		for (TextField textField : labelList) {
 			
@@ -176,7 +189,16 @@ public class TransactionViewController implements Initializable {
 			};
 		}
 		
-		if (inputComplete == false) {
+		// Logic to differentiate whether a warning is displayed or not.
+		if (sellingAmountOk == false) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.initOwner(dialogStage);
+			alert.setTitle("Eingabefehler");
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+			alert.getDialogPane().getStyleClass().add("dialog-pane");
+			alert.setHeaderText("Verkauf ist groesser als aktueller Bestand");
+			alert.showAndWait();
+		}else if (inputComplete == false) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(dialogStage);
 			alert.setTitle("Eingabefehler");
@@ -233,6 +255,29 @@ public class TransactionViewController implements Initializable {
 		}
 	}
 
+	
+	/**
+	 * checks whether the portfolio actually contains the number of coins to be sold
+	 * @param sellingAmount as Double and cryptoCurrency as String
+	 * @return boolean
+	 * @author Pascal Rohner
+	 */
+	public boolean cryptoCurrencyAmountHold(Double sellingAmount, String cryptoCurrency) {
+		boolean valid = false;
+		Double totalAmountAvailable = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), cryptoCurrency);
+		System.out.println(totalAmountAvailable);
+		if (totalAmountAvailable == null ) {
+			valid = false;
+			
+		} else if (totalAmountAvailable != null && totalAmountAvailable>=sellingAmount) {
+			valid = true;
+		} else {
+			valid = false;
+		}
+		
+		return valid;
+	}
+
 	/**
 	 * Checks whether the input in the text fields is a number. 
 	 * The number can have one comma and four decimal places.
@@ -241,8 +286,8 @@ public class TransactionViewController implements Initializable {
 	 * 
 	 * @author Pascal Rohner
 	 */
-	public Boolean validateFieldInput(String input) {
-		Boolean valid = false;
+	public boolean validateFieldInput(String input) {
+		boolean valid = false;
 	    if (input.matches("^[0-9]{1,8}([.][0-9]{1,4})?$")) {
 	    	
 	    	valid = true;
