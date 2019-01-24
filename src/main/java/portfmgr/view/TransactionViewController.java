@@ -167,7 +167,12 @@ public class TransactionViewController implements Initializable {
 		 *  checks whether the crypto currency to be sold is in the inventory at all.
 		 */
 		if(type.getValue().toString() == "Verkauf" && cryptoCurrency.getText() != null ) {	
-			sellingAmountOk = cryptoCurrencyAmountHold(Double.valueOf(numberOfCoins.getText()), cryptoCurrency.getText());
+			if(numberOfCoins.getText() == null || numberOfCoins.getText().isEmpty() || Double.valueOf(numberOfCoins.getText()) == 0.0) {
+				sellingAmountOk = false;
+			}else {
+				sellingAmountOk = cryptoCurrencyAmountHold(Double.valueOf(numberOfCoins.getText()), cryptoCurrency.getText());
+			}
+			
 		} 
 		
 		
@@ -187,7 +192,7 @@ public class TransactionViewController implements Initializable {
 			
 			if (validateFieldInput(textField.getText()) == false){
 				inputComplete = false;
-			};
+			}
 		}
 		
 		// Logic to differentiate whether a warning is displayed or not.
@@ -197,7 +202,7 @@ public class TransactionViewController implements Initializable {
 			alert.setTitle("Eingabefehler");
 			alert.getDialogPane().getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 			alert.getDialogPane().getStyleClass().add("dialog-pane");
-			alert.setHeaderText("Verkauf ist groesser als aktueller Bestand");
+			alert.setHeaderText("Ungueltige Anzahl, bitte korrigieren");
 			alert.showAndWait();
 		}else if (inputComplete == false) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -266,7 +271,6 @@ public class TransactionViewController implements Initializable {
 	public boolean cryptoCurrencyAmountHold(Double sellingAmount, String cryptoCurrency) {
 		boolean valid = false;
 		Double totalAmountAvailable = transRepo.sumUpNumberOfCoinsForCryptoCurrency(this.portfolio.getId(), cryptoCurrency);
-		System.out.println(totalAmountAvailable);
 		if (totalAmountAvailable == null ) {
 			valid = false;
 			
