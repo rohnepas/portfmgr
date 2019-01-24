@@ -170,7 +170,7 @@ public class TransactionViewController implements Initializable {
 			if(numberOfCoins.getText() == null || numberOfCoins.getText().isEmpty() || Double.valueOf(numberOfCoins.getText()) == 0.0) {
 				sellingAmountOk = false;
 			}else {
-				sellingAmountOk = cryptoCurrencyAmountHold(Double.valueOf(numberOfCoins.getText()), cryptoCurrency.getText());
+				sellingAmountOk = cryptoCurrencyAmountHold(Double.valueOf(numberOfCoins.getText()), cryptoCurrency.getText().toUpperCase());
 			}
 			
 		} 
@@ -293,7 +293,7 @@ public class TransactionViewController implements Initializable {
 	 */
 	public boolean validateFieldInput(String input) {
 		boolean valid = false;
-	    if (input.matches("^[0-9]{1,8}([.][0-9]{1,4})?$")) {
+	    if (input.matches("^[0-9]{1,8}([.][0-9]{1,4})?$") && Double.valueOf(input) >0.0) {
 	    	
 	    	valid = true;
 	    }
