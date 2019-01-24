@@ -1,17 +1,14 @@
 package portfmgr.view;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portfmgr.portfmgrApplication;
+import portfmgr.model.OnlineCourseQuery;
 import portfmgr.model.Portfolio;
 import portfmgr.model.PortfolioRepository;
 import portfmgr.model.Transaction;
@@ -55,7 +53,6 @@ public class TransactionViewController implements Initializable {
 	private Transaction transaction;
 	private Portfolio portfolio;
 	private Stage dialogStage;
-	private String coinlistPath;
 
 	@FXML
 	private Label fiatCurrency;
@@ -153,7 +150,12 @@ public class TransactionViewController implements Initializable {
 	 */
 	public void handleAddition() {
 		String tempCryptoCurrency = cryptoCurrency.getText().toUpperCase();
-		tempCryptoCurrency = validateCryptoInput(tempCryptoCurrency);
+		
+		boolean notValid = !isCryptoInputValid(tempCryptoCurrency);
+		
+		if(notValid) {
+			tempCryptoCurrency = null;
+		}
 		
 		// is set to false in case a textField is empty 
 		boolean inputComplete = true;
@@ -300,33 +302,35 @@ public class TransactionViewController implements Initializable {
 	/*
 	 * This method validate the user input of the crypto currencies based on JSON
 	 * list from http://www.cryptocompare.com. This JSON list is saved in project folder
-	 * src/main/java/coinlist/coinlist.json = coinlistPath
+	 * 
 	 *
 	 * @author Marc Steiner
 	 */
-	public String validateCryptoInput(String input) {
-		File file = new File(this.coinlistPath);
-		String content;
-
+	public boolean isCryptoInputValid(String input) {
+		OnlineCourseQuery onlineCheck = new OnlineCourseQuery();
+		
+		List<String> tempFiatCurrencyList = Arrays.asList("CHF");
+		List<String> tempcryptoCurrencyList = Arrays.asList(input);
+		
 		try {
-			content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
-			JSONObject contentObj = new JSONObject(content);
-			JSONObject cryptoCurrencyList = contentObj.getJSONObject("Data");
-			JSONArray keys = cryptoCurrencyList.names();
-
-			for (int i = 0; i < keys.length(); ++i) {
-				String key = keys.getString(i);
-
-				if (key.equalsIgnoreCase(input)) {
-					return key;
-				}
-			}
+			JSONObject check = onlineCheck.getOnlineCourseData(tempcryptoCurrencyList, tempFiatCurrencyList);
+			
+			 Iterator<String> keys = check.keys();
+			 String str_Name=keys.next();
+			 String value = check.optString(str_Name);
+			 
+			 if (value.equals("Error")) {
+				 return false;
+			 }
+			 
+			 return true;
+			
 		} catch (IOException e) {
-			String nameofCurrMethod = new Object(){}.getClass().getEnclosingMethod().getName(); 
-			System.out.println("Problem with Files.readAllBytes in method " + nameofCurrMethod);
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
-		return null;
+		return false;
 	}
 
 	/**
@@ -443,15 +447,6 @@ public class TransactionViewController implements Initializable {
 		this.portfolio = portfolio;
 		fiatCurrency.setText(portfolio.getPortfolioFiatCurrency());
 
-	}
-
-	/**
-	 *
-	 * @author Marc Steiner
-	 *
-	 */
-	public void setCoinListPath(String coinlistPath) {
-		this.coinlistPath = coinlistPath;
 	}
 
 	/**
