@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 public class OnlineCourseQuery {
 	
-	private String APIKey = "3b46b9503250d561de3cfa120910d34bada6f4d0587b7e3db6cf15e02a509313";
+	private String APIKey = "PASTE YOUR API KEY HERE";
 	private String cryptoCurrencies;
 	private String fiatCurrencies;
 
